@@ -55,14 +55,10 @@ import 'package:super_clipboard/super_clipboard.dart';
 typedef _PhotoInfo = ({Uint8List bytes, String extension});
 
 class Editor extends StatefulWidget {
-  Editor({
-    super.key,
-    String? path,
-    this.customTitle,
-    this.pdfPath,
-  })  : initialPath =
-            path != null ? Future.value(path) : FileManager.newFilePath('/'),
-        needsNaming = path == null;
+  Editor({super.key, String? path, this.customTitle, this.pdfPath})
+    : initialPath =
+          path != null ? Future.value(path) : FileManager.newFilePath('/'),
+      needsNaming = path == null;
 
   final Future<String> initialPath;
   final bool needsNaming;
@@ -240,8 +236,8 @@ class EditorState extends State<Editor> {
       }
       assert(pageIndex < coreInfo.pages.length);
 
-      quillFocus.value = coreInfo.pages[pageIndex].quill
-        ..focusNode.requestFocus();
+      quillFocus.value =
+          coreInfo.pages[pageIndex].quill..focusNode.requestFocus();
     }
 
     if (coreInfo.filePath == Whiteboard.filePath &&
@@ -262,13 +258,19 @@ class EditorState extends State<Editor> {
 
   Keybinding? _ctrlZ, _ctrlY, _ctrlShiftZ;
   void _assignKeybindings() {
-    _ctrlZ = Keybinding([KeyCode.ctrl, KeyCode.from(LogicalKeyboardKey.keyZ)],
-        inclusive: true);
-    _ctrlY = Keybinding([KeyCode.ctrl, KeyCode.from(LogicalKeyboardKey.keyY)],
-        inclusive: true);
-    _ctrlShiftZ = Keybinding(
-        [KeyCode.ctrl, KeyCode.shift, KeyCode.from(LogicalKeyboardKey.keyZ)],
-        inclusive: true);
+    _ctrlZ = Keybinding([
+      KeyCode.ctrl,
+      KeyCode.from(LogicalKeyboardKey.keyZ),
+    ], inclusive: true);
+    _ctrlY = Keybinding([
+      KeyCode.ctrl,
+      KeyCode.from(LogicalKeyboardKey.keyY),
+    ], inclusive: true);
+    _ctrlShiftZ = Keybinding([
+      KeyCode.ctrl,
+      KeyCode.shift,
+      KeyCode.from(LogicalKeyboardKey.keyZ),
+    ], inclusive: true);
     Keybinder.bind(_ctrlZ!, undo);
     Keybinder.bind(_ctrlY!, redo);
     Keybinder.bind(_ctrlShiftZ!, redo);
@@ -310,16 +312,18 @@ class EditorState extends State<Editor> {
       // scroll to the last page (only if we're below the last page)
 
       final scrollY = this.scrollY;
-      late final topOfLastPage = -CanvasGestureDetector.getTopOfPage(
-        pageIndex: coreInfo.pages.length - 1,
-        pages: coreInfo.pages,
-        screenWidth: MediaQuery.sizeOf(context).width,
-      );
-      final bottomOfLastPage = -CanvasGestureDetector.getTopOfPage(
-        pageIndex: coreInfo.pages.length,
-        pages: coreInfo.pages,
-        screenWidth: MediaQuery.sizeOf(context).width,
-      );
+      late final topOfLastPage =
+          -CanvasGestureDetector.getTopOfPage(
+            pageIndex: coreInfo.pages.length - 1,
+            pages: coreInfo.pages,
+            screenWidth: MediaQuery.sizeOf(context).width,
+          );
+      final bottomOfLastPage =
+          -CanvasGestureDetector.getTopOfPage(
+            pageIndex: coreInfo.pages.length,
+            pages: coreInfo.pages,
+            screenWidth: MediaQuery.sizeOf(context).width,
+          );
 
       if (scrollY < bottomOfLastPage) {
         _transformationController.value = Matrix4.translationValues(
@@ -406,17 +410,13 @@ class EditorState extends State<Editor> {
 
         case EditorHistoryItemType.move:
           for (Stroke stroke in item.strokes) {
-            stroke.shift(Offset(
-              -item.offset!.left,
-              -item.offset!.top,
-            ));
+            stroke.shift(Offset(-item.offset!.left, -item.offset!.top));
           }
           Select select = Select.currentSelect;
           if (select.doneSelecting) {
-            select.selectResult.path = select.selectResult.path.shift(Offset(
-              -item.offset!.left,
-              -item.offset!.top,
-            ));
+            select.selectResult.path = select.selectResult.path.shift(
+              Offset(-item.offset!.left, -item.offset!.top),
+            );
           }
           for (EditorImage image in item.images) {
             image.dstRect = Rect.fromLTRB(
@@ -462,21 +462,28 @@ class EditorState extends State<Editor> {
       case EditorHistoryItemType.insertPage:
         undo(item.copyWith(type: EditorHistoryItemType.deletePage));
       case EditorHistoryItemType.move:
-        undo(item.copyWith(
+        undo(
+          item.copyWith(
             offset: Rect.fromLTRB(
-          -item.offset!.left,
-          -item.offset!.top,
-          -item.offset!.right,
-          -item.offset!.bottom,
-        )));
+              -item.offset!.left,
+              -item.offset!.top,
+              -item.offset!.right,
+              -item.offset!.bottom,
+            ),
+          ),
+        );
       case EditorHistoryItemType.quillChange:
         undo(item.copyWith(type: EditorHistoryItemType.quillUndoneChange));
       case EditorHistoryItemType.quillUndoneChange: // this will never happen
         throw Exception('history should not contain quillUndoneChange items');
       case EditorHistoryItemType.changeColor:
-        undo(item.copyWith(
-            colorChange: item.colorChange!
-                .map((key, value) => MapEntry(key, value.swap()))));
+        undo(
+          item.copyWith(
+            colorChange: item.colorChange!.map(
+              (key, value) => MapEntry(key, value.swap()),
+            ),
+          ),
+        );
     }
   }
 
@@ -485,7 +492,9 @@ class EditorState extends State<Editor> {
       if (coreInfo.pages[i].renderBox == null) continue;
       Rect pageBounds = Offset.zero & coreInfo.pages[i].size;
       if (pageBounds.contains(
-          coreInfo.pages[i].renderBox!.globalToLocal(focalPoint))) return i;
+        coreInfo.pages[i].renderBox!.globalToLocal(focalPoint),
+      ))
+        return i;
     }
     return null;
   }
@@ -549,12 +558,18 @@ class EditorState extends State<Editor> {
 
     if (currentTool is Pen) {
       shouldPlayPencilSound = true;
-      (currentTool as Pen)
-          .onDragStart(position, page, dragPageIndex!, currentPressure);
+      (currentTool as Pen).onDragStart(
+        position,
+        page,
+        dragPageIndex!,
+        currentPressure,
+      );
     } else if (currentTool is Eraser) {
       shouldPlayPencilSound = true;
-      for (Stroke stroke in (currentTool as Eraser)
-          .checkForOverlappingStrokes(position, page.strokes)) {
+      for (Stroke stroke in (currentTool as Eraser).checkForOverlappingStrokes(
+        position,
+        page.strokes,
+      )) {
         page.strokes.remove(stroke);
       }
       removeExcessPages();
@@ -577,7 +592,8 @@ class EditorState extends State<Editor> {
     }
 
     if (Prefs.pencilSound.value != PencilSoundSetting.off &&
-        shouldPlayPencilSound) PencilSound.resume();
+        shouldPlayPencilSound)
+      PencilSound.resume();
 
     previousPosition = position;
     moveOffset = Offset.zero;
@@ -601,8 +617,10 @@ class EditorState extends State<Editor> {
       (currentTool as Pen).onDragUpdate(position, currentPressure);
       page.redrawStrokes();
     } else if (currentTool is Eraser) {
-      for (Stroke stroke in (currentTool as Eraser)
-          .checkForOverlappingStrokes(position, page.strokes)) {
+      for (Stroke stroke in (currentTool as Eraser).checkForOverlappingStrokes(
+        position,
+        page.strokes,
+      )) {
         page.strokes.remove(stroke);
       }
       page.redrawStrokes();
@@ -646,15 +664,18 @@ class EditorState extends State<Editor> {
 
         createPage(newStroke.pageIndex);
         page.insertStroke(newStroke);
-        history.recordChange(EditorHistoryItem(
-          type: EditorHistoryItemType.draw,
-          pageIndex: dragPageIndex!,
-          strokes: [newStroke],
-          images: [],
-        ));
+        history.recordChange(
+          EditorHistoryItem(
+            type: EditorHistoryItemType.draw,
+            pageIndex: dragPageIndex!,
+            strokes: [newStroke],
+            images: [],
+          ),
+        );
       } else if (currentTool is Eraser) {
         final erased = (currentTool as Eraser).onDragEnd();
-        if (tmpTool != null && currentTool is Eraser &&
+        if (tmpTool != null &&
+            currentTool is Eraser &&
             (stylusButtonPressed || Prefs.disableEraserAfterUse.value)) {
           // restore previous tool
           stylusButtonPressed = false;
@@ -662,28 +683,32 @@ class EditorState extends State<Editor> {
           tmpTool = null;
         }
         if (erased.isEmpty) return;
-        history.recordChange(EditorHistoryItem(
-          type: EditorHistoryItemType.erase,
-          pageIndex: dragPageIndex!,
-          strokes: erased,
-          images: [],
-        ));
+        history.recordChange(
+          EditorHistoryItem(
+            type: EditorHistoryItemType.erase,
+            pageIndex: dragPageIndex!,
+            strokes: erased,
+            images: [],
+          ),
+        );
       } else if (currentTool is Select) {
         if (moveOffset == Offset.zero) return;
         Select select = currentTool as Select;
         if (select.doneSelecting) {
-          history.recordChange(EditorHistoryItem(
-            type: EditorHistoryItemType.move,
-            pageIndex: dragPageIndex!,
-            strokes: select.selectResult.strokes,
-            images: select.selectResult.images,
-            offset: Rect.fromLTRB(
-              moveOffset.dx,
-              moveOffset.dy,
-              moveOffset.dx,
-              moveOffset.dy,
+          history.recordChange(
+            EditorHistoryItem(
+              type: EditorHistoryItemType.move,
+              pageIndex: dragPageIndex!,
+              strokes: select.selectResult.strokes,
+              images: select.selectResult.images,
+              offset: Rect.fromLTRB(
+                moveOffset.dx,
+                moveOffset.dy,
+                moveOffset.dx,
+                moveOffset.dy,
+              ),
             ),
-          ));
+          );
         } else {
           shouldSave = false;
           select.onDragEnd(page.strokes, page.images);
@@ -738,7 +763,7 @@ class EditorState extends State<Editor> {
         currentTool = Eraser();
         setState(() {});
       } else {
-        if (tmpTool != null) {
+        if (tmpTool != null && currentTool is Eraser) {
           currentTool = tmpTool!;
           tmpTool = null;
           setState(() {});
@@ -748,25 +773,29 @@ class EditorState extends State<Editor> {
   }
 
   void onMoveImage(EditorImage image, Rect offset) {
-    history.recordChange(EditorHistoryItem(
-      type: EditorHistoryItemType.move,
-      pageIndex: image.pageIndex,
-      strokes: [],
-      images: [image],
-      offset: offset,
-    ));
+    history.recordChange(
+      EditorHistoryItem(
+        type: EditorHistoryItemType.move,
+        pageIndex: image.pageIndex,
+        strokes: [],
+        images: [image],
+        offset: offset,
+      ),
+    );
     // setState to update undo button
     setState(() {});
     autosaveAfterDelay();
   }
 
   void onDeleteImage(EditorImage image) {
-    history.recordChange(EditorHistoryItem(
-      type: EditorHistoryItemType.erase,
-      pageIndex: image.pageIndex,
-      strokes: [],
-      images: [image],
-    ));
+    history.recordChange(
+      EditorHistoryItem(
+        type: EditorHistoryItemType.erase,
+        pageIndex: image.pageIndex,
+        strokes: [],
+        images: [image],
+      ),
+    );
     setState(() {
       coreInfo.pages[image.pageIndex].images.remove(image);
     });
@@ -817,21 +846,24 @@ class EditorState extends State<Editor> {
       }
     }
 
-    history.recordChange(EditorHistoryItem(
-      type: EditorHistoryItemType.quillChange,
-      pageIndex: pageIndex,
-      strokes: const [],
-      images: const [],
-      quillChange: event,
-    ));
+    history.recordChange(
+      EditorHistoryItem(
+        type: EditorHistoryItemType.quillChange,
+        pageIndex: pageIndex,
+        strokes: const [],
+        images: const [],
+        quillChange: event,
+      ),
+    );
   }
 
   void _refreshCurrentNote() async {
     if (coreInfo.readOnly) return;
     if (!Prefs.loggedIn) return;
 
-    final syncFile =
-        await SaberSyncFile.relative(coreInfo.filePath + Editor.extension);
+    final syncFile = await SaberSyncFile.relative(
+      coreInfo.filePath + Editor.extension,
+    );
 
     final bestFile = await SaberSyncInterface.getBestFile(
       syncFile,
@@ -859,8 +891,10 @@ class EditorState extends State<Editor> {
     void startTimer() {
       _delayedSaveTimer?.cancel();
       if (Prefs.autosaveDelay.value < 0) return;
-      _delayedSaveTimer =
-          Timer(Duration(milliseconds: Prefs.autosaveDelay.value), callback);
+      _delayedSaveTimer = Timer(
+        Duration(milliseconds: Prefs.autosaveDelay.value),
+        callback,
+      );
     }
 
     callback = () {
@@ -910,15 +944,16 @@ class EditorState extends State<Editor> {
       await Future.wait([
         FileManager.writeFile(filePath, bson, awaitWrite: true),
         for (int i = 0; i < assets.length; ++i)
-          assets.getBytes(i).then((bytes) => FileManager.writeFile(
-                '$filePath.$i',
-                bytes,
-                awaitWrite: true,
-              )),
-        FileManager.removeUnusedAssets(
-          filePath,
-          numAssets: assets.length,
-        ),
+          assets
+              .getBytes(i)
+              .then(
+                (bytes) => FileManager.writeFile(
+                  '$filePath.$i',
+                  bytes,
+                  awaitWrite: true,
+                ),
+              ),
+        FileManager.removeUnusedAssets(filePath, numAssets: assets.length),
       ]);
       savingState.value = SavingState.saved;
     } catch (e) {
@@ -931,9 +966,7 @@ class EditorState extends State<Editor> {
     if (!mounted) return;
     final screenshotter = ScreenshotController();
     final page = coreInfo.pages.first;
-    final previewHeight = page.previewHeight(
-      lineHeight: coreInfo.lineHeight,
-    );
+    final previewHeight = page.previewHeight(lineHeight: coreInfo.lineHeight);
     final thumbnailSize = Size(720, 720 * previewHeight / page.size.width);
     final thumbnail = await screenshotter.captureFromWidget(
       Theme(
@@ -989,21 +1022,24 @@ class EditorState extends State<Editor> {
         coreInfo.filePath + Editor.extension,
         newName.trim() + Editor.extension,
       );
-      coreInfo.filePath = coreInfo.filePath
-          .substring(0, coreInfo.filePath.lastIndexOf(Editor.extension));
+      coreInfo.filePath = coreInfo.filePath.substring(
+        0,
+        coreInfo.filePath.lastIndexOf(Editor.extension),
+      );
       needsNaming = false;
     }
 
     final actualName = coreInfo.fileName;
     if (actualName != newName) {
       // update text field if renamed differently
-      filenameTextEditingController.value =
-          filenameTextEditingController.value.copyWith(
-        text: actualName,
-        selection:
-            TextSelection.fromPosition(TextPosition(offset: actualName.length)),
-        composing: TextRange.empty,
-      );
+      filenameTextEditingController.value = filenameTextEditingController.value
+          .copyWith(
+            text: actualName,
+            selection: TextSelection.fromPosition(
+              TextPosition(offset: actualName.length),
+            ),
+            composing: TextRange.empty,
+          );
     }
   }
 
@@ -1016,8 +1052,9 @@ class EditorState extends State<Editor> {
 
   void updateColorBar(Color color) {
     if (Prefs.recentColorsDontSavePresets.value) {
-      if (ColorBar.colorPresets
-          .any((colorPreset) => colorPreset.color == color)) {
+      if (ColorBar.colorPresets.any(
+        (colorPreset) => colorPreset.color == color,
+      )) {
         return;
       }
     }
@@ -1028,9 +1065,11 @@ class EditorState extends State<Editor> {
     if (Prefs.recentColorsChronological.value.length !=
         Prefs.recentColorsPositioned.value.length) {
       log.info(
-          'MIGRATING recentColors: ${Prefs.recentColorsChronological.value.length} vs ${Prefs.recentColorsPositioned.value.length}');
-      Prefs.recentColorsChronological.value =
-          List.of(Prefs.recentColorsPositioned.value);
+        'MIGRATING recentColors: ${Prefs.recentColorsChronological.value.length} vs ${Prefs.recentColorsPositioned.value.length}',
+      );
+      Prefs.recentColorsChronological.value = List.of(
+        Prefs.recentColorsPositioned.value,
+      );
     }
 
     if (Prefs.pinnedColors.value.contains(newColorString)) {
@@ -1044,11 +1083,11 @@ class EditorState extends State<Editor> {
       if (Prefs.recentColorsPositioned.value.length >=
           Prefs.recentColorsLength.value) {
         // if full, replace the oldest color with the new one
-        final String removedColorString =
-            Prefs.recentColorsChronological.value.removeAt(0);
+        final String removedColorString = Prefs.recentColorsChronological.value
+            .removeAt(0);
         Prefs.recentColorsChronological.value.add(newColorString);
-        final int removedColorPosition =
-            Prefs.recentColorsPositioned.value.indexOf(removedColorString);
+        final int removedColorPosition = Prefs.recentColorsPositioned.value
+            .indexOf(removedColorString);
         Prefs.recentColorsPositioned.value[removedColorPosition] =
             newColorString;
       } else {
@@ -1106,12 +1145,14 @@ class EditorState extends State<Editor> {
           ),
     ];
 
-    history.recordChange(EditorHistoryItem(
-      type: EditorHistoryItemType.draw,
-      pageIndex: currentPageIndex,
-      strokes: [],
-      images: images,
-    ));
+    history.recordChange(
+      EditorHistoryItem(
+        type: EditorHistoryItemType.draw,
+        pageIndex: currentPageIndex,
+        strokes: [],
+        images: images,
+      ),
+    );
     createPage(currentPageIndex);
     coreInfo.pages[currentPageIndex].images.addAll(images);
     autosaveAfterDelay();
@@ -1148,10 +1189,7 @@ class EditorState extends State<Editor> {
     return [
       for (final PlatformFile file in result.files)
         if (file.bytes != null && file.extension != null)
-          (
-            bytes: file.bytes!,
-            extension: '.${file.extension}',
-          ),
+          (bytes: file.bytes!, extension: '.${file.extension}'),
     ];
   }
 
@@ -1186,10 +1224,7 @@ class EditorState extends State<Editor> {
     final emptyPage = coreInfo.pages.removeLast();
     assert(emptyPage.isEmpty);
 
-    final raster = Printing.raster(
-      pdfBytes,
-      dpi: 1,
-    );
+    final raster = Printing.raster(pdfBytes, dpi: 1);
 
     int currentPdfPage = -1;
     await for (final pdfPage in raster) {
@@ -1202,10 +1237,7 @@ class EditorState extends State<Editor> {
         EditorPage.defaultWidth * pdfPage.height / pdfPage.width,
       );
 
-      final page = EditorPage(
-        width: pageSize.width,
-        height: pageSize.height,
-      );
+      final page = EditorPage(width: pageSize.width, height: pageSize.height);
       page.backgroundImage = PdfEditorImage(
         id: coreInfo.nextImageId++,
         pdfBytes: pdfBytes,
@@ -1221,13 +1253,15 @@ class EditorState extends State<Editor> {
         assetCache: coreInfo.assetCache,
       );
       coreInfo.pages.add(page);
-      history.recordChange(EditorHistoryItem(
-        type: EditorHistoryItemType.insertPage,
-        pageIndex: coreInfo.pages.length - 1,
-        strokes: const [],
-        images: const [],
-        page: page,
-      ));
+      history.recordChange(
+        EditorHistoryItem(
+          type: EditorHistoryItemType.insertPage,
+          pageIndex: coreInfo.pages.length - 1,
+          strokes: const [],
+          images: const [],
+          page: page,
+        ),
+      );
 
       if (currentPdfPage == 0) {
         // update ui after we've rastered the first page
@@ -1265,33 +1299,29 @@ class EditorState extends State<Editor> {
 
     for (SimpleFileFormat format in formats.keys) {
       if (!reader.canProvide(format)) continue;
-      final progress = reader.getFile(
-        format,
-        (file) async {
-          final stream = file.getStream();
-          final List<int> bytes = [];
-          await for (final chunk in stream) {
-            bytes.addAll(chunk);
-          }
-          if (bytes.isEmpty) {
-            log.warning('Pasted empty file: $file (${formats[format]})');
-            return;
-          }
+      final progress = reader.getFile(format, (file) async {
+        final stream = file.getStream();
+        final List<int> bytes = [];
+        await for (final chunk in stream) {
+          bytes.addAll(chunk);
+        }
+        if (bytes.isEmpty) {
+          log.warning('Pasted empty file: $file (${formats[format]})');
+          return;
+        }
 
-          String extension;
-          if (file.fileName != null) {
-            extension =
-                file.fileName!.substring(file.fileName!.lastIndexOf('.'));
-          } else {
-            extension = formats[format]!;
-          }
+        String extension;
+        if (file.fileName != null) {
+          extension = file.fileName!.substring(file.fileName!.lastIndexOf('.'));
+        } else {
+          extension = formats[format]!;
+        }
 
-          photoInfos.add((
-            bytes: Uint8List.fromList(bytes),
-            extension: extension,
-          ));
-        },
-      );
+        photoInfos.add((
+          bytes: Uint8List.fromList(bytes),
+          extension: extension,
+        ));
+      });
       if (progress != null) progresses.add(progress);
     }
 
@@ -1307,15 +1337,16 @@ class EditorState extends State<Editor> {
     final pdf = await EditorExporter.generatePdf(coreInfo, context);
     final bytes = await pdf.save();
     if (!context.mounted) return;
-    await FileManager.exportFile('${coreInfo.fileName}.pdf', bytes,
-        context: context);
+    await FileManager.exportFile(
+      '${coreInfo.fileName}.pdf',
+      bytes,
+      context: context,
+    );
   }
 
   /// Exports the current note as an SBA (Saber Archive) file.
   Future exportAsSba(BuildContext context) async {
-    final sba = await coreInfo.saveToSba(
-      currentPageIndex: currentPageIndex,
-    );
+    final sba = await coreInfo.saveToSba(currentPageIndex: currentPageIndex);
     if (!context.mounted) return;
     await FileManager.exportFile(
       '${coreInfo.fileName}.sba',
@@ -1341,14 +1372,17 @@ class EditorState extends State<Editor> {
     final brightness = theme.brightness;
     final otherBrightness =
         brightness == Brightness.dark ? Brightness.light : Brightness.dark;
-    final overlayStyle = brightness == Brightness.dark
-        ? SystemUiOverlayStyle.dark
-        : SystemUiOverlayStyle.light;
+    final overlayStyle =
+        brightness == Brightness.dark
+            ? SystemUiOverlayStyle.dark
+            : SystemUiOverlayStyle.light;
 
-    SystemChrome.setSystemUIOverlayStyle(overlayStyle.copyWith(
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: otherBrightness,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      overlayStyle.copyWith(
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: otherBrightness,
+      ),
+    );
   }
 
   @override
@@ -1359,7 +1393,7 @@ class EditorState extends State<Editor> {
         platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
     final isToolbarVertical =
         Prefs.editorToolbarAlignment.value == AxisDirection.left ||
-            Prefs.editorToolbarAlignment.value == AxisDirection.right;
+        Prefs.editorToolbarAlignment.value == AxisDirection.right;
 
     setAndroidNavBarColor();
 
@@ -1400,27 +1434,30 @@ class EditorState extends State<Editor> {
       transformationController: _transformationController,
     );
 
-    final Widget? readonlyBanner = coreInfo.readOnlyBecauseOfVersion
-        ? Collapsible(
-            collapsed:
-                !(coreInfo.readOnly && coreInfo.readOnlyBecauseOfVersion),
-            axis: CollapsibleAxis.vertical,
-            child: SafeArea(
-              child: ListTile(
-                onTap: askUserToDisableReadOnly,
-                title: Text(t.editor.newerFileFormat.readOnlyMode),
-                subtitle: Text(t.editor.newerFileFormat.title),
-                trailing: const Icon(Icons.edit_off),
+    final Widget? readonlyBanner =
+        coreInfo.readOnlyBecauseOfVersion
+            ? Collapsible(
+              collapsed:
+                  !(coreInfo.readOnly && coreInfo.readOnlyBecauseOfVersion),
+              axis: CollapsibleAxis.vertical,
+              child: SafeArea(
+                child: ListTile(
+                  onTap: askUserToDisableReadOnly,
+                  title: Text(t.editor.newerFileFormat.readOnlyMode),
+                  subtitle: Text(t.editor.newerFileFormat.title),
+                  trailing: const Icon(Icons.edit_off),
+                ),
               ),
-            ),
-          )
-        : null;
+            )
+            : null;
 
     final Widget toolbar = Collapsible(
-      axis: isToolbarVertical
-          ? CollapsibleAxis.horizontal
-          : CollapsibleAxis.vertical,
-      collapsed: DynamicMaterialApp.isFullscreen &&
+      axis:
+          isToolbarVertical
+              ? CollapsibleAxis.horizontal
+              : CollapsibleAxis.vertical,
+      collapsed:
+          DynamicMaterialApp.isFullscreen &&
           !Prefs.editorToolbarShowInFullscreen.value,
       maintainState: true,
       child: SafeArea(
@@ -1464,15 +1501,17 @@ class EditorState extends State<Editor> {
 
               const duplicationFeedbackOffset = Offset(25, -25);
 
-              final duplicatedStrokes = strokes.map((stroke) {
-                return stroke.copy()..shift(duplicationFeedbackOffset);
-              }).toList();
+              final duplicatedStrokes =
+                  strokes.map((stroke) {
+                    return stroke.copy()..shift(duplicationFeedbackOffset);
+                  }).toList();
 
-              final duplicatedImages = images.map((image) {
-                return image.copy()
-                  ..id = coreInfo.nextImageId++
-                  ..dstRect.shift(duplicationFeedbackOffset);
-              }).toList();
+              final duplicatedImages =
+                  images.map((image) {
+                    return image.copy()
+                      ..id = coreInfo.nextImageId++
+                      ..dstRect.shift(duplicationFeedbackOffset);
+                  }).toList();
 
               page.strokes.addAll(duplicatedStrokes);
               page.images.addAll(duplicatedImages);
@@ -1483,12 +1522,14 @@ class EditorState extends State<Editor> {
                 path: select.selectResult.path.shift(duplicationFeedbackOffset),
               );
 
-              history.recordChange(EditorHistoryItem(
-                type: EditorHistoryItemType.draw,
-                pageIndex: select.selectResult.pageIndex,
-                strokes: duplicatedStrokes,
-                images: duplicatedImages,
-              ));
+              history.recordChange(
+                EditorHistoryItem(
+                  type: EditorHistoryItemType.draw,
+                  pageIndex: select.selectResult.pageIndex,
+                  strokes: duplicatedStrokes,
+                  images: duplicatedImages,
+                ),
+              );
               autosaveAfterDelay();
             });
           },
@@ -1512,12 +1553,14 @@ class EditorState extends State<Editor> {
 
               select.unselect();
 
-              history.recordChange(EditorHistoryItem(
-                type: EditorHistoryItemType.erase,
-                pageIndex: strokes.first.pageIndex,
-                strokes: strokes,
-                images: images,
-              ));
+              history.recordChange(
+                EditorHistoryItem(
+                  type: EditorHistoryItemType.erase,
+                  pageIndex: strokes.first.pageIndex,
+                  strokes: strokes,
+                  images: images,
+                ),
+              );
               autosaveAfterDelay();
             });
           },
@@ -1526,8 +1569,9 @@ class EditorState extends State<Editor> {
               updateColorBar(color);
 
               if (currentTool is Highlighter) {
-                (currentTool as Highlighter).color =
-                    color.withAlpha(Highlighter.alpha);
+                (currentTool as Highlighter).color = color.withAlpha(
+                  Highlighter.alpha,
+                );
               } else if (currentTool is Pen) {
                 (currentTool as Pen).color = color;
               } else if (currentTool is Select) {
@@ -1538,18 +1582,22 @@ class EditorState extends State<Editor> {
 
                   Map<Stroke, ColorChange> colorChange = {};
                   for (Stroke stroke in strokes) {
-                    colorChange[stroke] =
-                        ColorChange(previous: stroke.color, current: color);
+                    colorChange[stroke] = ColorChange(
+                      previous: stroke.color,
+                      current: color,
+                    );
                     stroke.color = color;
                   }
 
-                  history.recordChange(EditorHistoryItem(
-                    type: EditorHistoryItemType.changeColor,
-                    pageIndex: strokes.first.pageIndex,
-                    strokes: strokes,
-                    colorChange: colorChange,
-                    images: [],
-                  ));
+                  history.recordChange(
+                    EditorHistoryItem(
+                      type: EditorHistoryItemType.changeColor,
+                      pageIndex: strokes.first.pageIndex,
+                      strokes: strokes,
+                      colorChange: colorChange,
+                      images: [],
+                    ),
+                  );
                   autosaveAfterDelay();
                 }
               }
@@ -1557,21 +1605,24 @@ class EditorState extends State<Editor> {
           },
           quillFocus: quillFocus,
           textEditing: currentTool == Tool.textEditing,
-          toggleTextEditing: () => setState(() {
-            if (currentTool == Tool.textEditing) {
-              currentTool = Pen.currentPen;
-              for (EditorPage page in coreInfo.pages) {
-                // unselect text, but maintain cursor position
-                page.quill.controller.moveCursorToPosition(
-                    page.quill.controller.selection.extentOffset);
-                page.quill.focusNode.unfocus();
-              }
-            } else {
-              currentTool = Tool.textEditing;
-              quillFocus.value = coreInfo.pages[currentPageIndex].quill
-                ..focusNode.requestFocus();
-            }
-          }),
+          toggleTextEditing:
+              () => setState(() {
+                if (currentTool == Tool.textEditing) {
+                  currentTool = Pen.currentPen;
+                  for (EditorPage page in coreInfo.pages) {
+                    // unselect text, but maintain cursor position
+                    page.quill.controller.moveCursorToPosition(
+                      page.quill.controller.selection.extentOffset,
+                    );
+                    page.quill.focusNode.unfocus();
+                  }
+                } else {
+                  currentTool = Tool.textEditing;
+                  quillFocus.value =
+                      coreInfo.pages[currentPageIndex].quill
+                        ..focusNode.requestFocus();
+                }
+              }),
           undo: undo,
           isUndoPossible: history.canUndo,
           redo: redo,
@@ -1595,18 +1646,20 @@ class EditorState extends State<Editor> {
     final Widget body;
     if (isToolbarVertical) {
       body = Row(
-        textDirection: Prefs.editorToolbarAlignment.value == AxisDirection.left
-            ? TextDirection.ltr
-            : TextDirection.rtl,
+        textDirection:
+            Prefs.editorToolbarAlignment.value == AxisDirection.left
+                ? TextDirection.ltr
+                : TextDirection.rtl,
         children: [
           toolbar,
           Expanded(
-              child: Column(
-            children: [
-              Expanded(child: canvas),
-              if (readonlyBanner != null) readonlyBanner,
-            ],
-          )),
+            child: Column(
+              children: [
+                Expanded(child: canvas),
+                if (readonlyBanner != null) readonlyBanner,
+              ],
+            ),
+          ),
         ],
       );
     } else {
@@ -1646,104 +1699,109 @@ class EditorState extends State<Editor> {
         );
       },
       child: Scaffold(
-        appBar: DynamicMaterialApp.isFullscreen
-            ? null
-            : AppBar(
-                toolbarHeight: kToolbarHeight,
-                title: widget.customTitle != null
-                    ? Text(widget.customTitle!)
-                    : Form(
-                        key: _filenameFormKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
+        appBar:
+            DynamicMaterialApp.isFullscreen
+                ? null
+                : AppBar(
+                  toolbarHeight: kToolbarHeight,
+                  title:
+                      widget.customTitle != null
+                          ? Text(widget.customTitle!)
+                          : Form(
+                            key: _filenameFormKey,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              controller: filenameTextEditingController,
+                              onChanged: renameFile,
+                              autofocus: needsNaming,
+                              validator: _validateFilenameTextField,
+                            ),
                           ),
-                          controller: filenameTextEditingController,
-                          onChanged: renameFile,
-                          autofocus: needsNaming,
-                          validator: _validateFilenameTextField,
-                        ),
+                  leading: SaveIndicator(
+                    savingState: savingState,
+                    triggerSave: saveToFile,
+                  ),
+                  actions: [
+                    IconButton(
+                      icon: const AdaptiveIcon(
+                        icon: Icons.insert_page_break,
+                        cupertinoIcon: CupertinoIcons.add,
                       ),
-                leading: SaveIndicator(
-                  savingState: savingState,
-                  triggerSave: saveToFile,
+                      tooltip: t.editor.menu.insertPage,
+                      onPressed:
+                          () => setState(() {
+                            final currentPageIndex = this.currentPageIndex;
+                            insertPageAfter(currentPageIndex);
+                            CanvasGestureDetector.scrollToPage(
+                              pageIndex: currentPageIndex + 1,
+                              pages: coreInfo.pages,
+                              screenWidth: MediaQuery.sizeOf(context).width,
+                              transformationController:
+                                  _transformationController,
+                            );
+                          }),
+                    ),
+                    IconButton(
+                      icon: const AdaptiveIcon(
+                        icon: Icons.grid_view,
+                        cupertinoIcon: CupertinoIcons.rectangle_grid_2x2,
+                      ),
+                      tooltip: t.editor.pages,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder:
+                              (context) => AdaptiveAlertDialog(
+                                title: Text(t.editor.pages),
+                                content: pageManager(context),
+                                actions: const [],
+                              ),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: const AdaptiveIcon(
+                        icon: Icons.more_vert,
+                        cupertinoIcon: CupertinoIcons.ellipsis_vertical,
+                      ),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => bottomSheet(context),
+                          isScrollControlled: true,
+                          showDragHandle: true,
+                          backgroundColor: colorScheme.surface,
+                          constraints: const BoxConstraints(maxWidth: 500),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                actions: [
-                  IconButton(
-                    icon: const AdaptiveIcon(
-                      icon: Icons.insert_page_break,
-                      cupertinoIcon: CupertinoIcons.add,
-                    ),
-                    tooltip: t.editor.menu.insertPage,
-                    onPressed: () => setState(() {
-                      final currentPageIndex = this.currentPageIndex;
-                      insertPageAfter(currentPageIndex);
-                      CanvasGestureDetector.scrollToPage(
-                        pageIndex: currentPageIndex + 1,
-                        pages: coreInfo.pages,
-                        screenWidth: MediaQuery.sizeOf(context).width,
-                        transformationController: _transformationController,
-                      );
-                    }),
-                  ),
-                  IconButton(
-                    icon: const AdaptiveIcon(
-                      icon: Icons.grid_view,
-                      cupertinoIcon: CupertinoIcons.rectangle_grid_2x2,
-                    ),
-                    tooltip: t.editor.pages,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AdaptiveAlertDialog(
-                          title: Text(t.editor.pages),
-                          content: pageManager(context),
-                          actions: const [],
-                        ),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: const AdaptiveIcon(
-                      icon: Icons.more_vert,
-                      cupertinoIcon: CupertinoIcons.ellipsis_vertical,
-                    ),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => bottomSheet(context),
-                        isScrollControlled: true,
-                        showDragHandle: true,
-                        backgroundColor: colorScheme.surface,
-                        constraints: const BoxConstraints(
-                          maxWidth: 500,
-                        ),
-                      );
-                    },
-                  )
-                ],
-              ),
         body: body,
-        floatingActionButton: (DynamicMaterialApp.isFullscreen &&
-                !Prefs.editorToolbarShowInFullscreen.value)
-            ? FloatingActionButton(
-                shape: cupertino ? const CircleBorder() : null,
-                onPressed: () {
-                  DynamicMaterialApp.setFullscreen(false, updateSystem: true);
-                },
-                child: const Icon(Icons.fullscreen_exit),
-              )
-            : null,
+        floatingActionButton:
+            (DynamicMaterialApp.isFullscreen &&
+                    !Prefs.editorToolbarShowInFullscreen.value)
+                ? FloatingActionButton(
+                  shape: cupertino ? const CircleBorder() : null,
+                  onPressed: () {
+                    DynamicMaterialApp.setFullscreen(false, updateSystem: true);
+                  },
+                  child: const Icon(Icons.fullscreen_exit),
+                )
+                : null,
       ),
     );
   }
 
   void snackBarNeedsToSaveBeforeExiting() {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(t.editor.needsToSaveBeforeExiting),
-    ));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(t.editor.needsToSaveBeforeExiting)));
   }
 
   Widget bottomSheet(BuildContext context) {
@@ -1756,43 +1814,48 @@ class EditorState extends State<Editor> {
       invert: invert,
       coreInfo: coreInfo,
       currentPageIndex: currentPageIndex,
-      setBackgroundPattern: (pattern) => setState(() {
-        if (coreInfo.readOnly) return;
-        coreInfo.backgroundPattern = pattern;
-        Prefs.lastBackgroundPattern.value = pattern;
-        autosaveAfterDelay();
-      }),
-      setLineHeight: (lineHeight) => setState(() {
-        if (coreInfo.readOnly) return;
-        coreInfo.lineHeight = lineHeight;
-        Prefs.lastLineHeight.value = lineHeight;
-        autosaveAfterDelay();
-      }),
-      setLineThickness: (lineThickness) => setState(() {
-        if (coreInfo.readOnly) return;
-        coreInfo.lineThickness = lineThickness;
-        Prefs.lastLineThickness.value = lineThickness;
-        autosaveAfterDelay();
-      }),
-      removeBackgroundImage: () => setState(() {
-        if (coreInfo.readOnly) return;
+      setBackgroundPattern:
+          (pattern) => setState(() {
+            if (coreInfo.readOnly) return;
+            coreInfo.backgroundPattern = pattern;
+            Prefs.lastBackgroundPattern.value = pattern;
+            autosaveAfterDelay();
+          }),
+      setLineHeight:
+          (lineHeight) => setState(() {
+            if (coreInfo.readOnly) return;
+            coreInfo.lineHeight = lineHeight;
+            Prefs.lastLineHeight.value = lineHeight;
+            autosaveAfterDelay();
+          }),
+      setLineThickness:
+          (lineThickness) => setState(() {
+            if (coreInfo.readOnly) return;
+            coreInfo.lineThickness = lineThickness;
+            Prefs.lastLineThickness.value = lineThickness;
+            autosaveAfterDelay();
+          }),
+      removeBackgroundImage:
+          () => setState(() {
+            if (coreInfo.readOnly) return;
 
-        final page = coreInfo.pages[currentPageIndex];
-        if (page.backgroundImage == null) return;
-        page.images.add(page.backgroundImage!);
-        page.backgroundImage = null;
+            final page = coreInfo.pages[currentPageIndex];
+            if (page.backgroundImage == null) return;
+            page.images.add(page.backgroundImage!);
+            page.backgroundImage = null;
 
-        autosaveAfterDelay();
-      }),
+            autosaveAfterDelay();
+          }),
       redrawImage: () => setState(() {}),
       clearPage: () {
         clearPage(currentPageIndex);
       },
       clearAllPages: clearAllPages,
-      redrawAndSave: () => setState(() {
-        if (coreInfo.readOnly) return;
-        autosaveAfterDelay();
-      }),
+      redrawAndSave:
+          () => setState(() {
+            if (coreInfo.readOnly) return;
+            autosaveAfterDelay();
+          }),
       pickPhotos: _pickPhotos,
       importPdf: importPdf,
       canRasterPdf: Editor.canRasterPdf,
@@ -1864,9 +1927,7 @@ class EditorState extends State<Editor> {
     double? previewHeight,
   }) {
     final page = coreInfo.pages[pageIndex];
-    previewHeight ??= page.previewHeight(
-      lineHeight: coreInfo.lineHeight,
-    );
+    previewHeight ??= page.previewHeight(lineHeight: coreInfo.lineHeight);
     return CanvasPreview(
       pageIndex: pageIndex,
       height: previewHeight,
@@ -1878,73 +1939,86 @@ class EditorState extends State<Editor> {
     return EditorPageManager(
       coreInfo: coreInfo,
       currentPageIndex: currentPageIndex,
-      redrawAndSave: () => setState(() {
-        if (coreInfo.readOnly) return;
-        autosaveAfterDelay();
-      }),
+      redrawAndSave:
+          () => setState(() {
+            if (coreInfo.readOnly) return;
+            autosaveAfterDelay();
+          }),
       insertPageAfter: insertPageAfter,
-      duplicatePage: (int pageIndex) => setState(() {
-        if (coreInfo.readOnly) return;
-        final page = coreInfo.pages[pageIndex];
-        final newPage = page.copyWith(
-          strokes: page.strokes
-              .map((stroke) => stroke.copy()..pageIndex += 1)
-              .toList(),
-          images:
-              page.images.map((image) => image.copy()..pageIndex += 1).toList(),
-          quill: QuillStruct(
-            controller: flutter_quill.QuillController(
-              document: flutter_quill.Document.fromDelta(
-                  page.quill.controller.document.toDelta()),
-              selection: const TextSelection.collapsed(offset: 0),
-            ),
-            focusNode: FocusNode(debugLabel: 'Quill Focus Node'),
-          ),
-          backgroundImage: page.backgroundImage?.copy()?..pageIndex += 1,
-        );
-        coreInfo.pages.insert(pageIndex + 1, newPage);
-        listenToQuillChanges(newPage.quill, pageIndex + 1);
-        history.recordChange(EditorHistoryItem(
-          type: EditorHistoryItemType.insertPage,
-          pageIndex: pageIndex,
-          strokes: const [],
-          images: const [],
-          page: newPage,
-        ));
-        autosaveAfterDelay();
-      }),
+      duplicatePage:
+          (int pageIndex) => setState(() {
+            if (coreInfo.readOnly) return;
+            final page = coreInfo.pages[pageIndex];
+            final newPage = page.copyWith(
+              strokes:
+                  page.strokes
+                      .map((stroke) => stroke.copy()..pageIndex += 1)
+                      .toList(),
+              images:
+                  page.images
+                      .map((image) => image.copy()..pageIndex += 1)
+                      .toList(),
+              quill: QuillStruct(
+                controller: flutter_quill.QuillController(
+                  document: flutter_quill.Document.fromDelta(
+                    page.quill.controller.document.toDelta(),
+                  ),
+                  selection: const TextSelection.collapsed(offset: 0),
+                ),
+                focusNode: FocusNode(debugLabel: 'Quill Focus Node'),
+              ),
+              backgroundImage: page.backgroundImage?.copy()?..pageIndex += 1,
+            );
+            coreInfo.pages.insert(pageIndex + 1, newPage);
+            listenToQuillChanges(newPage.quill, pageIndex + 1);
+            history.recordChange(
+              EditorHistoryItem(
+                type: EditorHistoryItemType.insertPage,
+                pageIndex: pageIndex,
+                strokes: const [],
+                images: const [],
+                page: newPage,
+              ),
+            );
+            autosaveAfterDelay();
+          }),
       clearPage: clearPage,
-      deletePage: (int pageIndex) => setState(() {
-        if (coreInfo.readOnly) return;
-        final page = coreInfo.pages.removeAt(pageIndex);
-        createPage(pageIndex - 1);
-        history.recordChange(EditorHistoryItem(
-          type: EditorHistoryItemType.deletePage,
-          pageIndex: pageIndex,
-          strokes: const [],
-          images: const [],
-          page: page,
-        ));
-        autosaveAfterDelay();
-      }),
+      deletePage:
+          (int pageIndex) => setState(() {
+            if (coreInfo.readOnly) return;
+            final page = coreInfo.pages.removeAt(pageIndex);
+            createPage(pageIndex - 1);
+            history.recordChange(
+              EditorHistoryItem(
+                type: EditorHistoryItemType.deletePage,
+                pageIndex: pageIndex,
+                strokes: const [],
+                images: const [],
+                page: page,
+              ),
+            );
+            autosaveAfterDelay();
+          }),
       transformationController: _transformationController,
     );
   }
 
   void insertPageAfter(int pageIndex) => setState(() {
-        if (coreInfo.readOnly) return;
-        final page = EditorPage();
-        coreInfo.pages.insert(pageIndex + 1, page);
-        listenToQuillChanges(page.quill, pageIndex + 1);
-        history.recordChange(EditorHistoryItem(
-          type: EditorHistoryItemType.insertPage,
-          pageIndex: pageIndex + 1,
-          strokes: const [],
-          images: const [],
-          page: page,
-        ));
-        autosaveAfterDelay();
-      });
+    if (coreInfo.readOnly) return;
+    final page = EditorPage();
+    coreInfo.pages.insert(pageIndex + 1, page);
+    listenToQuillChanges(page.quill, pageIndex + 1);
+    history.recordChange(
+      EditorHistoryItem(
+        type: EditorHistoryItemType.insertPage,
+        pageIndex: pageIndex + 1,
+        strokes: const [],
+        images: const [],
+        page: page,
+      ),
+    );
+    autosaveAfterDelay();
+  });
 
   void clearPage(int pageIndex) {
     if (coreInfo.readOnly) return;
@@ -1955,12 +2029,14 @@ class EditorState extends State<Editor> {
       page.strokes.clear();
       page.images.clear();
       removeExcessPages();
-      history.recordChange(EditorHistoryItem(
-        type: EditorHistoryItemType.erase,
-        pageIndex: pageIndex,
-        strokes: removedStrokes,
-        images: removedImages,
-      ));
+      history.recordChange(
+        EditorHistoryItem(
+          type: EditorHistoryItemType.erase,
+          pageIndex: pageIndex,
+          strokes: removedStrokes,
+          images: removedImages,
+        ),
+      );
       autosaveAfterDelay();
     });
   }
@@ -1977,33 +2053,37 @@ class EditorState extends State<Editor> {
         page.images.clear();
       }
       removeExcessPages();
-      history.recordChange(EditorHistoryItem(
-        type: EditorHistoryItemType.erase,
-        pageIndex: 0,
-        strokes: removedStrokes,
-        images: removedImages,
-      ));
+      history.recordChange(
+        EditorHistoryItem(
+          type: EditorHistoryItemType.erase,
+          pageIndex: 0,
+          strokes: removedStrokes,
+          images: removedImages,
+        ),
+      );
     });
     autosaveAfterDelay();
   }
 
   Future askUserToDisableReadOnly() async {
-    bool disableReadOnly = await showDialog(
+    bool disableReadOnly =
+        await showDialog(
           context: context,
-          builder: (context) => AdaptiveAlertDialog(
-            title: Text(t.editor.newerFileFormat.title),
-            content: Text(t.editor.newerFileFormat.subtitle),
-            actions: [
-              CupertinoDialogAction(
-                child: Text(t.common.cancel),
-                onPressed: () => Navigator.pop(context, false),
+          builder:
+              (context) => AdaptiveAlertDialog(
+                title: Text(t.editor.newerFileFormat.title),
+                content: Text(t.editor.newerFileFormat.subtitle),
+                actions: [
+                  CupertinoDialogAction(
+                    child: Text(t.common.cancel),
+                    onPressed: () => Navigator.pop(context, false),
+                  ),
+                  CupertinoDialogAction(
+                    child: Text(t.editor.newerFileFormat.allowEditing),
+                    onPressed: () => Navigator.pop(context, true),
+                  ),
+                ],
               ),
-              CupertinoDialogAction(
-                child: Text(t.editor.newerFileFormat.allowEditing),
-                onPressed: () => Navigator.pop(context, true),
-              ),
-            ],
-          ),
         ) ??
         false;
 
