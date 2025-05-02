@@ -55,9 +55,9 @@ typedef _PhotoInfo = ({Uint8List bytes, String extension});
 
 class Editor extends StatefulWidget {
   Editor({super.key, String? path, this.customTitle, this.pdfPath})
-    : initialPath =
-          path != null ? Future.value(path) : FileManager.newFilePath('/'),
-      needsNaming = path == null;
+      : initialPath =
+            path != null ? Future.value(path) : FileManager.newFilePath('/'),
+        needsNaming = path == null;
 
   final Future<String> initialPath;
   final bool needsNaming;
@@ -235,8 +235,8 @@ class EditorState extends State<Editor> {
       }
       assert(pageIndex < coreInfo.pages.length);
 
-      quillFocus.value =
-          coreInfo.pages[pageIndex].quill..focusNode.requestFocus();
+      quillFocus.value = coreInfo.pages[pageIndex].quill
+        ..focusNode.requestFocus();
     }
 
     if (coreInfo.filePath == Whiteboard.filePath &&
@@ -311,18 +311,16 @@ class EditorState extends State<Editor> {
       // scroll to the last page (only if we're below the last page)
 
       final scrollY = this.scrollY;
-      late final topOfLastPage =
-          -CanvasGestureDetector.getTopOfPage(
-            pageIndex: coreInfo.pages.length - 1,
-            pages: coreInfo.pages,
-            screenWidth: MediaQuery.sizeOf(context).width,
-          );
-      final bottomOfLastPage =
-          -CanvasGestureDetector.getTopOfPage(
-            pageIndex: coreInfo.pages.length,
-            pages: coreInfo.pages,
-            screenWidth: MediaQuery.sizeOf(context).width,
-          );
+      late final topOfLastPage = -CanvasGestureDetector.getTopOfPage(
+        pageIndex: coreInfo.pages.length - 1,
+        pages: coreInfo.pages,
+        screenWidth: MediaQuery.sizeOf(context).width,
+      );
+      final bottomOfLastPage = -CanvasGestureDetector.getTopOfPage(
+        pageIndex: coreInfo.pages.length,
+        pages: coreInfo.pages,
+        screenWidth: MediaQuery.sizeOf(context).width,
+      );
 
       if (scrollY < bottomOfLastPage) {
         _transformationController.value = Matrix4.translationValues(
@@ -492,8 +490,7 @@ class EditorState extends State<Editor> {
       Rect pageBounds = Offset.zero & coreInfo.pages[i].size;
       if (pageBounds.contains(
         coreInfo.pages[i].renderBox!.globalToLocal(focalPoint),
-      ))
-        return i;
+      )) return i;
     }
     return null;
   }
@@ -591,8 +588,7 @@ class EditorState extends State<Editor> {
     }
 
     if (Prefs.pencilSound.value != PencilSoundSetting.off &&
-        shouldPlayPencilSound)
-      PencilSound.resume();
+        shouldPlayPencilSound) PencilSound.resume();
 
     previousPosition = position;
     moveOffset = Offset.zero;
@@ -943,9 +939,7 @@ class EditorState extends State<Editor> {
       await Future.wait([
         FileManager.writeFile(filePath, bson, awaitWrite: true),
         for (int i = 0; i < assets.length; ++i)
-          assets
-              .getBytes(i)
-              .then(
+          assets.getBytes(i).then(
                 (bytes) => FileManager.writeFile(
                   '$filePath.$i',
                   bytes,
@@ -1031,14 +1025,14 @@ class EditorState extends State<Editor> {
     final actualName = coreInfo.fileName;
     if (actualName != newName) {
       // update text field if renamed differently
-      filenameTextEditingController.value = filenameTextEditingController.value
-          .copyWith(
-            text: actualName,
-            selection: TextSelection.fromPosition(
-              TextPosition(offset: actualName.length),
-            ),
-            composing: TextRange.empty,
-          );
+      filenameTextEditingController.value =
+          filenameTextEditingController.value.copyWith(
+        text: actualName,
+        selection: TextSelection.fromPosition(
+          TextPosition(offset: actualName.length),
+        ),
+        composing: TextRange.empty,
+      );
     }
   }
 
@@ -1082,11 +1076,11 @@ class EditorState extends State<Editor> {
       if (Prefs.recentColorsPositioned.value.length >=
           Prefs.recentColorsLength.value) {
         // if full, replace the oldest color with the new one
-        final String removedColorString = Prefs.recentColorsChronological.value
-            .removeAt(0);
+        final String removedColorString =
+            Prefs.recentColorsChronological.value.removeAt(0);
         Prefs.recentColorsChronological.value.add(newColorString);
-        final int removedColorPosition = Prefs.recentColorsPositioned.value
-            .indexOf(removedColorString);
+        final int removedColorPosition =
+            Prefs.recentColorsPositioned.value.indexOf(removedColorString);
         Prefs.recentColorsPositioned.value[removedColorPosition] =
             newColorString;
       } else {
@@ -1354,36 +1348,6 @@ class EditorState extends State<Editor> {
     );
   }
 
-  void setAndroidNavBarColor() async {
-    if (coreInfo.filePath.isEmpty) return; // not loaded yet
-
-    final theme = Theme.of(context);
-
-    // whiteboard on mobile should keep home screen navbar color
-    if (coreInfo.filePath == Whiteboard.filePath &&
-        !ResponsiveNavbar.isLargeScreen) {
-      return ResponsiveNavbar.setAndroidNavBarColor(theme);
-    }
-
-    await null;
-    if (!mounted) return;
-
-    final brightness = theme.brightness;
-    final otherBrightness =
-        brightness == Brightness.dark ? Brightness.light : Brightness.dark;
-    final overlayStyle =
-        brightness == Brightness.dark
-            ? SystemUiOverlayStyle.dark
-            : SystemUiOverlayStyle.light;
-
-    SystemChrome.setSystemUIOverlayStyle(
-      overlayStyle.copyWith(
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: otherBrightness,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -1392,7 +1356,7 @@ class EditorState extends State<Editor> {
         platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
     final isToolbarVertical =
         Prefs.editorToolbarAlignment.value == AxisDirection.left ||
-        Prefs.editorToolbarAlignment.value == AxisDirection.right;
+            Prefs.editorToolbarAlignment.value == AxisDirection.right;
 
     final Widget canvas = CanvasGestureDetector(
       key: _canvasGestureDetectorKey,
@@ -1431,30 +1395,27 @@ class EditorState extends State<Editor> {
       transformationController: _transformationController,
     );
 
-    final Widget? readonlyBanner =
-        coreInfo.readOnlyBecauseOfVersion
-            ? Collapsible(
-              collapsed:
-                  !(coreInfo.readOnly && coreInfo.readOnlyBecauseOfVersion),
-              axis: CollapsibleAxis.vertical,
-              child: SafeArea(
-                child: ListTile(
-                  onTap: askUserToDisableReadOnly,
-                  title: Text(t.editor.newerFileFormat.readOnlyMode),
-                  subtitle: Text(t.editor.newerFileFormat.title),
-                  trailing: const Icon(Icons.edit_off),
-                ),
+    final Widget? readonlyBanner = coreInfo.readOnlyBecauseOfVersion
+        ? Collapsible(
+            collapsed:
+                !(coreInfo.readOnly && coreInfo.readOnlyBecauseOfVersion),
+            axis: CollapsibleAxis.vertical,
+            child: SafeArea(
+              child: ListTile(
+                onTap: askUserToDisableReadOnly,
+                title: Text(t.editor.newerFileFormat.readOnlyMode),
+                subtitle: Text(t.editor.newerFileFormat.title),
+                trailing: const Icon(Icons.edit_off),
               ),
-            )
-            : null;
+            ),
+          )
+        : null;
 
     final Widget toolbar = Collapsible(
-      axis:
-          isToolbarVertical
-              ? CollapsibleAxis.horizontal
-              : CollapsibleAxis.vertical,
-      collapsed:
-          DynamicMaterialApp.isFullscreen &&
+      axis: isToolbarVertical
+          ? CollapsibleAxis.horizontal
+          : CollapsibleAxis.vertical,
+      collapsed: DynamicMaterialApp.isFullscreen &&
           !Prefs.editorToolbarShowInFullscreen.value,
       maintainState: true,
       child: SafeArea(
@@ -1498,17 +1459,15 @@ class EditorState extends State<Editor> {
 
               const duplicationFeedbackOffset = Offset(25, -25);
 
-              final duplicatedStrokes =
-                  strokes.map((stroke) {
-                    return stroke.copy()..shift(duplicationFeedbackOffset);
-                  }).toList();
+              final duplicatedStrokes = strokes.map((stroke) {
+                return stroke.copy()..shift(duplicationFeedbackOffset);
+              }).toList();
 
-              final duplicatedImages =
-                  images.map((image) {
-                    return image.copy()
-                      ..id = coreInfo.nextImageId++
-                      ..dstRect.shift(duplicationFeedbackOffset);
-                  }).toList();
+              final duplicatedImages = images.map((image) {
+                return image.copy()
+                  ..id = coreInfo.nextImageId++
+                  ..dstRect.shift(duplicationFeedbackOffset);
+              }).toList();
 
               page.strokes.addAll(duplicatedStrokes);
               page.images.addAll(duplicatedImages);
@@ -1602,24 +1561,22 @@ class EditorState extends State<Editor> {
           },
           quillFocus: quillFocus,
           textEditing: currentTool == Tool.textEditing,
-          toggleTextEditing:
-              () => setState(() {
-                if (currentTool == Tool.textEditing) {
-                  currentTool = Pen.currentPen;
-                  for (EditorPage page in coreInfo.pages) {
-                    // unselect text, but maintain cursor position
-                    page.quill.controller.moveCursorToPosition(
-                      page.quill.controller.selection.extentOffset,
-                    );
-                    page.quill.focusNode.unfocus();
-                  }
-                } else {
-                  currentTool = Tool.textEditing;
-                  quillFocus.value =
-                      coreInfo.pages[currentPageIndex].quill
-                        ..focusNode.requestFocus();
-                }
-              }),
+          toggleTextEditing: () => setState(() {
+            if (currentTool == Tool.textEditing) {
+              currentTool = Pen.currentPen;
+              for (EditorPage page in coreInfo.pages) {
+                // unselect text, but maintain cursor position
+                page.quill.controller.moveCursorToPosition(
+                  page.quill.controller.selection.extentOffset,
+                );
+                page.quill.focusNode.unfocus();
+              }
+            } else {
+              currentTool = Tool.textEditing;
+              quillFocus.value = coreInfo.pages[currentPageIndex].quill
+                ..focusNode.requestFocus();
+            }
+          }),
           undo: undo,
           isUndoPossible: history.canUndo,
           redo: redo,
@@ -1643,10 +1600,9 @@ class EditorState extends State<Editor> {
     final Widget body;
     if (isToolbarVertical) {
       body = Row(
-        textDirection:
-            Prefs.editorToolbarAlignment.value == AxisDirection.left
-                ? TextDirection.ltr
-                : TextDirection.rtl,
+        textDirection: Prefs.editorToolbarAlignment.value == AxisDirection.left
+            ? TextDirection.ltr
+            : TextDirection.rtl,
         children: [
           toolbar,
           Expanded(
@@ -1696,100 +1652,93 @@ class EditorState extends State<Editor> {
         );
       },
       child: Scaffold(
-        appBar:
-            DynamicMaterialApp.isFullscreen
-                ? null
-                : AppBar(
-                  toolbarHeight: kToolbarHeight,
-                  title:
-                      widget.customTitle != null
-                          ? Text(widget.customTitle!)
-                          : Form(
-                            key: _filenameFormKey,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                              ),
-                              controller: filenameTextEditingController,
-                              onChanged: renameFile,
-                              autofocus: needsNaming,
-                              validator: _validateFilenameTextField,
-                            ),
+        appBar: DynamicMaterialApp.isFullscreen
+            ? null
+            : AppBar(
+                toolbarHeight: kToolbarHeight,
+                title: widget.customTitle != null
+                    ? Text(widget.customTitle!)
+                    : Form(
+                        key: _filenameFormKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
                           ),
-                  leading: SaveIndicator(
-                    savingState: savingState,
-                    triggerSave: saveToFile,
-                  ),
-                  actions: [
-                    IconButton(
-                      icon: const AdaptiveIcon(
-                        icon: Icons.insert_page_break,
-                        cupertinoIcon: CupertinoIcons.add,
+                          controller: filenameTextEditingController,
+                          onChanged: renameFile,
+                          autofocus: needsNaming,
+                          validator: _validateFilenameTextField,
+                        ),
                       ),
-                      tooltip: t.editor.menu.insertPage,
-                      onPressed:
-                          () => setState(() {
-                            final currentPageIndex = this.currentPageIndex;
-                            insertPageAfter(currentPageIndex);
-                            CanvasGestureDetector.scrollToPage(
-                              pageIndex: currentPageIndex + 1,
-                              pages: coreInfo.pages,
-                              screenWidth: MediaQuery.sizeOf(context).width,
-                              transformationController:
-                                  _transformationController,
-                            );
-                          }),
-                    ),
-                    IconButton(
-                      icon: const AdaptiveIcon(
-                        icon: Icons.grid_view,
-                        cupertinoIcon: CupertinoIcons.rectangle_grid_2x2,
-                      ),
-                      tooltip: t.editor.pages,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (context) => AdaptiveAlertDialog(
-                                title: Text(t.editor.pages),
-                                content: pageManager(context),
-                                actions: const [],
-                              ),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: const AdaptiveIcon(
-                        icon: Icons.more_vert,
-                        cupertinoIcon: CupertinoIcons.ellipsis_vertical,
-                      ),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => bottomSheet(context),
-                          isScrollControlled: true,
-                          showDragHandle: true,
-                          backgroundColor: colorScheme.surface,
-                          constraints: const BoxConstraints(maxWidth: 500),
-                        );
-                      },
-                    ),
-                  ],
+                leading: SaveIndicator(
+                  savingState: savingState,
+                  triggerSave: saveToFile,
                 ),
+                actions: [
+                  IconButton(
+                    icon: const AdaptiveIcon(
+                      icon: Icons.insert_page_break,
+                      cupertinoIcon: CupertinoIcons.add,
+                    ),
+                    tooltip: t.editor.menu.insertPage,
+                    onPressed: () => setState(() {
+                      final currentPageIndex = this.currentPageIndex;
+                      insertPageAfter(currentPageIndex);
+                      CanvasGestureDetector.scrollToPage(
+                        pageIndex: currentPageIndex + 1,
+                        pages: coreInfo.pages,
+                        screenWidth: MediaQuery.sizeOf(context).width,
+                        transformationController: _transformationController,
+                      );
+                    }),
+                  ),
+                  IconButton(
+                    icon: const AdaptiveIcon(
+                      icon: Icons.grid_view,
+                      cupertinoIcon: CupertinoIcons.rectangle_grid_2x2,
+                    ),
+                    tooltip: t.editor.pages,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AdaptiveAlertDialog(
+                          title: Text(t.editor.pages),
+                          content: pageManager(context),
+                          actions: const [],
+                        ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const AdaptiveIcon(
+                      icon: Icons.more_vert,
+                      cupertinoIcon: CupertinoIcons.ellipsis_vertical,
+                    ),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => bottomSheet(context),
+                        isScrollControlled: true,
+                        showDragHandle: true,
+                        backgroundColor: colorScheme.surface,
+                        constraints: const BoxConstraints(maxWidth: 500),
+                      );
+                    },
+                  ),
+                ],
+              ),
         body: body,
-        floatingActionButton:
-            (DynamicMaterialApp.isFullscreen &&
-                    !Prefs.editorToolbarShowInFullscreen.value)
-                ? FloatingActionButton(
-                  shape: cupertino ? const CircleBorder() : null,
-                  onPressed: () {
-                    DynamicMaterialApp.setFullscreen(false, updateSystem: true);
-                  },
-                  child: const Icon(Icons.fullscreen_exit),
-                )
-                : null,
+        floatingActionButton: (DynamicMaterialApp.isFullscreen &&
+                !Prefs.editorToolbarShowInFullscreen.value)
+            ? FloatingActionButton(
+                shape: cupertino ? const CircleBorder() : null,
+                onPressed: () {
+                  DynamicMaterialApp.setFullscreen(false, updateSystem: true);
+                },
+                child: const Icon(Icons.fullscreen_exit),
+              )
+            : null,
       ),
     );
   }
@@ -1811,48 +1760,43 @@ class EditorState extends State<Editor> {
       invert: invert,
       coreInfo: coreInfo,
       currentPageIndex: currentPageIndex,
-      setBackgroundPattern:
-          (pattern) => setState(() {
-            if (coreInfo.readOnly) return;
-            coreInfo.backgroundPattern = pattern;
-            Prefs.lastBackgroundPattern.value = pattern;
-            autosaveAfterDelay();
-          }),
-      setLineHeight:
-          (lineHeight) => setState(() {
-            if (coreInfo.readOnly) return;
-            coreInfo.lineHeight = lineHeight;
-            Prefs.lastLineHeight.value = lineHeight;
-            autosaveAfterDelay();
-          }),
-      setLineThickness:
-          (lineThickness) => setState(() {
-            if (coreInfo.readOnly) return;
-            coreInfo.lineThickness = lineThickness;
-            Prefs.lastLineThickness.value = lineThickness;
-            autosaveAfterDelay();
-          }),
-      removeBackgroundImage:
-          () => setState(() {
-            if (coreInfo.readOnly) return;
+      setBackgroundPattern: (pattern) => setState(() {
+        if (coreInfo.readOnly) return;
+        coreInfo.backgroundPattern = pattern;
+        Prefs.lastBackgroundPattern.value = pattern;
+        autosaveAfterDelay();
+      }),
+      setLineHeight: (lineHeight) => setState(() {
+        if (coreInfo.readOnly) return;
+        coreInfo.lineHeight = lineHeight;
+        Prefs.lastLineHeight.value = lineHeight;
+        autosaveAfterDelay();
+      }),
+      setLineThickness: (lineThickness) => setState(() {
+        if (coreInfo.readOnly) return;
+        coreInfo.lineThickness = lineThickness;
+        Prefs.lastLineThickness.value = lineThickness;
+        autosaveAfterDelay();
+      }),
+      removeBackgroundImage: () => setState(() {
+        if (coreInfo.readOnly) return;
 
-            final page = coreInfo.pages[currentPageIndex];
-            if (page.backgroundImage == null) return;
-            page.images.add(page.backgroundImage!);
-            page.backgroundImage = null;
+        final page = coreInfo.pages[currentPageIndex];
+        if (page.backgroundImage == null) return;
+        page.images.add(page.backgroundImage!);
+        page.backgroundImage = null;
 
-            autosaveAfterDelay();
-          }),
+        autosaveAfterDelay();
+      }),
       redrawImage: () => setState(() {}),
       clearPage: () {
         clearPage(currentPageIndex);
       },
       clearAllPages: clearAllPages,
-      redrawAndSave:
-          () => setState(() {
-            if (coreInfo.readOnly) return;
-            autosaveAfterDelay();
-          }),
+      redrawAndSave: () => setState(() {
+        if (coreInfo.readOnly) return;
+        autosaveAfterDelay();
+      }),
       pickPhotos: _pickPhotos,
       importPdf: importPdf,
       canRasterPdf: Editor.canRasterPdf,
@@ -1936,86 +1880,80 @@ class EditorState extends State<Editor> {
     return EditorPageManager(
       coreInfo: coreInfo,
       currentPageIndex: currentPageIndex,
-      redrawAndSave:
-          () => setState(() {
-            if (coreInfo.readOnly) return;
-            autosaveAfterDelay();
-          }),
+      redrawAndSave: () => setState(() {
+        if (coreInfo.readOnly) return;
+        autosaveAfterDelay();
+      }),
       insertPageAfter: insertPageAfter,
-      duplicatePage:
-          (int pageIndex) => setState(() {
-            if (coreInfo.readOnly) return;
-            final page = coreInfo.pages[pageIndex];
-            final newPage = page.copyWith(
-              strokes:
-                  page.strokes
-                      .map((stroke) => stroke.copy()..pageIndex += 1)
-                      .toList(),
-              images:
-                  page.images
-                      .map((image) => image.copy()..pageIndex += 1)
-                      .toList(),
-              quill: QuillStruct(
-                controller: flutter_quill.QuillController(
-                  document: flutter_quill.Document.fromDelta(
-                    page.quill.controller.document.toDelta(),
-                  ),
-                  selection: const TextSelection.collapsed(offset: 0),
-                ),
-                focusNode: FocusNode(debugLabel: 'Quill Focus Node'),
+      duplicatePage: (int pageIndex) => setState(() {
+        if (coreInfo.readOnly) return;
+        final page = coreInfo.pages[pageIndex];
+        final newPage = page.copyWith(
+          strokes: page.strokes
+              .map((stroke) => stroke.copy()..pageIndex += 1)
+              .toList(),
+          images:
+              page.images.map((image) => image.copy()..pageIndex += 1).toList(),
+          quill: QuillStruct(
+            controller: flutter_quill.QuillController(
+              document: flutter_quill.Document.fromDelta(
+                page.quill.controller.document.toDelta(),
               ),
-              backgroundImage: page.backgroundImage?.copy()?..pageIndex += 1,
-            );
-            coreInfo.pages.insert(pageIndex + 1, newPage);
-            listenToQuillChanges(newPage.quill, pageIndex + 1);
-            history.recordChange(
-              EditorHistoryItem(
-                type: EditorHistoryItemType.insertPage,
-                pageIndex: pageIndex,
-                strokes: const [],
-                images: const [],
-                page: newPage,
-              ),
-            );
-            autosaveAfterDelay();
-          }),
+              selection: const TextSelection.collapsed(offset: 0),
+            ),
+            focusNode: FocusNode(debugLabel: 'Quill Focus Node'),
+          ),
+          backgroundImage: page.backgroundImage?.copy()?..pageIndex += 1,
+        );
+        coreInfo.pages.insert(pageIndex + 1, newPage);
+        listenToQuillChanges(newPage.quill, pageIndex + 1);
+        history.recordChange(
+          EditorHistoryItem(
+            type: EditorHistoryItemType.insertPage,
+            pageIndex: pageIndex,
+            strokes: const [],
+            images: const [],
+            page: newPage,
+          ),
+        );
+        autosaveAfterDelay();
+      }),
       clearPage: clearPage,
-      deletePage:
-          (int pageIndex) => setState(() {
-            if (coreInfo.readOnly) return;
-            final page = coreInfo.pages.removeAt(pageIndex);
-            createPage(pageIndex - 1);
-            history.recordChange(
-              EditorHistoryItem(
-                type: EditorHistoryItemType.deletePage,
-                pageIndex: pageIndex,
-                strokes: const [],
-                images: const [],
-                page: page,
-              ),
-            );
-            autosaveAfterDelay();
-          }),
+      deletePage: (int pageIndex) => setState(() {
+        if (coreInfo.readOnly) return;
+        final page = coreInfo.pages.removeAt(pageIndex);
+        createPage(pageIndex - 1);
+        history.recordChange(
+          EditorHistoryItem(
+            type: EditorHistoryItemType.deletePage,
+            pageIndex: pageIndex,
+            strokes: const [],
+            images: const [],
+            page: page,
+          ),
+        );
+        autosaveAfterDelay();
+      }),
       transformationController: _transformationController,
     );
   }
 
   void insertPageAfter(int pageIndex) => setState(() {
-    if (coreInfo.readOnly) return;
-    final page = EditorPage();
-    coreInfo.pages.insert(pageIndex + 1, page);
-    listenToQuillChanges(page.quill, pageIndex + 1);
-    history.recordChange(
-      EditorHistoryItem(
-        type: EditorHistoryItemType.insertPage,
-        pageIndex: pageIndex + 1,
-        strokes: const [],
-        images: const [],
-        page: page,
-      ),
-    );
-    autosaveAfterDelay();
-  });
+        if (coreInfo.readOnly) return;
+        final page = EditorPage();
+        coreInfo.pages.insert(pageIndex + 1, page);
+        listenToQuillChanges(page.quill, pageIndex + 1);
+        history.recordChange(
+          EditorHistoryItem(
+            type: EditorHistoryItemType.insertPage,
+            pageIndex: pageIndex + 1,
+            strokes: const [],
+            images: const [],
+            page: page,
+          ),
+        );
+        autosaveAfterDelay();
+      });
 
   void clearPage(int pageIndex) {
     if (coreInfo.readOnly) return;
@@ -2063,24 +2001,22 @@ class EditorState extends State<Editor> {
   }
 
   Future askUserToDisableReadOnly() async {
-    bool disableReadOnly =
-        await showDialog(
+    bool disableReadOnly = await showDialog(
           context: context,
-          builder:
-              (context) => AdaptiveAlertDialog(
-                title: Text(t.editor.newerFileFormat.title),
-                content: Text(t.editor.newerFileFormat.subtitle),
-                actions: [
-                  CupertinoDialogAction(
-                    child: Text(t.common.cancel),
-                    onPressed: () => Navigator.pop(context, false),
-                  ),
-                  CupertinoDialogAction(
-                    child: Text(t.editor.newerFileFormat.allowEditing),
-                    onPressed: () => Navigator.pop(context, true),
-                  ),
-                ],
+          builder: (context) => AdaptiveAlertDialog(
+            title: Text(t.editor.newerFileFormat.title),
+            content: Text(t.editor.newerFileFormat.subtitle),
+            actions: [
+              CupertinoDialogAction(
+                child: Text(t.common.cancel),
+                onPressed: () => Navigator.pop(context, false),
               ),
+              CupertinoDialogAction(
+                child: Text(t.editor.newerFileFormat.allowEditing),
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          ),
         ) ??
         false;
 
