@@ -135,7 +135,7 @@ class _DirectorySelectorState extends State<DirectorySelector> {
   }
 
   void _onConfirm() async {
-    Prefs.customDataDir.value = _directory;
+    stows.customDataDir.value = _directory;
     context.pop();
     if (Platform.isAndroid &&
         !_directory.startsWith('/data/user/') &&

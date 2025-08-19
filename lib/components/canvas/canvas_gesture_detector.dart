@@ -193,7 +193,8 @@ class CanvasGestureDetectorState extends State<CanvasGestureDetector> {
         (transformation.getTranslation() - center) * (newScale / oldScale) +
             center;
 
-    return Matrix4.translation(translation)..scale(newScale);
+    return Matrix4.translation(translation)
+      ..scaleByDouble(newScale, newScale, newScale, 1);
   }
 
   final Map<AxisDirection, Timer> _arrowKeyPanTimers = {};
@@ -220,7 +221,7 @@ class CanvasGestureDetectorState extends State<CanvasGestureDetector> {
     final transformation = widget._transformationController.value;
     const panAmount = 50.0;
 
-    transformation.leftTranslate(
+    transformation.leftTranslateByDouble(
       switch (direction) {
         AxisDirection.left => panAmount,
         AxisDirection.right => -panAmount,
@@ -233,6 +234,8 @@ class CanvasGestureDetectorState extends State<CanvasGestureDetector> {
         AxisDirection.up => panAmount,
         AxisDirection.down => -panAmount,
       },
+      0,
+      1,
     );
     widget._transformationController.notifyListenersPlease();
   }
@@ -373,10 +376,8 @@ class CanvasGestureDetectorState extends State<CanvasGestureDetector> {
     }
 
     if (adjustmentX.abs() > 0.1 || adjustmentY.abs() > 0.1) {
-      widget._transformationController.value.leftTranslate(
-        adjustmentX,
-        adjustmentY,
-      );
+      widget._transformationController.value
+          .leftTranslateByDouble(adjustmentX, adjustmentY, 0, 1);
     }
   }
 
@@ -571,19 +572,21 @@ class _PagesBuilder extends StatelessWidget {
 
     double topOfPage = Editor.gapBetweenPages * 2;
     for (int pageIndex = 0; pageIndex < pages.length; pageIndex++) {
-      final Size pageSize = pages[pageIndex].size;
+      final page = pages[pageIndex];
       final double pageWidth =
-          min(pageSize.width, containerWidth); // because of FittedBox
-      final double pageHeight = pageWidth / pageSize.width * pageSize.height;
+          min(page.size.width, containerWidth); // because of FittedBox
+      final double pageHeight = pageWidth / page.size.width * page.size.height;
       final double bottomOfPage = topOfPage + pageHeight;
 
-      if (topOfPage > boundingBox.bottom || bottomOfPage < boundingBox.top) {
-        pages[pageIndex].isRendered = false;
-        children.add(placeholderPageBuilder(context, pageIndex));
-      } else {
-        pages[pageIndex].isRendered = true;
-        children.add(pageBuilder(context, pageIndex));
-      }
+      final isFocused = page.quill.focusNode.hasFocus;
+      final isInViewport =
+          boundingBox.bottom >= topOfPage && boundingBox.top <= bottomOfPage;
+      final shouldRender = isFocused || isInViewport;
+
+      page.isRendered = shouldRender;
+      children.add(shouldRender
+          ? pageBuilder(context, pageIndex)
+          : placeholderPageBuilder(context, pageIndex));
 
       children.add(const SizedBox.square(dimension: Editor.gapBetweenPages));
 
