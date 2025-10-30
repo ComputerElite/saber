@@ -63,6 +63,7 @@ home:
   noPreviewAvailable(OUTDATED): Nenhuma visualização disponível
 sentry: 
   consent: 
+    title(OUTDATED): Ajudar a melhorar o Saber?
     description: 
       question(OUTDATED): Você gostaria de relatar automaticamente erros inesperados? Isso me ajuda a identificar e corrigir problemas mais rapidamente.
       scope(OUTDATED): Os relatórios podem conter informações sobre o erro e seu dispositivo. Fiz todos os esforços para filtrar dados pessoais, mas alguns podem permanecer.
@@ -87,6 +88,7 @@ settings:
     layoutSize: Tipo de leiaute
     customAccentColor: Cor de destaque personalizada
     hyperlegibleFont: Fonte hiperlegível
+    useYaruTitleBar(OUTDATED): Use barra de título temática
     shouldCheckForUpdates: Verificar automaticamente as atualizações do Saber
     shouldAlwaysAlertForUpdates: Atualizações mais rápidas
     allowInsecureConnections: Permitir conexões inseguras
@@ -99,7 +101,6 @@ settings:
     disableEraserAfterUse: Desativar automaticamente a borracha
     hideFingerDrawingToggle: Ocultar o botão de desenho com o dedo
     editorPromptRename: Solicitar que você renomeie novas notas
-    hideHomeBackgrounds: Ocultar planos de fundo na tela inicial
     recentColorsDontSavePresets: Não salvar as cores predefinidas nas cores recentes
     printPageIndicators: Imprimir os indicadores de página
     sentry(OUTDATED): Relatório de erro
@@ -122,7 +123,6 @@ settings:
       fixedOn: O desenho com o dedo está ativado
       fixedOff: O desenho com o dedo está desativado
     editorPromptRename: Você pode sempre renomear as notas mais tarde
-    hideHomeBackgrounds: Para uma aparência mais limpa
     printPageIndicators: Mostrar os indicadores de página nas exportações
     shouldAlwaysAlertForUpdates: Conte-me sobre atualizações assim que elas estiverem disponíveis
     pencilSoundSetting: 

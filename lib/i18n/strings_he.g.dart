@@ -3,6 +3,7 @@
 ///
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
+// dart format off
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -388,6 +389,7 @@ class _TranslationsSettingsPrefLabelsHe extends TranslationsSettingsPrefLabelsEn
 	@override String get layoutSize => 'סוג פריסה';
 	@override String get customAccentColor => 'צבע הדגשה מותאם אישית';
 	@override String get hyperlegibleFont => 'גופן Atkinson Hyperreadible';
+	@override String get useYaruTitleBar => 'השתמש בשורת הכותרת בנושא';
 	@override String get shouldCheckForUpdates => 'בדוק אם קיימים עדכוני Saber';
 	@override String get shouldAlwaysAlertForUpdates => 'עדכונים מהירים יותר';
 	@override String get allowInsecureConnections => 'אפשר חיבורים לא מאובטחים';
@@ -400,7 +402,6 @@ class _TranslationsSettingsPrefLabelsHe extends TranslationsSettingsPrefLabelsEn
 	@override String get disableEraserAfterUse => 'השבת אוטומטית את המחק';
 	@override String get hideFingerDrawingToggle => 'הסתר את מתג ציור האצבע';
 	@override String get editorPromptRename => 'מבקש ממך לשנות את שם הערות חדשות';
-	@override String get hideHomeBackgrounds => 'הסתר רקעים במסך הבית';
 	@override String get recentColorsDontSavePresets => 'אל תשמור צבעים מוגדרים מראש בצבעים אחרונים';
 	@override String get printPageIndicators => 'הדפסת עמודים מחוונים';
 	@override String get sentry => 'דיווח שגיאות';
@@ -428,7 +429,6 @@ class _TranslationsSettingsPrefDescriptionsHe extends TranslationsSettingsPrefDe
 	@override String get maxImageSize => 'תמונות גדולות יותר יידחסו';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe._(_root);
 	@override String get editorPromptRename => 'תמיד תוכל לשנות את שם הפתקים מאוחר יותר';
-	@override String get hideHomeBackgrounds => 'למראה נקי יותר';
 	@override String get printPageIndicators => 'הצג מחווני עמודים בייצוא';
 	@override String get shouldAlwaysAlertForUpdates => 'ספר לי על עדכונים ברגע שהם יהיו זמינים';
 	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingHe pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingHe._(_root);

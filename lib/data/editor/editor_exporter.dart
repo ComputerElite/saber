@@ -9,8 +9,7 @@ import 'package:saber/components/canvas/_rectangle_stroke.dart';
 import 'package:saber/components/canvas/_stroke.dart';
 import 'package:saber/components/canvas/inner_canvas.dart';
 import 'package:saber/data/editor/editor_core_info.dart';
-import 'package:saber/data/tools/highlighter.dart';
-import 'package:saber/data/tools/pencil.dart';
+import 'package:saber/data/tools/_tool.dart';
 import 'package:screenshot/screenshot.dart';
 
 abstract class EditorExporter {
@@ -32,8 +31,8 @@ abstract class EditorExporter {
   /// - Highlighter strokes, because PDFs don't support transparency
   /// - Pencil strokes, which need a special shader to look correct
   static bool _shouldRasterizeStroke(Stroke stroke) {
-    return stroke.penType == (Highlighter).toString() ||
-        stroke.penType == (Pencil).toString();
+    return stroke.toolId == ToolId.highlighter ||
+        stroke.toolId == ToolId.pencil;
   }
 
   static Future<pw.Document> generatePdf(
@@ -80,12 +79,13 @@ abstract class EditorExporter {
                         InnerCanvas.defaultBackgroundColor.toARGB32(),
                   ).flatten();
 
-                  final strokes = page.strokes
-                      .where((stroke) => !_shouldRasterizeStroke(stroke));
+                  final strokes = page.strokes.where(
+                    (stroke) => !_shouldRasterizeStroke(stroke),
+                  );
                   for (final stroke in strokes) {
-                    final strokeColor =
-                        PdfColor.fromInt(stroke.color.toARGB32())
-                            .flatten(background: backgroundColor);
+                    final strokeColor = PdfColor.fromInt(
+                      stroke.color.toARGB32(),
+                    ).flatten(background: backgroundColor);
 
                     /// Whether we need to fill the shape, or draw its stroke
                     final bool shouldFillShape;
@@ -174,10 +174,13 @@ abstract class EditorExporter {
             textEditing: false,
             coreInfo: coreInfo.copyWith(
               pages: coreInfo.pages
-                  .map((page) => page.copyWith(
-                        strokes:
-                            page.strokes.where(_shouldRasterizeStroke).toList(),
-                      ))
+                  .map(
+                    (page) => page.copyWith(
+                      strokes: page.strokes
+                          .where(_shouldRasterizeStroke)
+                          .toList(),
+                    ),
+                  )
                   .toList(),
             ),
             currentStroke: null,

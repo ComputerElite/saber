@@ -88,6 +88,7 @@ settings:
     layoutSize: סוג פריסה
     customAccentColor: צבע הדגשה מותאם אישית
     hyperlegibleFont: גופן Atkinson Hyperreadible
+    useYaruTitleBar(OUTDATED): השתמש בשורת הכותרת בנושא
     shouldCheckForUpdates: בדוק אם קיימים עדכוני Saber
     shouldAlwaysAlertForUpdates: עדכונים מהירים יותר
     allowInsecureConnections: אפשר חיבורים לא מאובטחים
@@ -100,7 +101,6 @@ settings:
     disableEraserAfterUse: השבת אוטומטית את המחק
     hideFingerDrawingToggle: הסתר את מתג ציור האצבע
     editorPromptRename: מבקש ממך לשנות את שם הערות חדשות
-    hideHomeBackgrounds: הסתר רקעים במסך הבית
     recentColorsDontSavePresets: אל תשמור צבעים מוגדרים מראש בצבעים אחרונים
     printPageIndicators: הדפסת עמודים מחוונים
     sentry(OUTDATED): דיווח שגיאות
@@ -123,7 +123,6 @@ settings:
       fixedOn: ציור אצבע קבוע כזמין
       fixedOff: ציור אצבע קבוע כלא זמין
     editorPromptRename: תמיד תוכל לשנות את שם הפתקים מאוחר יותר
-    hideHomeBackgrounds: למראה נקי יותר
     printPageIndicators: הצג מחווני עמודים בייצוא
     shouldAlwaysAlertForUpdates: ספר לי על עדכונים ברגע שהם יהיו זמינים
     pencilSoundSetting: 

@@ -88,6 +88,7 @@ settings:
     layoutSize: Dimensione layout
     customAccentColor: Colore personalizzato
     hyperlegibleFont: Carattere iperleggibile
+    useYaruTitleBar(OUTDATED): Utilizza la barra del titolo a tema
     shouldCheckForUpdates: Controlla automaticamente gli aggiornamenti di Saber
     shouldAlwaysAlertForUpdates: Aggiornamenti veloci
     allowInsecureConnections: Consenti connessioni non sicure
@@ -100,7 +101,6 @@ settings:
     disableEraserAfterUse: Disattiva automaticamente la gomma
     hideFingerDrawingToggle: Nascondi l'interruttore del disegno con le dita
     editorPromptRename: Richiede di rinominare nuove note
-    hideHomeBackgrounds: Nascondi gli sfondi nella schermata iniziale
     recentColorsDontSavePresets: Non salvare i colori preimpostati nei colori recenti
     recentColorsLength: Quanti colori recenti memorizzare
     printPageIndicators: Stampa indicatori di pagina
@@ -123,7 +123,6 @@ settings:
       fixedOn: Il disegno con le dita è fissato come abilitato
       fixedOff: Il disegno con le dita è fisso come disabilitato
     editorPromptRename: Puoi sempre rinominare le note in un secondo momento
-    hideHomeBackgrounds: Per un aspetto più pulito
     printPageIndicators: Mostra indicatori di pagina nelle esportazioni
     autosave: Salvataggio automatico dopo un breve ritardo o mai
     shapeRecognitionDelay: Quanto spesso aggiornare l'anteprima della forma
@@ -165,7 +164,7 @@ settings:
     select: Seleziona
     mustBeEmpty: La cartella selezionata deve essere vuota
     mustBeDoneSyncing: Assicurati che la sincronizzazione sia completa prima di cambiare cartella
-    unsupported(OUTDATED): Questa funzione è attualmente solo per gli sviluppatori. Usandolo probabilmente comporterà la perdita di dati.
+    unsupported: Questa funzionalità è attualmente disponibile solo per gli sviluppatori. Il suo utilizzo comporterà probabilmente la perdita di dati.
   autosaveDisabled: Mai
   shapeRecognitionDisabled: Mai
 logs: 

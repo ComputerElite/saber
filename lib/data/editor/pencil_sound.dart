@@ -25,20 +25,21 @@ abstract class PencilSound {
   /// Loads the audio file into the audio cache
   /// and sets the audio context.
   static Future<void> preload() => Future.wait([
-        stows.pencilSound.waitUntilRead().then((_) => setAudioContext()),
-        _player.audioCache.loadPath(_source),
-      ]);
+    stows.pencilSound.waitUntilRead().then((_) => setAudioContext()),
+    _player.audioCache.loadPath(_source),
+  ]);
 
   /// Updates the `respectSilence` setting in the audio context.
-  static Future<void> setAudioContext() =>
-      AudioPlayer.global.setAudioContext(AudioContextConfig(
-        // Prevents the pencil sound interrupting other audio, like music.
-        focus: Platform.isIOS
-            ? AudioContextConfigFocus.gain
-            : AudioContextConfigFocus.mixWithOthers,
-        // Doesn't play the sound when the device is in silent mode.
-        respectSilence: stows.pencilSound.value.respectSilence,
-      ).build());
+  static Future<void> setAudioContext() => AudioPlayer.global.setAudioContext(
+    AudioContextConfig(
+      // Prevents the pencil sound interrupting other audio, like music.
+      focus: Platform.isIOS
+          ? AudioContextConfigFocus.gain
+          : AudioContextConfigFocus.mixWithOthers,
+      // Doesn't play the sound when the device is in silent mode.
+      respectSilence: stows.pencilSound.value.respectSilence,
+    ).build(),
+  );
 
   static void resume() {
     _pauseTimer?.cancel();
@@ -48,7 +49,11 @@ abstract class PencilSound {
   }
 
   static void pause() {
-    if (_player.state == PlayerState.paused) return;
+    if (!isPlaying) {
+      _pauseTimer?.cancel();
+      _player.pause();
+      return;
+    }
 
     const numTicks = 4;
     var tick = 0;
@@ -67,12 +72,17 @@ abstract class PencilSound {
   /// Called when the pointer moves.
   /// [distance] is the distance travelled by the pointer this frame.
   static void update(double distance) {
+    if (!isPlaying) {
+      return;
+    }
+
     const maxVolume = 0.5;
     final speed = min(1, distance / 100);
     _setVolume(speed * maxVolume);
     _player.setPlaybackRate(1 - (1 - speed) * 0.5);
   }
 
+  @protected
   static bool get isPlaying => _player.state == PlayerState.playing;
 
   /// Sets the volume to the average of the current volume and the new volume,
@@ -104,19 +114,19 @@ enum PencilSoundSetting {
   final IconData icon;
 
   String get description => switch (this) {
-        PencilSoundSetting.off =>
-          t.settings.prefDescriptions.pencilSoundSetting.off,
-        PencilSoundSetting.onButNotInSilentMode =>
-          t.settings.prefDescriptions.pencilSoundSetting.onButNotInSilentMode,
-        PencilSoundSetting.onAlways =>
-          t.settings.prefDescriptions.pencilSoundSetting.onAlways,
-      };
+    PencilSoundSetting.off =>
+      t.settings.prefDescriptions.pencilSoundSetting.off,
+    PencilSoundSetting.onButNotInSilentMode =>
+      t.settings.prefDescriptions.pencilSoundSetting.onButNotInSilentMode,
+    PencilSoundSetting.onAlways =>
+      t.settings.prefDescriptions.pencilSoundSetting.onAlways,
+  };
 
   bool get respectSilence => switch (this) {
-        PencilSoundSetting.off => true,
-        PencilSoundSetting.onButNotInSilentMode => true,
-        PencilSoundSetting.onAlways => false,
-      };
+    PencilSoundSetting.off => true,
+    PencilSoundSetting.onButNotInSilentMode => true,
+    PencilSoundSetting.onAlways => false,
+  };
 
   static const codec = EnumCodec(values);
 }

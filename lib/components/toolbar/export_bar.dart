@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:saber/components/nextcloud/spinning_loading_icon.dart';
+import 'package:saber/components/theming/adaptive_circular_progress_indicator.dart';
 import 'package:saber/i18n/strings.g.dart';
 
 class ExportBar extends StatefulWidget {
@@ -53,7 +53,7 @@ class _ExportBarState extends State<ExportBar> {
       return Text(text);
     } else {
       // if this is currently exporting, show a loading icon
-      return const SpinningLoadingIcon();
+      return AdaptiveCircularProgressIndicator.textStyled(alpha: 0.4);
     }
   }
 
@@ -62,25 +62,31 @@ class _ExportBarState extends State<ExportBar> {
     final children = <Widget>[
       Text(t.editor.toolbar.exportAs),
       const SizedBox.square(dimension: 8),
-      Builder(builder: (context) {
-        return TextButton(
-          onPressed: _onPressed(widget.exportAsSba, context),
-          child: _buttonChild(widget.exportAsSba, 'SBA'),
-        );
-      }),
-      Builder(builder: (context) {
-        return TextButton(
-          onPressed: _onPressed(widget.exportAsPdf, context),
-          child: _buttonChild(widget.exportAsPdf, 'PDF'),
-        );
-      }),
-      if (kDebugMode)
-        Builder(builder: (context) {
+      Builder(
+        builder: (context) {
           return TextButton(
-            onPressed: _onPressed(widget.exportAsPng, context),
-            child: _buttonChild(widget.exportAsPng, 'PNG'),
+            onPressed: _onPressed(widget.exportAsSba, context),
+            child: _buttonChild(widget.exportAsSba, 'SBA'),
           );
-        }),
+        },
+      ),
+      Builder(
+        builder: (context) {
+          return TextButton(
+            onPressed: _onPressed(widget.exportAsPdf, context),
+            child: _buttonChild(widget.exportAsPdf, 'PDF'),
+          );
+        },
+      ),
+      if (kDebugMode)
+        Builder(
+          builder: (context) {
+            return TextButton(
+              onPressed: _onPressed(widget.exportAsPng, context),
+              child: _buttonChild(widget.exportAsPng, 'PNG'),
+            );
+          },
+        ),
     ];
 
     return Center(
@@ -88,9 +94,7 @@ class _ExportBarState extends State<ExportBar> {
         padding: const EdgeInsets.all(8),
         child: SingleChildScrollView(
           scrollDirection: widget.axis,
-          child: widget.axis == Axis.horizontal
-              ? Row(children: children)
-              : Column(children: children),
+          child: Flex(direction: widget.axis, children: children),
         ),
       ),
     );

@@ -73,7 +73,7 @@ sentry:
       yes(OUTDATED): Oui
       no(OUTDATED): Non
       later(OUTDATED): Demandez-moi plus tard
-    title(OUTDATED): Aider à améliorer le sabre?
+    title(OUTDATED): Aidez-moi à améliorer Saber?
 settings: 
   prefCategories: 
     general: Général
@@ -88,6 +88,7 @@ settings:
     layoutSize: Type de disposition
     customAccentColor: Couleur d'accentuation personnalisée
     hyperlegibleFont: Fonte Hyperlegible
+    useYaruTitleBar(OUTDATED): Utiliser une barre de titre thématique
     shouldCheckForUpdates: Rechercher automatiquement les mises à jour
     shouldAlwaysAlertForUpdates: M'alerter à chaque mise à jour
     allowInsecureConnections: Autoriser les connexions non sécurisées
@@ -100,7 +101,6 @@ settings:
     disableEraserAfterUse: Désactiver automatiquement la gomme après usage
     hideFingerDrawingToggle: Cacher l'icône d'activation/désactivation de tracé au doigt
     editorPromptRename: Vous rappeler de renommer les notes
-    hideHomeBackgrounds: Cacher le fond de la page d'accueil
     recentColorsDontSavePresets: Ne pas conserver les couleurs pré-définies parmi les couleurs récentes
     recentColorsLength: Nombre de couleurs récentes à conserver
     printPageIndicators: Imprimer les numéros de pages
@@ -123,7 +123,6 @@ settings:
       fixedOn: Le tracé au doigt est fixé à activé
       fixedOff: Le tracé au doigt est fixé à désactivé
     editorPromptRename: Vous pourrez toujours les renommer plus tard
-    hideHomeBackgrounds: Pour une apparence plus sobre
     printPageIndicators: Montrer les numéros de pages dans les exportations
     shapeRecognitionDelay: Avec quelle fréquence mettre à jour la prévisualisation de forme
     shouldAlwaysAlertForUpdates: Me prévenir dès qu'une mise à jour est disponible

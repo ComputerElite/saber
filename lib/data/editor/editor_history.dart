@@ -6,7 +6,7 @@ import 'package:saber/data/editor/_color_change.dart';
 import 'package:saber/data/editor/page.dart';
 
 class EditorHistory {
-  static const int maxHistoryLength = 100;
+  static const maxHistoryLength = 100;
 
   /// A stack of the changes that have been made in the editor.
   /// The last element is used when undoing.
@@ -23,7 +23,7 @@ class EditorHistory {
   /// True if redo is possible.
   /// We don't directly clear [_future] because we sometimes need to
   /// reject strokes (i.e. accidental strokes when zooming).
-  bool _isRedoPossible = false;
+  var _isRedoPossible = false;
 
   /// Removes an element from the [_past] stack,
   /// adds it to the [_future] stack, and returns it.
@@ -32,7 +32,7 @@ class EditorHistory {
   /// throw an exception if there is nothing to undo.
   EditorHistoryItem undo() {
     if (_past.isEmpty) throw Exception('Nothing to undo');
-    final EditorHistoryItem item = _past.removeLast();
+    final item = _past.removeLast();
     _future.add(item);
     return item;
   }
@@ -44,7 +44,7 @@ class EditorHistory {
   /// throw an exception if there is nothing to redo.
   EditorHistoryItem redo() {
     if (_future.isEmpty) throw Exception('Nothing to redo');
-    final EditorHistoryItem item = _future.removeLast();
+    final item = _future.removeLast();
     _past.add(item);
     return item;
   }
@@ -71,8 +71,10 @@ class EditorHistory {
 
   /// Adds an item to the [_past] stack.
   void recordChange(EditorHistoryItem item) {
-    assert(item.type != EditorHistoryItemType.quillUndoneChange,
-        'EditorHistoryItemType.quillUndoneChange is just a hack to make undoing quill changes easier. It should just be recorded as a quill change.');
+    assert(
+      item.type != EditorHistoryItemType.quillUndoneChange,
+      'EditorHistoryItemType.quillUndoneChange is just a hack to make undoing quill changes easier. It should just be recorded as a quill change.',
+    );
 
     _past.add(item);
     if (_past.length > maxHistoryLength) _past.removeAt(0);
@@ -84,12 +86,18 @@ class EditorHistory {
   EditorHistoryItem? removeAccidentalStroke() {
     _isRedoPossible = true;
     if (_past.isEmpty) return null;
-    assert(_past.last.type == EditorHistoryItemType.draw,
-        'Accidental stroke is not a draw');
-    assert(_past.last.strokes.length == 1,
-        'Accidental strokes should be single-stroke');
-    assert(_past.last.images.isEmpty,
-        'Accidental strokes should not contain images');
+    assert(
+      _past.last.type == EditorHistoryItemType.draw,
+      'Accidental stroke is not a draw',
+    );
+    assert(
+      _past.last.strokes.length == 1,
+      'Accidental strokes should be single-stroke',
+    );
+    assert(
+      _past.last.images.isEmpty,
+      'Accidental strokes should not contain images',
+    );
     return _past.removeLast();
   }
 
@@ -122,22 +130,31 @@ class EditorHistoryItem {
     this.page,
     this.quillChange,
     this.colorChange,
-  })  : assert(type != EditorHistoryItemType.move || offset != null,
-            'Offset must be provided for move'),
-        assert(type != EditorHistoryItemType.deletePage || page != null,
-            'Page must be provided for deletePage'),
-        assert(type != EditorHistoryItemType.insertPage || page != null,
-            'Page must be provided for insertPage'),
-        assert(type != EditorHistoryItemType.quillChange || quillChange != null,
-            'Quill change must be provided for quillChange'),
-        assert(
-            type != EditorHistoryItemType.quillUndoneChange ||
-                quillChange != null,
-            'Quill change must be provided for quillUndoneChange'),
-        assert(
-            type != EditorHistoryItemType.changeColor ||
-                colorChange?.length == strokes.length,
-            'colorChange must be provided and contain each of strokes');
+  }) : assert(
+         type != EditorHistoryItemType.move || offset != null,
+         'Offset must be provided for move',
+       ),
+       assert(
+         type != EditorHistoryItemType.deletePage || page != null,
+         'Page must be provided for deletePage',
+       ),
+       assert(
+         type != EditorHistoryItemType.insertPage || page != null,
+         'Page must be provided for insertPage',
+       ),
+       assert(
+         type != EditorHistoryItemType.quillChange || quillChange != null,
+         'Quill change must be provided for quillChange',
+       ),
+       assert(
+         type != EditorHistoryItemType.quillUndoneChange || quillChange != null,
+         'Quill change must be provided for quillUndoneChange',
+       ),
+       assert(
+         type != EditorHistoryItemType.changeColor ||
+             colorChange?.length == strokes.length,
+         'colorChange must be provided and contain each of strokes',
+       );
 
   final EditorHistoryItemType type;
   final int pageIndex;

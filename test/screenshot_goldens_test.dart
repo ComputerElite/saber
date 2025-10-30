@@ -9,7 +9,7 @@ import 'package:saber/components/home/syncing_button.dart';
 import 'package:saber/components/settings/app_info.dart';
 import 'package:saber/components/settings/nextcloud_profile.dart';
 import 'package:saber/components/theming/font_fallbacks.dart';
-import 'package:saber/components/theming/yaru_builder.dart';
+import 'package:saber/components/theming/saber_theme.dart';
 import 'package:saber/data/file_manager/file_manager.dart';
 import 'package:saber/data/flavor_config.dart';
 import 'package:saber/data/locales.dart';
@@ -51,29 +51,30 @@ void main() {
     stows.username.value = 'myusername';
     stows.sentryConsent.value = SentryConsent.granted;
 
-    setUpAll(() => Future.wait([
-          FileManager.init(
-            shouldWatchRootDirectory: false,
-          ),
-          PencilShader.init(),
-        ]));
+    setUpAll(
+      () => Future.wait([
+        FileManager.init(shouldWatchRootDirectory: false),
+        PencilShader.init(),
+      ]),
+    );
 
     setUpAll(() async {
       final recentFiles = <String>[];
-      await Future.wait(Directory('test/demo_notes/')
-          .listSync()
-          .whereType<File>()
-          .map((file) async {
-        /// The file name starting with a slash
-        final fileName = file.path.substring(file.path.lastIndexOf('/'));
-        if (fileName.endsWith('.sbn2') || fileName.endsWith('.sbn')) {
-          recentFiles.add(fileName);
-        }
-        final bytes = await file.readAsBytes();
-        final dstFile = FileManager.getFile(fileName);
-        await dstFile.create(recursive: true);
-        return dstFile.writeAsBytes(bytes);
-      }));
+      await Future.wait(
+        Directory('test/demo_notes/').listSync().whereType<File>().map((
+          file,
+        ) async {
+          /// The file name starting with a slash
+          final fileName = file.path.substring(file.path.lastIndexOf('/'));
+          if (fileName.endsWith('.sbn2') || fileName.endsWith('.sbn')) {
+            recentFiles.add(fileName);
+          }
+          final bytes = await file.readAsBytes();
+          final dstFile = FileManager.getFile(fileName);
+          await dstFile.create(recursive: true);
+          return dstFile.writeAsBytes(bytes);
+        }),
+      );
       stows.recentFiles.value = recentFiles..sort();
     });
 
@@ -81,25 +82,18 @@ void main() {
       seedColor: const Color(0xffdae2ff),
       surface: const Color(0xfffefbff),
     );
-    final materialTheme = ThemeData(
-      colorScheme: colorScheme,
-      textTheme: ThemeData(brightness: Brightness.light).textTheme.withFont(
-            fontFamily: 'Inter',
-            fontFamilyFallback: saberSansSerifFontFallbacks,
-          ),
-      scaffoldBackgroundColor: colorScheme.surface,
+    final materialTheme = SaberTheme.createTheme(
+      colorScheme,
+      TargetPlatform.android,
     );
-    final cupertinoTheme = ThemeData(
-      colorScheme: colorScheme,
-      textTheme: ThemeData(brightness: Brightness.light).textTheme.withFont(
-            fontFamily: 'Inter',
-            fontFamilyFallback: saberSansSerifFontFallbacks,
-          ),
-      scaffoldBackgroundColor: colorScheme.surface,
-      platform: TargetPlatform.iOS,
+    final cupertinoTheme = SaberTheme.createTheme(
+      colorScheme,
+      TargetPlatform.iOS,
     );
-    final yaruVariant = YaruBuilder.findClosestYaruVariant(colorScheme.primary);
-    final yaruTheme = YaruThemeData(variant: yaruVariant, useMaterial3: true);
+    const yaruTheme = YaruThemeData(
+      variant: YaruVariant.orange,
+      useMaterial3: true,
+    );
 
     _screenshot(
       materialTheme: materialTheme,
@@ -113,18 +107,14 @@ void main() {
       cupertinoTheme: cupertinoTheme,
       yaruTheme: yaruTheme,
       goldenFileName: '2_editor',
-      child: Editor(
-        path: '/Metric Spaces Week 1',
-      ),
+      child: Editor(path: '/Metric Spaces Week 1'),
     );
     _screenshot(
       materialTheme: materialTheme,
       cupertinoTheme: cupertinoTheme,
       yaruTheme: yaruTheme,
       goldenFileName: '3_login',
-      child: const NcLoginPage(
-        forceAppBarLeading: true,
-      ),
+      child: const NcLoginPage(forceAppBarLeading: true),
     );
     _screenshot(
       materialTheme: materialTheme,
@@ -194,19 +184,19 @@ void _screenshot({
           },
           device: device,
           frameColors: frameColors,
-          child: TranslationProvider(
-            child: child,
-          ),
+          home: TranslationProvider(child: child),
         );
         await tester.pumpWidget(widget);
         await tester.pump();
 
-        for (final editorState
-            in tester.stateList<EditorState>(find.byType(Editor))) {
+        for (final editorState in tester.stateList<EditorState>(
+          find.byType(Editor),
+        )) {
           // Wait for the editor to load
           while (editorState.coreInfo.isEmpty) {
             await tester.runAsync(
-                () => Future.delayed(const Duration(milliseconds: 100)));
+              () => Future.delayed(const Duration(milliseconds: 100)),
+            );
           }
           await tester.pump();
         }

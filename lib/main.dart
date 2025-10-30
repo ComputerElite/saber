@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
-import 'package:onyxsdk_pen/onyxsdk_pen_area.dart';
+import 'package:onyxsdk_pen/onyxsdk_pen.dart';
 import 'package:path_to_regexp/path_to_regexp.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:printing/printing.dart';
@@ -50,8 +50,9 @@ Future<void> appRunner(List<String> args) async {
   final parser = ArgParser()..addFlag('verbose', abbr: 'v', negatable: false);
   final parsedArgs = parser.parse(args);
 
-  Logger.root.level =
-      (kDebugMode || parsedArgs.flag('verbose')) ? Level.INFO : Level.WARNING;
+  Logger.root.level = (kDebugMode || parsedArgs.flag('verbose'))
+      ? Level.INFO
+      : Level.WARNING;
   Logger.root.onRecord.listen((record) {
     logsHistory.add(record);
 
@@ -66,7 +67,10 @@ Future<void> appRunner(List<String> args) async {
     final errorLogger = Logger('ErrorLogger');
     FlutterError.onError = (details) {
       errorLogger.severe(
-          details.exceptionAsString(), details.exception, details.stack);
+        details.exceptionAsString(),
+        details.exception,
+        details.stack,
+      );
       FlutterError.presentError(details);
     };
     PlatformDispatcher.instance.onError = (error, stackTrace) {
@@ -82,7 +86,10 @@ Future<void> appRunner(List<String> args) async {
   await Future.wait([
     stows.customDataDir.waitUntilRead().then((_) => FileManager.init()),
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
-      windowManager.ensureInitialized(),
+      Future.wait([
+        windowManager.ensureInitialized(),
+        stows.useYaruTitleBar.waitUntilRead(),
+      ]).then((_) => DynamicMaterialApp.showOrHideNativeTitleBar()),
     workerManager.init(),
     stows.locale.waitUntilRead(),
     stows.url.waitUntilRead(),
@@ -169,18 +176,25 @@ void setupBackgroundSync() {
   );
 
   if (Platform.isAndroid)
-    Workmanager().registerPeriodicTask(uniqueName, uniqueName,
-        frequency: initialDelay,
-        initialDelay: initialDelay,
-        constraints: constraints);
+    Workmanager().registerPeriodicTask(
+      uniqueName,
+      uniqueName,
+      frequency: initialDelay,
+      initialDelay: initialDelay,
+      constraints: constraints,
+    );
   else if (Platform.isIOS)
-    Workmanager().registerOneOffTask(uniqueName, uniqueName,
-        initialDelay: initialDelay, constraints: constraints);
+    Workmanager().registerOneOffTask(
+      uniqueName,
+      uniqueName,
+      initialDelay: initialDelay,
+      constraints: constraints,
+    );
 }
 
 @pragma('vm:entry-point')
 void doBackgroundSync() {
-  Workmanager().executeTask((_, __) async {
+  Workmanager().executeTask((_, _) async {
     FlavorConfig.setupFromEnvironment();
     StrokeOptionsExtension.setDefaults();
     Editor.canRasterPdf = false;
@@ -207,8 +221,9 @@ void doBackgroundSync() {
       }
     }
 
-    transferSubscription =
-        syncer.downloader.transferStream.listen(transferListener);
+    transferSubscription = syncer.downloader.transferStream.listen(
+      transferListener,
+    );
     return completer.future;
   });
 }
@@ -218,15 +233,13 @@ class App extends StatefulWidget {
 
   static final log = Logger('App');
 
-  static String initialLocation =
-      pathToFunction(RoutePaths.home)({'subpage': HomePage.recentSubpage});
-  static final GoRouter _router = GoRouter(
+  static String initialLocation = pathToFunction(RoutePaths.home)({
+    'subpage': HomePage.recentSubpage,
+  });
+  static final _router = GoRouter(
     initialLocation: initialLocation,
     routes: <GoRoute>[
-      GoRoute(
-        path: '/',
-        redirect: (context, state) => initialLocation,
-      ),
+      GoRoute(path: '/', redirect: (context, state) => initialLocation),
       GoRoute(
         path: RoutePaths.home,
         builder: (context, state) => HomePage(
@@ -245,10 +258,7 @@ class App extends StatefulWidget {
         path: RoutePaths.login,
         builder: (context, state) => const NcLoginPage(),
       ),
-      GoRoute(
-        path: '/profile',
-        redirect: (context, state) => RoutePaths.login,
-      ),
+      GoRoute(path: '/profile', redirect: (context, state) => RoutePaths.login),
       GoRoute(
         path: RoutePaths.logs,
         builder: (context, state) => const LogsPage(),
@@ -269,7 +279,7 @@ class App extends StatefulWidget {
     }
 
     if (extension == 'sbn' || extension == 'sbn2' || extension == 'sba') {
-      final String? path = await FileManager.importFile(
+      final path = await FileManager.importFile(
         file.path,
         null,
         extension: '.$extension',
@@ -310,9 +320,9 @@ class _AppState extends State<App> {
   void setupSharingIntent() {
     if (Platform.isAndroid || Platform.isIOS) {
       // for files opened while the app is closed
-      ReceiveSharingIntent.instance
-          .getInitialMedia()
-          .then((List<SharedMediaFile> files) {
+      ReceiveSharingIntent.instance.getInitialMedia().then((
+        List<SharedMediaFile> files,
+      ) {
         for (final file in files) {
           App.openFile(file);
         }
@@ -320,8 +330,9 @@ class _AppState extends State<App> {
 
       // for files opened while the app is open
       final stream = ReceiveSharingIntent.instance.getMediaStream();
-      _intentDataStreamSubscription =
-          stream.listen((List<SharedMediaFile> files) {
+      _intentDataStreamSubscription = stream.listen((
+        List<SharedMediaFile> files,
+      ) {
         for (final file in files) {
           App.openFile(file);
         }
@@ -331,10 +342,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return DynamicMaterialApp(
-      title: 'Saber',
-      router: App._router,
-    );
+    return DynamicMaterialApp(title: 'Saber', router: App._router);
   }
 
   @override

@@ -88,6 +88,7 @@ settings:
     layoutSize: Yerleşim tipi
     customAccentColor: Farklı ana renk
     hyperlegibleFont: Hyperlegible font
+    useYaruTitleBar(OUTDATED): Temalı başlık çubuğunu kullanın
     shouldCheckForUpdates: Otomatik olarak Saber güncellemelerini kontrol et
     shouldAlwaysAlertForUpdates: Hızlı güncellemeler
     allowInsecureConnections: Güvensiz bağlantılara izin ver
@@ -100,7 +101,6 @@ settings:
     disableEraserAfterUse: Silgiden kaleme geçiş
     hideFingerDrawingToggle: Parmakla çizme kilidini sakla
     editorPromptRename: Notları yeniden adlandırmak için uyar
-    hideHomeBackgrounds: Ana ekranda arkaplanları gizle
     recentColorsDontSavePresets: Ön tanımlı renkleri son kullanılanlara kaydetme
     recentColorsLength: Kaç tane son kullanılan renk saklanacak
     printPageIndicators: Sayfa belirteçlerini yazdır
@@ -123,7 +123,6 @@ settings:
       fixedOn: Parmakla çizim izni verildi ve sabitlendi
       fixedOff: Parmakla çizim izni verilmedi ve sabitlendi
     editorPromptRename: Notlarınızı daha sonra da yeniden adlandırabilirsiniz
-    hideHomeBackgrounds: Daha sade bir görüntü için
     printPageIndicators: Çıktılarda sayfa belirteçlerini göster
     shapeRecognitionDelay: Çizilen şekilleri tanımlama sıklığını belirler
     autoStraightenLines: Şekil aracını kullanmadığınızda da çizgileri düzleştirir

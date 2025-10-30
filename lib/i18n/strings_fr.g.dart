@@ -3,6 +3,7 @@
 ///
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
+// dart format off
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -358,7 +359,7 @@ class _TranslationsSentryConsentFr extends TranslationsSentryConsentEn {
 	// Translations
 	@override late final _TranslationsSentryConsentDescriptionFr description = _TranslationsSentryConsentDescriptionFr._(_root);
 	@override late final _TranslationsSentryConsentAnswersFr answers = _TranslationsSentryConsentAnswersFr._(_root);
-	@override String get title => 'Aider à améliorer le sabre?';
+	@override String get title => 'Aidez-moi à améliorer Saber?';
 }
 
 // Path: settings.prefCategories
@@ -388,6 +389,7 @@ class _TranslationsSettingsPrefLabelsFr extends TranslationsSettingsPrefLabelsEn
 	@override String get layoutSize => 'Type de disposition';
 	@override String get customAccentColor => 'Couleur d\'accentuation personnalisée';
 	@override String get hyperlegibleFont => 'Fonte Hyperlegible';
+	@override String get useYaruTitleBar => 'Utiliser une barre de titre thématique';
 	@override String get shouldCheckForUpdates => 'Rechercher automatiquement les mises à jour';
 	@override String get shouldAlwaysAlertForUpdates => 'M\'alerter à chaque mise à jour';
 	@override String get allowInsecureConnections => 'Autoriser les connexions non sécurisées';
@@ -400,7 +402,6 @@ class _TranslationsSettingsPrefLabelsFr extends TranslationsSettingsPrefLabelsEn
 	@override String get disableEraserAfterUse => 'Désactiver automatiquement la gomme après usage';
 	@override String get hideFingerDrawingToggle => 'Cacher l\'icône d\'activation/désactivation de tracé au doigt';
 	@override String get editorPromptRename => 'Vous rappeler de renommer les notes';
-	@override String get hideHomeBackgrounds => 'Cacher le fond de la page d\'accueil';
 	@override String get recentColorsDontSavePresets => 'Ne pas conserver les couleurs pré-définies parmi les couleurs récentes';
 	@override String get recentColorsLength => 'Nombre de couleurs récentes à conserver';
 	@override String get printPageIndicators => 'Imprimer les numéros de pages';
@@ -428,7 +429,6 @@ class _TranslationsSettingsPrefDescriptionsFr extends TranslationsSettingsPrefDe
 	@override String get maxImageSize => 'Les images plus grandes seront compressées';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingFr hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingFr._(_root);
 	@override String get editorPromptRename => 'Vous pourrez toujours les renommer plus tard';
-	@override String get hideHomeBackgrounds => 'Pour une apparence plus sobre';
 	@override String get printPageIndicators => 'Montrer les numéros de pages dans les exportations';
 	@override String get shapeRecognitionDelay => 'Avec quelle fréquence mettre à jour la prévisualisation de forme';
 	@override String get shouldAlwaysAlertForUpdates => 'Me prévenir dès qu\'une mise à jour est disponible';

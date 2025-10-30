@@ -26,7 +26,7 @@ class AssetCache {
 
   /// Whether items from the cache can be removed:
   /// set to false during file save.
-  bool allowRemovingAssets = true;
+  var allowRemovingAssets = true;
 
   /// Marks [image] as currently visible.
   ///
@@ -130,7 +130,8 @@ class OrderedAssetCache {
       return item.file.readAsBytes();
     } else {
       throw Exception(
-          'OrderedAssetCache.getBytes: unknown type ${item.runtimeType}');
+        'OrderedAssetCache.getBytes: unknown type ${item.runtimeType}',
+      );
     }
   }
 }

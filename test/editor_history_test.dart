@@ -3,15 +3,15 @@ import 'package:saber/data/editor/editor_history.dart';
 
 void main() {
   test('Test editor history', () {
-    final EditorHistory history = EditorHistory();
+    final history = EditorHistory();
 
-    final EditorHistoryItem item1 = EditorHistoryItem(
+    final item1 = EditorHistoryItem(
       type: EditorHistoryItemType.draw,
       pageIndex: 0,
       strokes: [],
       images: [],
     );
-    final EditorHistoryItem item2 = EditorHistoryItem(
+    final item2 = EditorHistoryItem(
       type: EditorHistoryItemType.draw,
       pageIndex: 0,
       strokes: [],
@@ -21,10 +21,16 @@ void main() {
     expect(history.canUndo, false, reason: 'History should be empty');
     expect(history.canRedo, false, reason: 'History should be empty');
 
-    expect(() => history.undo(), throwsA(anything),
-        reason: 'Undo should throw an exception if history is empty');
-    expect(() => history.redo(), throwsA(anything),
-        reason: 'Redo should throw an exception if history is empty');
+    expect(
+      () => history.undo(),
+      throwsA(anything),
+      reason: 'Undo should throw an exception if history is empty',
+    );
+    expect(
+      () => history.redo(),
+      throwsA(anything),
+      reason: 'Redo should throw an exception if history is empty',
+    );
 
     history.recordChange(item1);
     expect(history.canUndo, true);

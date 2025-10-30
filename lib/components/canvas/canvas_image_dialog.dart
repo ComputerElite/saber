@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:saber/components/canvas/image/editor_image.dart';
 import 'package:saber/components/theming/adaptive_icon.dart';
+import 'package:saber/components/theming/adaptive_switch.dart';
 import 'package:saber/data/file_manager/file_manager.dart';
 import 'package:saber/data/prefs.dart';
 import 'package:saber/i18n/strings.g.dart';
@@ -35,10 +36,10 @@ class CanvasImageDialog extends StatefulWidget {
 
 class _CanvasImageDialogState extends State<CanvasImageDialog> {
   void setInvertible([bool? value]) => setState(() {
-        widget.image.invertible = value ?? !widget.image.invertible;
-        widget.image.onMiscChange?.call();
-        widget.redrawImage();
-      });
+    widget.image.invertible = value ?? !widget.image.invertible;
+    widget.image.onMiscChange?.call();
+    widget.redrawImage();
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,48 +52,63 @@ class _CanvasImageDialogState extends State<CanvasImageDialog> {
         child: _CanvasImageDialogItem(
           onTap: stows.editorAutoInvert.value ? setInvertible : null,
           title: t.editor.imageOptions.invertible,
-          child: Switch.adaptive(
+          child: AdaptiveSwitch(
             value: widget.image.invertible,
             onChanged: stows.editorAutoInvert.value ? setInvertible : null,
-            thumbIcon: WidgetStateProperty.all(widget.image.invertible
-                ? const Icon(Icons.invert_colors)
-                : const Icon(Icons.invert_colors_off)),
+            thumbIcon: WidgetStateProperty.all(
+              widget.image.invertible
+                  ? const Icon(Icons.invert_colors)
+                  : const Icon(Icons.invert_colors_off),
+            ),
           ),
         ),
       ),
       _CanvasImageDialogItem(
         onTap: () async {
-          final String filePathSanitized =
-              widget.filePath.replaceAll(RegExp(r'[^a-zA-Z\d]'), '_');
-          final String imageFileName =
+          final filePathSanitized = widget.filePath.replaceAll(
+            RegExp(r'[^a-zA-Z\d]'),
+            '_',
+          );
+          final imageFileName =
               'image$filePathSanitized${widget.image.id}${widget.image.extension}';
           final List<int> bytes;
           switch (widget.image) {
-            case PdfEditorImage image:
+            case final PdfEditorImage image:
               if (!image.loadedIn) await image.loadIn();
               bytes = image.pdfBytes!;
-            case SvgEditorImage image:
+            case final SvgEditorImage image:
               bytes = switch (image.svgLoader) {
-                (SvgStringLoader loader) =>
-                  utf8.encode(loader.provideSvg(null)),
-                (SvgFileLoader loader) => await loader.file.readAsBytes(),
+                (final SvgStringLoader loader) => utf8.encode(
+                  loader.provideSvg(null),
+                ),
+                (final SvgFileLoader loader) => await loader.file.readAsBytes(),
                 (_) => throw ArgumentError.value(
-                    image.svgLoader, 'svgLoader', 'Unknown SVG loader type'),
+                  image.svgLoader,
+                  'svgLoader',
+                  'Unknown SVG loader type',
+                ),
               };
-            case PngEditorImage image:
+            case final PngEditorImage image:
               if (image.imageProvider is MemoryImage) {
                 bytes = (image.imageProvider as MemoryImage).bytes;
               } else if (image.imageProvider is FileImage) {
-                bytes =
-                    await (image.imageProvider as FileImage).file.readAsBytes();
+                bytes = await (image.imageProvider as FileImage).file
+                    .readAsBytes();
               } else {
-                throw ArgumentError.value(image.imageProvider, 'imageProvider',
-                    'Unknown image provider type');
+                throw ArgumentError.value(
+                  image.imageProvider,
+                  'imageProvider',
+                  'Unknown image provider type',
+                );
               }
           }
           if (!context.mounted) return;
-          FileManager.exportFile(imageFileName, bytes,
-              isImage: true, context: context);
+          FileManager.exportFile(
+            imageFileName,
+            bytes,
+            isImage: true,
+            context: context,
+          );
           Navigator.of(context).pop();
         },
         title: t.editor.imageOptions.download,
@@ -142,10 +158,7 @@ class _CanvasImageDialogState extends State<CanvasImageDialog> {
         child: gridView,
       );
     } else {
-      return SizedBox(
-        width: 250,
-        child: gridView,
-      );
+      return SizedBox(width: 250, child: gridView);
     }
   }
 }
@@ -165,7 +178,7 @@ class _CanvasImageDialogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = ColorScheme.of(context);
     return Material(
       color: colorScheme.primary.withValues(alpha: 0.05),
       borderRadius: BorderRadius.circular(8),
@@ -176,10 +189,7 @@ class _CanvasImageDialogItem extends StatelessWidget {
           child: Column(
             children: [
               Expanded(child: child),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-              ),
+              Text(title, textAlign: TextAlign.center),
             ],
           ),
         ),

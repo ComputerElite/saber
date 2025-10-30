@@ -14,20 +14,21 @@ class SyncingButton extends StatefulWidget {
 
   /// Whether to force the button to look tappable (for screenshots).
   @visibleForTesting
-  static bool forceButtonActive = false;
+  static var forceButtonActive = false;
 }
 
 class _SyncingButtonState extends State<SyncingButton> {
   /// The number of files transferred since we started listening.
-  static int filesTransferred = 0;
+  static var filesTransferred = 0;
 
   late final StreamSubscription queueListener, transferListener;
 
   @override
   void initState() {
     queueListener = syncer.downloader.queueStream.listen(_onQueueChanged);
-    transferListener =
-        syncer.downloader.transferStream.listen(_onFileTransferred);
+    transferListener = syncer.downloader.transferStream.listen(
+      _onFileTransferred,
+    );
     stows.username.addListener(_onUsernameChanged);
 
     super.initState();
@@ -82,14 +83,14 @@ class _SyncingButtonState extends State<SyncingButton> {
 
   @override
   Widget build(BuildContext context) {
-    double? percentage = getPercentage();
+    final percentage = getPercentage();
 
     return IconButton(
       onPressed: stows.loggedIn
           ? onPressed
           : SyncingButton.forceButtonActive
-              ? () {}
-              : null,
+          ? () {}
+          : null,
       icon: Stack(
         alignment: Alignment.center,
         children: [
@@ -138,9 +139,13 @@ class _AnimatedCircularProgressIndicatorState
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
-    _valueTween = visitor(_valueTween, widget.percentage ?? 0.0,
-            (dynamic value) => Tween<double>(begin: (value ?? 0.0) as double))
-        as Tween<double>?;
+    _valueTween =
+        visitor(
+              _valueTween,
+              widget.percentage ?? 0.0,
+              (dynamic value) => Tween<double>(begin: (value ?? 0.0) as double),
+            )
+            as Tween<double>?;
   }
 
   @override

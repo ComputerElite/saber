@@ -51,7 +51,8 @@ class LogsPage extends StatelessWidget {
         builder: (context, _) {
           final theme = Theme.of(context);
           final colorScheme = theme.colorScheme;
-          final cupertino = theme.platform == TargetPlatform.iOS ||
+          final cupertino =
+              theme.platform == TargetPlatform.iOS ||
               theme.platform == TargetPlatform.macOS;
           return CustomScrollView(
             slivers: [
@@ -208,7 +209,7 @@ class _LogLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = ColorScheme.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
         color: switch (level) {

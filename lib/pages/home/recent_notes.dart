@@ -26,7 +26,7 @@ class RecentPage extends StatefulWidget {
 
 class _RecentPageState extends State<RecentPage> {
   final List<String> filePaths = [];
-  bool failed = false;
+  var failed = false;
 
   final ValueNotifier<List<String>> selectedFiles = ValueNotifier([]);
 
@@ -45,14 +45,17 @@ class _RecentPageState extends State<RecentPage> {
       final String newFilePath;
       if (filePath.startsWith('null/')) {
         newFilePath = await FileManager.suffixFilePathToMakeItUnique(
-            filePath.substring('null'.length));
+          filePath.substring('null'.length),
+        );
       } else {
-        newFilePath =
-            await FileManager.suffixFilePathToMakeItUnique('/$filePath');
+        newFilePath = await FileManager.suffixFilePathToMakeItUnique(
+          '/$filePath',
+        );
       }
 
       log.warning(
-          'Found incorrectly imported file at `$filePath`; moving to `$newFilePath`');
+        'Found incorrectly imported file at `$filePath`; moving to `$newFilePath`',
+      );
       await FileManager.moveFile(filePath, newFilePath);
     }
   }
@@ -60,8 +63,9 @@ class _RecentPageState extends State<RecentPage> {
   @override
   void initState() {
     findRecentlyAccessedNotes();
-    fileWriteSubscription =
-        FileManager.fileWriteStream.stream.listen(fileWriteListener);
+    fileWriteSubscription = FileManager.fileWriteStream.stream.listen(
+      fileWriteListener,
+    );
     selectedFiles.addListener(_setState);
 
     super.initState();
@@ -105,7 +109,7 @@ class _RecentPageState extends State<RecentPage> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = ColorScheme.of(context);
     final platform = Theme.of(context).platform;
     final cupertino =
         platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
@@ -119,9 +123,7 @@ class _RecentPageState extends State<RecentPage> {
         child: CustomScrollView(
           slivers: [
             SliverPadding(
-              padding: const EdgeInsets.only(
-                bottom: 8,
-              ),
+              padding: const EdgeInsets.only(bottom: 8),
               sliver: SliverAppBar(
                 collapsedHeight: kToolbarHeight,
                 expandedHeight: 200,
@@ -134,18 +136,16 @@ class _RecentPageState extends State<RecentPage> {
                   ),
                   centerTitle: cupertino,
                   titlePadding: EdgeInsetsDirectional.only(
-                      start: cupertino ? 0 : 16, bottom: 16),
+                    start: cupertino ? 0 : 16,
+                    bottom: 16,
+                  ),
                 ),
-                actions: const [
-                  SyncingButton(),
-                ],
+                actions: const [SyncingButton()],
               ),
             ),
             if (failed) ...[
               const SliverSafeArea(
-                sliver: SliverToBoxAdapter(
-                  child: Welcome(),
-                ),
+                sliver: SliverToBoxAdapter(child: Welcome()),
               ),
             ] else ...[
               SliverSafeArea(
@@ -155,9 +155,7 @@ class _RecentPageState extends State<RecentPage> {
                 ),
                 sliver: MasonryFiles(
                   crossAxisCount: crossAxisCount,
-                  files: [
-                    for (String filePath in filePaths) filePath,
-                  ],
+                  files: [for (final filePath in filePaths) filePath],
                   selectedFiles: selectedFiles,
                 ),
               ),
@@ -165,9 +163,7 @@ class _RecentPageState extends State<RecentPage> {
           ],
         ),
       ),
-      floatingActionButton: NewNoteButton(
-        cupertino: cupertino,
-      ),
+      floatingActionButton: NewNoteButton(cupertino: cupertino),
       persistentFooterButtons: selectedFiles.value.isEmpty
           ? null
           : [
@@ -190,22 +186,25 @@ class _RecentPageState extends State<RecentPage> {
                 tooltip: t.home.deleteNote,
                 onPressed: () async {
                   await Future.wait([
-                    for (String filePath in selectedFiles.value)
-                      Future.value(FileManager.doesFileExist(
-                              filePath + Editor.extensionOldJson))
-                          .then((oldExtension) => FileManager.deleteFile(
-                              filePath +
-                                  (oldExtension
-                                      ? Editor.extensionOldJson
-                                      : Editor.extension))),
+                    for (final filePath in selectedFiles.value)
+                      Future.value(
+                        FileManager.doesFileExist(
+                          filePath + Editor.extensionOldJson,
+                        ),
+                      ).then(
+                        (oldExtension) => FileManager.deleteFile(
+                          filePath +
+                              (oldExtension
+                                  ? Editor.extensionOldJson
+                                  : Editor.extension),
+                        ),
+                      ),
                   ]);
                   selectedFiles.value = [];
                 },
                 icon: const Icon(Icons.delete_forever),
               ),
-              ExportNoteButton(
-                selectedFiles: selectedFiles.value,
-              ),
+              ExportNoteButton(selectedFiles: selectedFiles.value),
             ],
     );
   }

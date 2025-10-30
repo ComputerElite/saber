@@ -14,17 +14,17 @@ import 'package:saber/i18n/strings.g.dart';
 
 class ShapePen extends Pen {
   ShapePen()
-      : super(
-          name: t.editor.pens.shapePen,
-          sizeMin: 1,
-          sizeMax: 25,
-          sizeStep: 1,
-          icon: shapePenIcon,
-          options: stows.lastShapePenOptions.value,
-          pressureEnabled: false,
-          color: Color(stows.lastShapePenColor.value),
-          toolId: ToolId.shapePen,
-        );
+    : super(
+        name: t.editor.pens.shapePen,
+        sizeMin: 1,
+        sizeMax: 25,
+        sizeStep: 1,
+        icon: shapePenIcon,
+        options: stows.lastShapePenOptions.value,
+        pressureEnabled: false,
+        color: Color(stows.lastShapePenColor.value),
+        toolId: ToolId.shapePen,
+      );
 
   static final log = Logger('ShapePen');
 
@@ -89,7 +89,7 @@ class ShapePen extends Pen {
           options: rawStroke.options,
           pageIndex: rawStroke.pageIndex,
           page: rawStroke.page,
-          penType: rawStroke.penType,
+          toolId: toolId,
           rect: rect,
         );
       case DefaultUnistrokeNames.circle:
@@ -101,7 +101,7 @@ class ShapePen extends Pen {
           options: rawStroke.options,
           pageIndex: rawStroke.pageIndex,
           page: rawStroke.page,
-          penType: rawStroke.penType,
+          toolId: toolId,
           radius: radius,
           center: center,
         );
@@ -115,7 +115,7 @@ class ShapePen extends Pen {
           options: rawStroke.options,
           pageIndex: rawStroke.pageIndex,
           page: rawStroke.page,
-          penType: rawStroke.penType,
+          toolId: toolId,
         )..addPoints(polygon);
     }
   }

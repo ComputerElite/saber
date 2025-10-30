@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - '**'
+      - "**"
     branches:
-      - '**'
+      - "**"
     paths:
       - .github/workflows/android-play-store.yml
 
@@ -19,8 +19,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-        with:
-          submodules: true
 
       - uses: "./.github/shared_workflows/install_apt_dependencies"
 
@@ -30,7 +28,9 @@ jobs:
           path: |
             .dart_tool/
             build/
-            .flutter-plugins
+            linux/flutter/ephemeral/
+            macos/Flutter/ephemeral/
+            windows/flutter/ephemeral/
             .flutter-plugins-dependencies
             pubspec.lock
           key: ${{ runner.OS }}-saber-${{ hashFiles('**/pubspec.lock') }}-${{ hashFiles('**/*.dart') }}
@@ -38,6 +38,9 @@ jobs:
             ${{ runner.OS }}-saber-
 
       - name: Setup keystore
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        if: ${{ env.SIGNING_KEY != '' }}
         run: |
           echo "${{ secrets.SIGNING_KEY }}" | base64 -d > android/android.keystore
           echo "storePassword=${{ secrets.KEY_STORE_PASSWORD }}" > android/key.properties
@@ -45,18 +48,21 @@ jobs:
           echo "keyAlias=${{ secrets.ALIAS }}" >> android/key.properties
           echo "storeFile=../android.keystore" >> android/key.properties
 
-      - uses: "./.github/shared_workflows/setup_flutter"
+      - name: Setup Flutter
+        uses: adil192/setup-flutter-submodule@v1
+        with:
+          flutter-path: submodules/flutter
 
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
-          distribution: 'microsoft'
-          java-version: '21'
+          distribution: "microsoft"
+          java-version: "21"
 
       - name: Setup Rust
         uses: moonrepo/setup-rust@v1
         with:
-          channel: stable
+          # The rust version is read from rust-toolchain.toml
           targets: armv7-linux-androideabi,aarch64-linux-android,x86_64-linux-android
 
       - name: Disable Flutter CLI animations
@@ -70,6 +76,8 @@ jobs:
         run: ./patches/remove_dev_dependencies.sh
       - name: Remove non-Android dependencies
         run: ./patches/remove_non_android_dependencies.sh
+      - name: Patch rust dependencies
+        run: ./patches/patch_rust_versions.sh
 
       - name: Build aab
         run: |
@@ -85,7 +93,7 @@ jobs:
           mv build/app/outputs/bundle/release/app-release.aab output/Saber.aab
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Saber-Android-PlayStore
           path: output/Saber.aab
@@ -98,11 +106,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-        with:
-          submodules: false # flutter not needed here
 
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: Saber-Android-PlayStore
           path: output

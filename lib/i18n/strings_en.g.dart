@@ -3,6 +3,7 @@
 ///
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
+// dart format off
 
 part of 'strings.g.dart';
 
@@ -595,6 +596,9 @@ class TranslationsSettingsPrefLabelsEn {
 	/// en: 'Atkinson Hyperlegible font'
 	String get hyperlegibleFont => 'Atkinson Hyperlegible font';
 
+	/// en: 'Use themed title bar'
+	String get useYaruTitleBar => 'Use themed title bar';
+
 	/// en: 'Check for Saber updates'
 	String get shouldCheckForUpdates => 'Check for Saber updates';
 
@@ -630,9 +634,6 @@ class TranslationsSettingsPrefLabelsEn {
 
 	/// en: 'Prompt you to rename new notes'
 	String get editorPromptRename => 'Prompt you to rename new notes';
-
-	/// en: 'Hide backgrounds on the home screen'
-	String get hideHomeBackgrounds => 'Hide backgrounds on the home screen';
 
 	/// en: 'Don't save preset colors in recent colors'
 	String get recentColorsDontSavePresets => 'Don\'t save preset colors in recent colors';
@@ -695,9 +696,6 @@ class TranslationsSettingsPrefDescriptionsEn {
 
 	/// en: 'You can always rename notes later'
 	String get editorPromptRename => 'You can always rename notes later';
-
-	/// en: 'For a cleaner look'
-	String get hideHomeBackgrounds => 'For a cleaner look';
 
 	/// en: 'Show page indicators in exports'
 	String get printPageIndicators => 'Show page indicators in exports';

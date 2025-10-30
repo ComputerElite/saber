@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:saber/components/settings/update_dialog.dart';
 import 'package:saber/data/flavor_config.dart';
 import 'package:saber/data/prefs.dart';
@@ -17,18 +17,23 @@ abstract class UpdateManager {
   static final log = Logger('UpdateManager');
 
   static final Uri versionUrl = Uri.parse(
-      'https://raw.githubusercontent.com/saber-notes/saber/main/lib/data/version.dart');
+    'https://raw.githubusercontent.com/saber-notes/saber/main/lib/data/version.dart',
+  );
   static final Uri apiUrl = Uri.parse(
-      'https://api.github.com/repos/saber-notes/saber/releases/latest');
+    'https://api.github.com/repos/saber-notes/saber/releases/latest',
+  );
 
   /// The availability of an update.
-  static final ValueNotifier<UpdateStatus> status =
-      ValueNotifier(UpdateStatus.upToDate);
+  static final ValueNotifier<UpdateStatus> status = ValueNotifier(
+    UpdateStatus.upToDate,
+  );
   static int? newestVersion;
 
-  static bool _hasShownUpdateDialog = false;
-  static Future<void> showUpdateDialog(BuildContext context,
-      {bool userTriggered = false}) async {
+  static var _hasShownUpdateDialog = false;
+  static Future<void> showUpdateDialog(
+    BuildContext context, {
+    bool userTriggered = false,
+  }) async {
     if (!userTriggered) {
       if (status.value == UpdateStatus.upToDate) {
         // check for updates if not already done
@@ -71,8 +76,9 @@ abstract class UpdateManager {
 
     // extract the number from the latest version.dart
     final RegExp numberRegex = RegExp(r'(\d+)');
-    final RegExpMatch? newestVersionMatch =
-        numberRegex.firstMatch(latestVersionFile);
+    final RegExpMatch? newestVersionMatch = numberRegex.firstMatch(
+      latestVersionFile,
+    );
     if (newestVersionMatch == null) return null;
 
     final int newestVersion = int.tryParse(newestVersionMatch[0] ?? '0') ?? 0;
@@ -91,18 +97,23 @@ abstract class UpdateManager {
     }
     if (response.statusCode >= 400)
       throw SocketException(
-          'Failed to download version.dart, HTTP status code ${response.statusCode}');
+        'Failed to download version.dart, HTTP status code ${response.statusCode}',
+      );
 
     return response.body;
   }
 
   @visibleForTesting
   static UpdateStatus getUpdateStatus(
-      int currentVersionNumber, int newestVersionNumber) {
-    final currentVersion =
-        SaberVersion.fromNumber(currentVersionNumber).copyWith(revision: 0);
-    final newestVersion =
-        SaberVersion.fromNumber(newestVersionNumber).copyWith(revision: 0);
+    int currentVersionNumber,
+    int newestVersionNumber,
+  ) {
+    final currentVersion = SaberVersion.fromNumber(
+      currentVersionNumber,
+    ).copyWith(revision: 0);
+    final newestVersion = SaberVersion.fromNumber(
+      newestVersionNumber,
+    ).copyWith(revision: 0);
 
     // Check if we're up to date
     if (newestVersion.buildNumber <= currentVersion.buildNumber) {
@@ -148,7 +159,8 @@ abstract class UpdateManager {
       }
       if (response.statusCode >= 400)
         throw SocketException(
-            'Failed to fetch latest release, HTTP status code ${response.statusCode}');
+          'Failed to fetch latest release, HTTP status code ${response.statusCode}',
+        );
       apiResponse = response.body;
     }
 
@@ -169,17 +181,31 @@ abstract class UpdateManager {
   };
 
   /// Downloads the update file from [downloadUrl] and installs it.
-  // TODO(adil192): use a downloader like background_downloader for progress
-  static Future<void> directlyDownloadUpdate(String downloadUrl) async {
-    final Uint8List bytes = await http.readBytes(Uri.parse(downloadUrl));
-
-    final tempDir = await getTemporaryDirectory();
+  static Future<void> directlyDownloadUpdate(
+    String downloadUrl, {
+    required void Function(TaskStatus)? onStatus,
+    required void Function(double)? onProgress,
+  }) async {
     final fileName = downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1);
-
-    final file = File('${tempDir.path}/$fileName');
-    await file.writeAsBytes(bytes);
-
-    await OpenFile.open(file.path);
+    final task = DownloadTask(
+      url: downloadUrl,
+      filename: fileName,
+      baseDirectory: BaseDirectory.temporary,
+    );
+    final result = await FileDownloader().download(
+      task,
+      onStatus: onStatus,
+      onProgress: onProgress,
+    );
+    if (result.status == TaskStatus.complete) {
+      log.info('Update downloaded successfully: ${result.status}');
+      await OpenFile.open(await task.filePath());
+    } else {
+      log.severe(
+        'Failed to download update from $downloadUrl: '
+        '${result.status} ${result.exception} ${result.responseBody}',
+      );
+    }
   }
 
   static Future<String?> getChangelog({
@@ -189,7 +215,8 @@ abstract class UpdateManager {
     newestVersion ??= UpdateManager.newestVersion;
     assert(newestVersion != null);
 
-    final url = 'https://raw.githubusercontent.com/saber-notes/saber/main/'
+    final url =
+        'https://raw.githubusercontent.com/saber-notes/saber/main/'
         'metadata/$localeCode/changelogs/$newestVersion.txt';
     log.info('Downloading changelog from $url');
 

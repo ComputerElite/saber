@@ -32,14 +32,20 @@ class CanvasBackgroundPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Rect canvasRect = Offset.zero & size;
-    Paint paint = Paint();
+    final canvasRect = Offset.zero & size;
+    final paint = Paint();
 
     paint.color = backgroundColor.withInversion(invert);
     canvas.drawRect(canvasRect, paint);
 
     paint.strokeWidth = lineThickness.toDouble();
-    for (PatternElement element in getPatternElements(
+
+    if (backgroundPattern.requiresClipping) {
+      canvas.save();
+      canvas.clipRect(canvasRect);
+    }
+
+    for (final element in getPatternElements(
       pattern: backgroundPattern,
       size: size,
       lineHeight: lineHeight,
@@ -55,6 +61,10 @@ class CanvasBackgroundPainter extends CustomPainter {
       } else {
         canvas.drawCircle(element.start, paint.strokeWidth * 4 / 3, paint);
       }
+    }
+
+    if (backgroundPattern.requiresClipping) {
+      canvas.restore();
     }
   }
 
@@ -122,11 +132,7 @@ class CanvasBackgroundPainter extends CustomPainter {
       case CanvasBackgroundPattern.dots:
         for (double y = lineHeight * 2; y <= size.height; y += lineHeight) {
           for (double x = 0; x <= size.width; x += lineHeight) {
-            yield PatternElement(
-              Offset(x, y),
-              Offset(x, y),
-              isLine: false,
-            );
+            yield PatternElement(Offset(x, y), Offset(x, y), isLine: false);
           }
         }
       case CanvasBackgroundPattern.staffs:
@@ -135,9 +141,11 @@ class CanvasBackgroundPainter extends CustomPainter {
         final staffHeight = lineHeight * staffSpaces;
         final staffSpacing = lineHeight * 3;
 
-        for (double topOfStaff = staffSpacing.toDouble() - lineHeight;
-            topOfStaff + staffHeight < size.height;
-            topOfStaff += staffHeight + staffSpacing) {
+        for (
+          double topOfStaff = staffSpacing.toDouble() - lineHeight;
+          topOfStaff + staffHeight < size.height;
+          topOfStaff += staffHeight + staffSpacing
+        ) {
           // horizontal lines
           for (int line = 0; line < staffSpaces + 1; line++) {
             yield PatternElement(
@@ -227,11 +235,11 @@ enum CanvasBackgroundPattern {
   lined('lined'),
 
   /// A grid of squares
-  grid('grid'),
+  grid('grid', requiresClipping: true),
 
   /// A grid of dots. This is the same as "grid" except it has dots on the
   /// corners instead of the whole square border.
-  dots('dots'),
+  dots('dots', requiresClipping: true),
 
   /// Music staffs
   staffs('staffs'),
@@ -244,8 +252,15 @@ enum CanvasBackgroundPattern {
   /// Cornell notes
   cornell('cornell');
 
+  const CanvasBackgroundPattern(this.name, {this.requiresClipping = false});
+
+  /// The pattern name used for serialization.
+  /// Do not display this to the user: instead use [localizedName].
   final String name;
-  const CanvasBackgroundPattern(this.name);
+
+  /// Whether this pattern has elements along the page edges that may need to be
+  /// clipped.
+  final bool requiresClipping;
 
   static String localizedName(CanvasBackgroundPattern pattern) {
     switch (pattern) {

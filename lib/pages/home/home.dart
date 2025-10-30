@@ -10,11 +10,7 @@ import 'package:saber/pages/home/settings.dart';
 import 'package:saber/pages/home/whiteboard.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({
-    super.key,
-    required this.subpage,
-    required this.path,
-  });
+  const HomePage({super.key, required this.subpage, required this.path});
 
   final String subpage;
   final String? path;
@@ -22,15 +18,15 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 
-  static const String recentSubpage = 'recent';
-  static const String browseSubpage = 'browse';
-  static const String whiteboardSubpage = 'whiteboard';
-  static const String settingsSubpage = 'settings';
+  static const recentSubpage = 'recent';
+  static const browseSubpage = 'browse';
+  static const whiteboardSubpage = 'whiteboard';
+  static const settingsSubpage = 'settings';
   static const List<String> subpages = [
     recentSubpage,
     browseSubpage,
     whiteboardSubpage,
-    settingsSubpage
+    settingsSubpage,
   ];
 }
 
