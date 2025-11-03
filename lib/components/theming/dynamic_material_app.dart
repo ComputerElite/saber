@@ -44,14 +44,6 @@ class DynamicMaterialApp extends StatefulWidget {
     }
   }
 
-  /// Toggles the native titlebar so it doesn't conflict with Yaru's titlebar.
-  static void showOrHideNativeTitleBar() {
-    if (!Stows.canUseYaruTitleBar) return;
-    windowManager.setTitleBarStyle(
-      stows.useYaruTitleBar.value ? TitleBarStyle.hidden : TitleBarStyle.normal,
-    );
-  }
-
   static void addFullscreenListener(void Function() listener) {
     _isFullscreen.addListener(listener);
   }
@@ -69,7 +61,6 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
     stows.platform.addListener(onChanged);
     stows.accentColor.addListener(onChanged);
     stows.hyperlegibleFont.addListener(onChanged);
-    stows.useYaruTitleBar.addListener(onChanged);
 
     windowManager.addListener(this);
     SystemChrome.setSystemUIChangeCallback(_onFullscreenChange);
@@ -130,7 +121,6 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
               platform: platform,
               textTheme: SaberTheme.createTextTheme(Brightness.dark),
             ),
-            useYaruTitleBar: stows.useYaruTitleBar.value,
           );
         },
       );
@@ -152,7 +142,6 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
           Brightness.dark,
           platform,
         ),
-        useYaruTitleBar: stows.useYaruTitleBar.value,
       );
     }
 
@@ -177,7 +166,6 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
                   Brightness.dark,
                   platform,
                 ),
-          useYaruTitleBar: stows.useYaruTitleBar.value,
         );
       },
     );
@@ -189,7 +177,6 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
     stows.platform.removeListener(onChanged);
     stows.accentColor.removeListener(onChanged);
     stows.hyperlegibleFont.removeListener(onChanged);
-    stows.useYaruTitleBar.removeListener(onChanged);
 
     windowManager.removeListener(this);
     SystemChrome.setSystemUIChangeCallback(null);
@@ -210,7 +197,6 @@ class ExplicitlyThemedApp extends StatelessWidget {
     required this.darkTheme,
     this.highContrastTheme,
     this.highContrastDarkTheme,
-    required this.useYaruTitleBar,
   });
 
   final String title;
@@ -218,7 +204,6 @@ class ExplicitlyThemedApp extends StatelessWidget {
   final ThemeMode themeMode;
   final ThemeData theme, darkTheme;
   final ThemeData? highContrastTheme, highContrastDarkTheme;
-  final bool useYaruTitleBar;
 
   static final _materialAppKey = GlobalKey<State<MaterialApp>>();
 
@@ -230,8 +215,6 @@ class ExplicitlyThemedApp extends StatelessWidget {
     final highContrastDarkTheme =
         this.highContrastDarkTheme ??
         darkTheme.copyWith(colorScheme: theme.colorScheme.withHighContrast());
-
-    DynamicMaterialApp.showOrHideNativeTitleBar();
 
     return MaterialApp.router(
       key: _materialAppKey,
@@ -251,11 +234,72 @@ class ExplicitlyThemedApp extends StatelessWidget {
       highContrastTheme: highContrastTheme,
       highContrastDarkTheme: highContrastDarkTheme,
       debugShowCheckedModeBanner: false,
-      builder: (Stows.canUseYaruTitleBar && useYaruTitleBar)
-          ? (context, child) =>
-                Scaffold(appBar: const YaruWindowTitleBar(), body: child)
+      builder: (Platform.isWindows || Platform.isLinux)
+          ? (context, child) => _BorderedWindow(child: child)
           : null,
     );
+  }
+}
+
+/// A widget that adds a border around the app window when not in fullscreen.
+class _BorderedWindow extends StatefulWidget {
+  const _BorderedWindow({required this.child});
+  final Widget? child;
+  @override
+  State<_BorderedWindow> createState() => _BorderedWindowState();
+}
+
+class _BorderedWindowState extends State<_BorderedWindow> {
+  static var _lastBorderColor = Colors.transparent;
+  static final _childKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    DynamicMaterialApp.addFullscreenListener(_onFullscreenChanged);
+  }
+
+  @override
+  void dispose() {
+    DynamicMaterialApp.removeFullscreenListener(_onFullscreenChanged);
+    super.dispose();
+  }
+
+  void _onFullscreenChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    final borderColor = Color.alphaBlend(
+      YaruTitleBarTheme.of(context).border?.color ??
+          (Theme.brightnessOf(context) == Brightness.light
+              ? Colors.black.withValues(alpha: 0.1)
+              : Colors.white.withValues(alpha: 0.06)),
+      ColorScheme.of(context).surface,
+    );
+    if (borderColor != _lastBorderColor) {
+      _lastBorderColor = borderColor;
+      windowManager.setBackgroundColor(borderColor).catchError((_) {});
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    /// Use KeyedSubtree to preserve child state when adding/removing border
+    final keyedChild = KeyedSubtree(
+      key: _childKey,
+      child: widget.child ?? const SizedBox(),
+    );
+
+    final showBorder = !DynamicMaterialApp.isFullscreen;
+    return showBorder
+        ? ColoredBox(
+            color: _lastBorderColor,
+            child: Padding(padding: const EdgeInsets.all(1), child: keyedChild),
+          )
+        : keyedChild;
   }
 }
 

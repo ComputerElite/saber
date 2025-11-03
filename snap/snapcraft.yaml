@@ -5,7 +5,7 @@ grade: stable
 confinement: strict
 license: GPL-3.0
 compression: lzo
-icon: assets/icon/icon.svg
+icon: assets/icon/icon_linux.svg
 platforms:
   amd64:
   arm64:
@@ -13,7 +13,7 @@ platforms:
 parts:
   saber:
     source: https://github.com/saber-notes/saber.git
-    source-tag: 'v0.26.12'
+    source-tag: 'v1.27.1'
     plugin: flutter
     build-packages:
       - execstack

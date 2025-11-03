@@ -97,6 +97,8 @@ class _EncLoginStepState extends State<EncLoginStep> {
           decoration: InputDecoration(
             labelText: t.login.encLoginStep.encPassword,
           ),
+          autofillHints: const [AutofillHints.password],
+          autofocus: true,
         ),
         ValueListenableBuilder(
           valueListenable: _errorMessage,
