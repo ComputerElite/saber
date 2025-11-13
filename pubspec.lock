@@ -648,11 +648,7 @@ packages:
       sha256: "055de8921be7b8e8b98a233c7a5ef84b3a6fcc32f46f1ebf5b9bb3576d108355"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "2.2.0"
-=======
     version: "2.2.2"
->>>>>>> upstream/main
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -1252,18 +1248,18 @@ packages:
     dependency: "direct main"
     description:
       name: pdfrx
-      sha256: cc9513ecdcfb78e1c2af4ca0e014a05dc3e6fd21933ee92e1c956013449905e6
+      sha256: "45d535ab7156144e19748e95ecbc1e2ef3f72ed0ea91fb2b22b7493dd95167a2"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.9"
+    version: "2.2.11"
   pdfrx_engine:
     dependency: transitive
     description:
       name: pdfrx_engine
-      sha256: "092e749e406549cd035da73457a0c17b7526c4123aeeb513727a3f9a0d9c4487"
+      sha256: "46f9b2da314cb4b8fd3d5eace24977b91da0920110fea6f531892c10847dc256"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.2"
+    version: "0.3.3"
   perfect_freehand:
     dependency: "direct main"
     description:
@@ -2066,18 +2062,18 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics_codec
-      sha256: c86987475f162fadff579e7320c7ddda04cd2fdeffbe1129227a85d9ac9e03da
+      sha256: "99fd9fbd34d9f9a32efd7b6a6aae14125d8237b10403b422a6a6dfeac2806146"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.11+1"
+    version: "1.1.13"
   vector_graphics_compiler:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: ca81fdfaf62a5ab45d7296614aea108d2c7d0efca8393e96174bf4d51e6725b0
+      sha256: d354a7ec6931e6047785f4db12a1f61ec3d43b207fc0790f863818543f8ff0dc
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.18"
+    version: "1.1.19"
   vector_math:
     dependency: "direct main"
     description:

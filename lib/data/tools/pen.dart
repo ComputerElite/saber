@@ -25,31 +25,31 @@ class Pen extends Tool {
   });
 
   Pen.fountainPen()
-    : name = t.editor.pens.fountainPen,
-      sizeMin = 1,
-      sizeMax = 25,
-      sizeStep = 1,
-      icon = fountainPenIcon,
-      options = stows.lastFountainPenOptions.value,
-      pressureEnabled = true,
-      color = Color(stows.lastFountainPenColor.value),
-      toolId = ToolId.fountainPen;
+      : name = t.editor.pens.fountainPen,
+        sizeMin = 1,
+        sizeMax = 25,
+        sizeStep = 0.5,
+        icon = fountainPenIcon,
+        options = stows.lastFountainPenOptions.value,
+        pressureEnabled = true,
+        color = Color(stows.lastFountainPenColor.value),
+        toolId = ToolId.fountainPen;
 
   Pen.ballpointPen()
-    : name = t.editor.pens.ballpointPen,
-      sizeMin = 1,
-      sizeMax = 25,
-      sizeStep = 1,
-      icon = ballpointPenIcon,
-      options = stows.lastBallpointPenOptions.value,
-      pressureEnabled = false,
-      color = Color(stows.lastBallpointPenColor.value),
-      toolId = ToolId.ballpointPen;
+      : name = t.editor.pens.ballpointPen,
+        sizeMin = 1,
+        sizeMax = 25,
+        sizeStep = 0.5,
+        icon = ballpointPenIcon,
+        options = stows.lastBallpointPenOptions.value,
+        pressureEnabled = false,
+        color = Color(stows.lastBallpointPenColor.value),
+        toolId = ToolId.ballpointPen;
 
   final String name;
   final double sizeMin, sizeMax, sizeStep;
-  late final int sizeStepsBetweenMinAndMax = ((sizeMax - sizeMin) / sizeStep)
-      .round();
+  late final int sizeStepsBetweenMinAndMax =
+      ((sizeMax - sizeMin) / sizeStep).round();
   final IconData icon;
 
   @override
@@ -118,8 +118,8 @@ class Pen extends Tool {
   static StrokeOptions get highlighterOptions =>
       defaultOptions.copyWith(size: 50);
   static StrokeOptions get pencilOptions => defaultOptions.copyWith(
-    streamline: 0.1,
-    start: StrokeEndOptions.start(taperEnabled: true, customTaper: 1),
-    end: StrokeEndOptions.end(taperEnabled: true, customTaper: 1),
-  );
+        streamline: 0.1,
+        start: StrokeEndOptions.start(taperEnabled: true, customTaper: 1),
+        end: StrokeEndOptions.end(taperEnabled: true, customTaper: 1),
+      );
 }
