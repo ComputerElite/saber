@@ -5,7 +5,6 @@
 import FlutterMacOS
 import Foundation
 
-import audioplayers_darwin
 import desktop_webview_window
 import device_info_plus
 import dynamic_color
@@ -16,7 +15,6 @@ import irondash_engine_context
 import open_file_mac
 import package_info_plus
 import path_provider_foundation
-import pdfrx
 import printing
 import quill_native_bridge_macos
 import screen_retriever_macos
@@ -29,7 +27,6 @@ import window_manager
 import window_to_front
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-  AudioplayersDarwinPlugin.register(with: registry.registrar(forPlugin: "AudioplayersDarwinPlugin"))
   DesktopWebviewWindowPlugin.register(with: registry.registrar(forPlugin: "DesktopWebviewWindowPlugin"))
   DeviceInfoPlusMacosPlugin.register(with: registry.registrar(forPlugin: "DeviceInfoPlusMacosPlugin"))
   DynamicColorPlugin.register(with: registry.registrar(forPlugin: "DynamicColorPlugin"))
@@ -40,7 +37,6 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   OpenFilePlugin.register(with: registry.registrar(forPlugin: "OpenFilePlugin"))
   FPPPackageInfoPlusPlugin.register(with: registry.registrar(forPlugin: "FPPPackageInfoPlusPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
-  PdfrxPlugin.register(with: registry.registrar(forPlugin: "PdfrxPlugin"))
   PrintingPlugin.register(with: registry.registrar(forPlugin: "PrintingPlugin"))
   QuillNativeBridgePlugin.register(with: registry.registrar(forPlugin: "QuillNativeBridgePlugin"))
   ScreenRetrieverMacosPlugin.register(with: registry.registrar(forPlugin: "ScreenRetrieverMacosPlugin"))

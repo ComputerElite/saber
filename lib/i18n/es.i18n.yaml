@@ -98,6 +98,7 @@ settings:
     autoClearWhiteboardOnExit: Borrar la pizarra después de salir de la aplicación
     disableEraserAfterUse: Desactivar automáticamente la goma de borrar
     hideFingerDrawingToggle: Ocultar la opción para activar/desactivar la escritura con el dedo
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Desactivar automáticamente el dibujo con los dedos
     editorPromptRename: Solicitarte cambiar el nombre de nuevas notas
     recentColorsDontSavePresets: No guardar colores preestablecidos en los colores recientes
     recentColorsLength: Número de colores recientes a almacenar
@@ -105,7 +106,6 @@ settings:
     sentry(OUTDATED): Informes de errores
     autosave(OUTDATED): Auto-Save
     simplifiedHomeLayout(OUTDATED): Disposición simplificada de la casa
-    pencilSoundSetting(OUTDATED): Efecto de sonido de lápiz
     customDataDir(OUTDATED): Directorio de datos personalizado
     autoStraightenLines(OUTDATED): Líneas de enderezamiento automático
     shapeRecognitionDelay(OUTDATED): Retraso en el reconocimiento de formas
@@ -120,13 +120,10 @@ settings:
       shown: Evita cambios accidentales
       fixedOn: Dibujar o escribir con el dedo está activado
       fixedOff: Dibujar o escribir con el dedo está desactivado
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Desactivar el dibujo con los dedos cuando se detecta un lápiz
     editorPromptRename: Siempre puedes cambiar el nombre de las notas más tarde
     printPageIndicators: Mostrar indicadores de página en las exportaciones
     shouldAlwaysAlertForUpdates: Avísame sobre actualizaciones tan pronto como estén disponibles
-    pencilSoundSetting: 
-      off(OUTDATED): Sin sonido
-      onButNotInSilentMode(OUTDATED): Habilitado (a menos que esté en modo silencioso)
-      onAlways(OUTDATED): Habilitado (incluso en modo silencioso)
     sentry: 
       active(OUTDATED): Activo
       inactive(OUTDATED): Inactivo
@@ -248,7 +245,6 @@ appInfo:
   licenseNotice: |-
     Saber  Copyright © 2022-$buildYear  Adil Hanney
     Este programa no tiene ninguna garantía. Es un software libre, y se puede redistribuir bajo ciertas condiciones.
-  dirty: DIRTY
   debug: DEBUG
   sponsorButton: Toca aquí para patrocinarme o comprar más almacenamiento
   licenseButton: Toca aquí para ver más información sobre la licencia

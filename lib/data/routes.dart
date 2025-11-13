@@ -26,8 +26,12 @@ abstract class RoutePaths {
 }
 
 abstract class HomeRoutes {
-  static String browseFilePath(String filePath) {
-    return '${getRoute(1)}?path=${Uri.encodeQueryComponent(filePath)}';
+  static String browseFilePath(String? filePath) {
+    var path = getRoute(1);
+    if (filePath != '/' && filePath != '' && filePath != null) {
+      path += '?path=${Uri.encodeQueryComponent(filePath)}';
+    }
+    return path;
   }
 
   static final PathFunction _homeFunction = pathToFunction(RoutePaths.home);
@@ -71,12 +75,12 @@ abstract class HomeRoutes {
     return _routes[index].routePath;
   }
 
-  static final navigationDestinations = _routes
-      .map((route) => route.toNavigationDestination())
-      .toList(growable: false);
-  static final navigationRailDestinations = _routes
-      .map((route) => route.toNavigationRailDestination())
-      .toList(growable: false);
+  static List<NavigationDestination> get navigationDestinations =>
+      _routes.map((e) => e.toNavigationDestination()).toList(growable: false);
+  static List<NavigationRailDestination> get navigationRailDestinations =>
+      _routes
+          .map((e) => e.toNavigationRailDestination())
+          .toList(growable: false);
 }
 
 class _Route {

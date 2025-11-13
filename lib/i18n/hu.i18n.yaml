@@ -94,12 +94,12 @@ settings:
     preferGreyscale: Szürkeárnyalatos színek előnyben részesítése
     maxImageSize: Maximális képméret
     autoClearWhiteboardOnExit: A tábla törlése az alkalmazásból való kilépés után
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Ujjrajzolás automatikus letiltása
     editorPromptRename: Új jegyzetek átnevezésére való felszólítás
     recentColorsDontSavePresets: Ne mentse az előre beállított színeket a legutóbbi színek között
     sentry(OUTDATED): Hibajelentés
     autosave(OUTDATED): Automatikus mentés
     simplifiedHomeLayout(OUTDATED): Egyszerűsített otthoni elrendezés
-    pencilSoundSetting(OUTDATED): Ceruza hanghatás
     customDataDir(OUTDATED): Egyedi adatkönyvtár
     autoStraightenLines(OUTDATED): A vonalak automatikus kiegyenesítése
     shapeRecognitionDelay(OUTDATED): Alakfelismerési késleltetés
@@ -119,11 +119,8 @@ settings:
       shown(OUTDATED): Megakadályozza a véletlen átkapcsolást
       fixedOn(OUTDATED): Az ujjlenyomat rögzítése engedélyezett állapotban van
       fixedOff(OUTDATED): Az ujjrajzolás letiltva van rögzítve
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Kapcsolja ki az ujjal történő rajzolást, ha ceruzát észlel
     editorPromptRename: A jegyzeteket később bármikor átnevezheti
-    pencilSoundSetting: 
-      off(OUTDATED): Nincs hang
-      onButNotInSilentMode(OUTDATED): Engedélyezve (kivéve, ha néma módban van)
-      onAlways(OUTDATED): Engedélyezve (néma módban is)
     sentry: 
       active(OUTDATED): Aktív
       inactive(OUTDATED): Tétlen
@@ -249,7 +246,6 @@ appInfo:
   licenseNotice: |-
     Saber Copyright © 2022-$buildYear Adil Hanney
     Ez a program nem tartalmaz semmilyen garanciát. Ez egy szabad szoftver, és bizonyos feltételek mellett szabadon terjeszthető.
-  dirty: DIRTY
   debug: DEBUG
   sponsorButton: Ide kattintva támogathat engem vagy vásárolhat több tárhelyet
   licenseButton: További licencinformációk megtekintéséhez kattintson ide

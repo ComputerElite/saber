@@ -99,6 +99,7 @@ settings:
     autoClearWhiteboardOnExit: Svuota la lavagna dopo essere uscito dall'app
     disableEraserAfterUse: Disattiva automaticamente la gomma
     hideFingerDrawingToggle: Nascondi l'interruttore del disegno con le dita
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Disabilita automaticamente il disegno con le dita
     editorPromptRename: Richiede di rinominare nuove note
     recentColorsDontSavePresets: Non salvare i colori preimpostati nei colori recenti
     recentColorsLength: Quanti colori recenti memorizzare
@@ -108,7 +109,6 @@ settings:
     autoStraightenLines: Raddrizzamento automatico delle linee
     simplifiedHomeLayout: Layout semplificato della home
     customDataDir: Cartella Saber personalizzata
-    pencilSoundSetting: Effetto sonoro della matita
     sentry: Segnalazione di errori
   prefDescriptions: 
     hyperlegibleFont: Atkinson Iperleggibile aumenta la leggibilità per i lettori ipovedenti
@@ -121,6 +121,7 @@ settings:
       shown: Impedisce l'attivazione accidentale
       fixedOn: Il disegno con le dita è fissato come abilitato
       fixedOff: Il disegno con le dita è fisso come disabilitato
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Disattiva il disegno con le dita quando viene rilevato uno stilo
     editorPromptRename: Puoi sempre rinominare le note in un secondo momento
     printPageIndicators: Mostra indicatori di pagina nelle esportazioni
     autosave: Salvataggio automatico dopo un breve ritardo o mai
@@ -128,10 +129,6 @@ settings:
     autoStraightenLines: Raddrizza le linee lunghe senza dover utilizzare la penna sagomatrice
     simplifiedHomeLayout: Imposta un'altezza fissa per ogni anteprima della nota
     shouldAlwaysAlertForUpdates: Segnalami aggiornamenti non appena sono disponibili
-    pencilSoundSetting: 
-      off: Nessun suono
-      onButNotInSilentMode: Abilitato (a meno che non sia in modalità silenziosa)
-      onAlways: Abilitato (anche in modalità silenziosa)
     sentry: 
       active: Attivo
       inactive: Non attivo
@@ -250,7 +247,6 @@ appInfo:
   licenseNotice: |-
     Saber Copyright © 2022-$buildYear Adil Hanney
     Questo programma non ha alcuna garanzia. Questo è un software libero e sei libero di ridistribuirlo a determinate condizioni.
-  dirty: GROSSOLANA
   debug: DEBUG
   sponsorButton: Tocca qui per sponsorizzarmi o acquistare altro spazio di archiviazione
   licenseButton: Tocca qui per visualizzare ulteriori informazioni sulla licenza

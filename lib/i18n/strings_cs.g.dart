@@ -187,7 +187,6 @@ class _TranslationsAppInfoCs extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber  Copyright © 2022-${buildYear}  Adil Hanney\nTento program je poskytován bez jakékoliv záruky. Jedná se o software poskytovaný zdarma, který je možné šířit při splnění určitých podmínek.';
-	@override String get dirty => 'ZKUŠEBNÍ VERZE';
 	@override String get debug => 'LADÍCÍ VERZE';
 	@override String get sponsorButton => 'Klepněte sem, pokud mě chcete sponzorovat nebo si přikoupit úložiště';
 	@override String get licenseButton => 'Klepněte sem pro zobrazení podrobnějších licenčních informací';
@@ -402,6 +401,7 @@ class _TranslationsSettingsPrefLabelsCs extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'Smazat tabuli po opuštění aplikace';
 	@override String get disableEraserAfterUse => 'Automaticky vypínat gumu';
 	@override String get hideFingerDrawingToggle => 'Skrýt přepínač pro kreslení prstem';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Automaticky deaktivovat kreslení prstem';
 	@override String get editorPromptRename => 'Vybízet k přejmenování nových poznámek';
 	@override String get recentColorsDontSavePresets => 'Neukládat přednastavené barvy mezi naposledy použité barvy';
 	@override String get recentColorsLength => 'Kolik naposledy použitých barev se má ukládat';
@@ -411,7 +411,6 @@ class _TranslationsSettingsPrefLabelsCs extends TranslationsSettingsPrefLabelsEn
 	@override String get autoStraightenLines => 'Automaticky narovnávat čáry';
 	@override String get simplifiedHomeLayout => 'Zjednodušené rozložení domovské obrazovky';
 	@override String get customDataDir => 'Vlastní umístění složky aplikace Saber';
-	@override String get pencilSoundSetting => 'Zvukový efekt psaní tužkou';
 	@override String get sentry => 'Hlášení chyb';
 }
 
@@ -429,6 +428,7 @@ class _TranslationsSettingsPrefDescriptionsCs extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'Po použití gumy automaticky přepnout zpět na pero';
 	@override String get maxImageSize => 'Na větší obrázky bude aplikována komprese';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingCs hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingCs._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Při detekci stylusu vypněte kreslení prstem';
 	@override String get editorPromptRename => 'Poznámky můžete vždy přejmenovat i později';
 	@override String get printPageIndicators => 'V exportech budou zobrazena čísla stránek';
 	@override String get autosave => 'Poznámky se budou automaticky ukládat po krátké prodlevě, nebo nikdy';
@@ -436,7 +436,6 @@ class _TranslationsSettingsPrefDescriptionsCs extends TranslationsSettingsPrefDe
 	@override String get autoStraightenLines => 'Automaticky narovná dlouhé čáry, aniž by bylo nutné využít tvarové pero';
 	@override String get simplifiedHomeLayout => 'Nastaví pevnou výšku pro každý náhled poznámky';
 	@override String get shouldAlwaysAlertForUpdates => 'Oznámit dostupnost aktualizací co nejdříve od jejich vydání';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingCs pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingCs._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryCs sentry = _TranslationsSettingsPrefDescriptionsSentryCs._(_root);
 }
 
@@ -827,18 +826,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingCs extends Translati
 	@override String get shown => 'Zabraňuje nechtěnému přepnutí';
 	@override String get fixedOn => 'Kreslení prstem je napevno zapnuté';
 	@override String get fixedOff => 'Kreslení prstem je napevno vypnuté';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingCs extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingCs._(TranslationsCs root) : this._root = root, super.internal(root);
-
-	final TranslationsCs _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => 'Bez zvuku';
-	@override String get onButNotInSilentMode => 'Zapnuto (mimo tichý režim)';
-	@override String get onAlways => 'Zapnuto (i v tichém režimu)';
 }
 
 // Path: settings.prefDescriptions.sentry

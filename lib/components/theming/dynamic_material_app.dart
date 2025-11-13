@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:saber/components/theming/saber_theme.dart';
 import 'package:saber/components/theming/yaru_builder.dart';
 import 'package:saber/data/prefs.dart';
+import 'package:saber/i18n/extensions/redirecting_localization_delegate.dart';
 import 'package:saber/i18n/strings.g.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:yaru/yaru.dart';
@@ -100,27 +102,16 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
     if (platform == TargetPlatform.linux) {
       return YaruBuilder(
         primary: chosenAccentColor, // if null, falls back to system color
-        builder: (context, yaru, _) {
+        platform: platform,
+        builder: (context, themes) {
           return ExplicitlyThemedApp(
             title: widget.title,
             router: widget.router,
             themeMode: stows.appTheme.value,
-            theme: (yaru.theme ?? yaruLight).copyWith(
-              platform: platform,
-              textTheme: SaberTheme.createTextTheme(Brightness.light),
-            ),
-            darkTheme: (yaru.darkTheme ?? yaruDark).copyWith(
-              platform: platform,
-              textTheme: SaberTheme.createTextTheme(Brightness.dark),
-            ),
-            highContrastTheme: yaruHighContrastLight.copyWith(
-              platform: platform,
-              textTheme: SaberTheme.createTextTheme(Brightness.light),
-            ),
-            highContrastDarkTheme: yaruHighContrastDark.copyWith(
-              platform: platform,
-              textTheme: SaberTheme.createTextTheme(Brightness.dark),
-            ),
+            theme: themes.theme,
+            darkTheme: themes.darkTheme,
+            highContrastTheme: themes.highContrastTheme,
+            highContrastDarkTheme: themes.highContrastDarkTheme,
           );
         },
       );
@@ -152,17 +143,17 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
           title: widget.title,
           router: widget.router,
           themeMode: stows.appTheme.value,
-          theme: lightColorScheme != null
+          theme: (!platform.usesYaruColors && lightColorScheme != null)
               ? SaberTheme.createTheme(lightColorScheme, platform)
               : SaberTheme.createThemeFromSeed(
-                  widget.defaultSwatch,
+                  lightColorScheme?.primary ?? widget.defaultSwatch,
                   Brightness.light,
                   platform,
                 ),
-          darkTheme: darkColorScheme != null
+          darkTheme: (!platform.usesYaruColors && darkColorScheme != null)
               ? SaberTheme.createTheme(darkColorScheme, platform)
               : SaberTheme.createThemeFromSeed(
-                  widget.defaultSwatch,
+                  darkColorScheme?.primary ?? widget.defaultSwatch,
                   Brightness.dark,
                   platform,
                 ),
@@ -225,8 +216,18 @@ class ExplicitlyThemedApp extends StatelessWidget {
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: const [
-        ...GlobalMaterialLocalizations.delegates,
-        FlutterQuillLocalizations.delegate,
+        RedirectingLocalizationDelegate<CupertinoLocalizations>(
+          GlobalCupertinoLocalizations.delegate,
+        ),
+        RedirectingLocalizationDelegate<MaterialLocalizations>(
+          GlobalMaterialLocalizations.delegate,
+        ),
+        RedirectingLocalizationDelegate<WidgetsLocalizations>(
+          GlobalWidgetsLocalizations.delegate,
+        ),
+        RedirectingLocalizationDelegate<FlutterQuillLocalizations>(
+          FlutterQuillLocalizations.delegate,
+        ),
       ],
       themeMode: themeMode,
       theme: theme,

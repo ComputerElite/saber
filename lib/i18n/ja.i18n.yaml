@@ -96,13 +96,13 @@ settings:
     preferGreyscale: グレースケールを優先
     maxImageSize: 最大画像サイズ
     autoClearWhiteboardOnExit: アプリを終了したらホワイトボードを消去する
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): 指の描画を自動的に無効にする
     editorPromptRename: 新しいメモの名前を変更するよう促す
     recentColorsDontSavePresets: 最近使用した色をプリセットに登録しない
     printPageIndicators: 印刷ページのインジケーター
     sentry(OUTDATED): エラー報告
     autosave(OUTDATED): 自動保存
     simplifiedHomeLayout(OUTDATED): 簡素化されたホームレイアウト
-    pencilSoundSetting(OUTDATED): 鉛筆の効果音
     customDataDir(OUTDATED): カスタムデータディレクトリ
     autoStraightenLines(OUTDATED): 線を自動直線化する
     shapeRecognitionDelay(OUTDATED): 形状認識の遅延
@@ -120,12 +120,9 @@ settings:
       fixedOn(OUTDATED): 指の描画が有効に固定される
       shown(OUTDATED): 偶発的な切り替えを防止します
       fixedOff(OUTDATED): 指の描画が無効に固定される
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): スタイラスが検出されたときに指の描画をオフにする
     editorPromptRename: メモの名前は後でいつでも変更できます
     printPageIndicators: エクスポートにページインジケーターを表示
-    pencilSoundSetting: 
-      off(OUTDATED): 無音
-      onButNotInSilentMode(OUTDATED): 有効 (サイレントモードでない場合)
-      onAlways(OUTDATED): 有効（サイレントモードでも）
     sentry: 
       active(OUTDATED): アクティブ
       inactive(OUTDATED): 非アクティブ
@@ -246,7 +243,6 @@ appInfo:
   licenseNotice: |-
     Saber  Copyright © 2022-$buildYear  Adil Hanney
     このプログラムには一切の保証がありません。これはフリーソフトウェアであり、一定の条件下で再配布することを歓迎します。
-  dirty: DIRTY
   debug: デバッグ
   sponsorButton: 私のスポンサーになる、またはストレージを購入する際は、ここをタップしてください。
   licenseButton: ライセンス情報を見るには、ここをタップして

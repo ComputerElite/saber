@@ -51,9 +51,6 @@ class LogsPage extends StatelessWidget {
         builder: (context, _) {
           final theme = Theme.of(context);
           final colorScheme = theme.colorScheme;
-          final cupertino =
-              theme.platform == TargetPlatform.iOS ||
-              theme.platform == TargetPlatform.macOS;
           return CustomScrollView(
             slivers: [
               SliverAppBar(
@@ -66,7 +63,11 @@ class LogsPage extends StatelessWidget {
                     t.logs.logs,
                     style: TextStyle(color: colorScheme.onSurface),
                   ),
-                  centerTitle: cupertino,
+                  centerTitle: false,
+                  titlePadding: const EdgeInsetsDirectional.only(
+                    start: 16,
+                    bottom: 16,
+                  ),
                 ),
                 actions: [
                   if (logsHistory.isFrozen)
@@ -170,34 +171,38 @@ class _LogsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _LogLevel(level: record.level),
-          Text(record.message),
-          if (record.stackTrace != null)
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: const Color(0xCC000000),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Text(
-                  record.stackTrace.toString(),
-                  style: const TextStyle(
-                    fontFamily: 'FiraMono',
-                    fontFamilyFallback: saberMonoFontFallbacks,
-                    fontSize: 11,
-                    color: Colors.white,
-                  ),
+    const hPadding = 16.0;
+    const vPadding = 8.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: vPadding),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: hPadding),
+          child: _LogLevel(level: record.level),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: hPadding),
+          child: Text(record.message),
+        ),
+        if (record.stackTrace != null)
+          ColoredBox(
+            color: const Color(0xCC000000),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                record.stackTrace.toString(),
+                style: const TextStyle(
+                  fontFamily: 'FiraMono',
+                  fontFamilyFallback: saberMonoFontFallbacks,
+                  fontSize: 11,
+                  color: Colors.white,
                 ),
               ),
             ),
-        ],
-      ),
+          ),
+        const SizedBox(height: vPadding),
+      ],
     );
   }
 }

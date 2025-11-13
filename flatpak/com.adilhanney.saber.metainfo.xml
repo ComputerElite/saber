@@ -18,8 +18,8 @@
     </developer>
 
     <branding>
-        <color type="primary" scheme_preference="light">#fffeac</color>
-        <color type="primary" scheme_preference="dark">#494900</color>
+        <color type="primary" scheme_preference="light">#fff6da</color>
+        <color type="primary" scheme_preference="dark">#705600</color>
     </branding>
 
     <metadata_license>MIT</metadata_license>
@@ -214,6 +214,36 @@
     </screenshots>
 
     <releases>
+        <release version="1.28.1" type="development" date="2025-11-11">
+            <description>
+                <ul>
+                    <li>Improved animation smoothness when closing a note.</li>
+                    <li>Your mouse wheel now scrolls instead of zooming. Hold the Ctrl key to zoom.</li>
+                    <li>Made the New Note button less round.</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.28.0" type="development" date="2025-11-10">
+            <description>
+                <ul>
+                    <li>Added a new floating navigation bar.</li>
+                    <li>A pending autosave is now cancelled if you undo all changes.</li>
+                    <li>Improved the smoothness of home screen transitions.</li>
+                    <li>Fixed some path handling bugs on the browse page.</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.27.2" type="development" date="2025-11-07">
+            <description>
+                <ul>
+                    <li>Fixed the entire app breaking if you choose the Esperanto language.</li>
+                    <li>Fixed the navigation bar not updating its text when you change language.</li>
+                    <li>Fixed the storage used percentage not being rounded.</li>
+                    <li>Freed up memory used by images and PDFs.</li>
+                    <li>Removed the pencil sound effect, and removed the sound+microphone flatpak permission.</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.27.1" type="development" date="2025-11-02">
             <description>
                 <ul>

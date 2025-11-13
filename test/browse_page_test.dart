@@ -25,8 +25,7 @@ void main() {
       group('at $depth depth:', () {
         testGoldens('Empty', (tester) async {
           await tester.pumpWidget(_BrowseApp(path: path, children: null));
-          await tester.loadFonts();
-          await tester.precacheImagesInWidgetTree();
+          await tester.loadAssets();
           await tester.pumpAndSettle();
 
           await expectLater(
@@ -42,8 +41,7 @@ void main() {
           );
 
           await tester.pumpWidget(_BrowseApp(path: path, children: children));
-          await tester.loadFonts();
-          await tester.precacheImagesInWidgetTree();
+          await tester.loadAssets();
           await tester.pumpAndSettle();
 
           await expectLater(
@@ -64,10 +62,11 @@ class _BrowseApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BrowsePage.overrideChildren = children;
     return ScreenshotApp.withConditionalTitlebar(
       device: GoldenSmallDevices.androidPhone.device,
       title: 'Saber',
-      home: BrowsePage(path: path, overrideChildren: children),
+      home: BrowsePage(path: path),
     );
   }
 }

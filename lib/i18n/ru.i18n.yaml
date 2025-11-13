@@ -99,6 +99,7 @@ settings:
     autoClearWhiteboardOnExit: Очищать лист при выходе из приложения
     disableEraserAfterUse: Автоотключение ластика
     hideFingerDrawingToggle: Скрыть переключатель «Рисование пальцем»
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Автоматическое отключение рисования пальцем
     editorPromptRename: Предлагать переименовывать новые заметки
     recentColorsDontSavePresets: Не сохранять предустановленные цвета в последних цветах
     recentColorsLength: Количество последних сохраняемых цветов
@@ -108,7 +109,6 @@ settings:
     autoStraightenLines: Автоматическое выпрямление линий
     simplifiedHomeLayout: Упрощённый главный экран
     customDataDir: Свой каталог Saber
-    pencilSoundSetting: Звуковой эффект карандаша
     sentry: Сообщить об ошибке
   prefDescriptions: 
     hyperlegibleFont: Шрифт Atkinson Hyperlegible повышает разборчивость для читателей с плохим зрением
@@ -121,6 +121,7 @@ settings:
       shown: Предотвращать случайное переключение
       fixedOn: «Рисование пальцем» зафиксировано как включенное
       fixedOff: «Рисование пальцем» зафиксировано как выключенное
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Отключить рисование пальцем при обнаружении стилуса
     editorPromptRename: Вы всегда можете переименовать заметки позже
     printPageIndicators: Показывать номера страниц при экспорте
     autosave: Автосохранение с задержкой
@@ -128,10 +129,6 @@ settings:
     autoStraightenLines: Выпрямляет длинные линии без использования фигурного пера
     simplifiedHomeLayout: Фиксированная высота предварительного просмотра каждой заметки
     shouldAlwaysAlertForUpdates: Сообщать мне об обновлениях, как только они станут доступны
-    pencilSoundSetting: 
-      off: Без звука
-      onButNotInSilentMode: Включено (кроме тихого режима)
-      onAlways: Включено (даже в беззвучном режиме)
     sentry: 
       active: Активно
       inactive: Неактивно
@@ -250,7 +247,6 @@ appInfo:
   licenseNotice: |-
     Saber  Copyright © 2022-$buildYear  Adil Hanney
     Эта программа поставляется без каких-либо гарантий. Это бесплатное программное обеспечение, и вы можете распространять его при определенных условиях.
-  dirty: ГРЯЗНАЯ
   debug: ОТЛАДКА
   sponsorButton: Проспонсируйте меня или купите дополнительное пространство
   licenseButton: Просмотрите дополнительную информацию о лицензии

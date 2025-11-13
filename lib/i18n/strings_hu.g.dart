@@ -185,7 +185,6 @@ class _TranslationsAppInfoHu extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber Copyright © 2022-${buildYear} Adil Hanney\nEz a program nem tartalmaz semmilyen garanciát. Ez egy szabad szoftver, és bizonyos feltételek mellett szabadon terjeszthető.';
-	@override String get dirty => 'DIRTY';
 	@override String get debug => 'DEBUG';
 	@override String get sponsorButton => 'Ide kattintva támogathat engem vagy vásárolhat több tárhelyet';
 	@override String get licenseButton => 'További licencinformációk megtekintéséhez kattintson ide';
@@ -395,12 +394,12 @@ class _TranslationsSettingsPrefLabelsHu extends TranslationsSettingsPrefLabelsEn
 	@override String get preferGreyscale => 'Szürkeárnyalatos színek előnyben részesítése';
 	@override String get maxImageSize => 'Maximális képméret';
 	@override String get autoClearWhiteboardOnExit => 'A tábla törlése az alkalmazásból való kilépés után';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Ujjrajzolás automatikus letiltása';
 	@override String get editorPromptRename => 'Új jegyzetek átnevezésére való felszólítás';
 	@override String get recentColorsDontSavePresets => 'Ne mentse az előre beállított színeket a legutóbbi színek között';
 	@override String get sentry => 'Hibajelentés';
 	@override String get autosave => 'Automatikus mentés';
 	@override String get simplifiedHomeLayout => 'Egyszerűsített otthoni elrendezés';
-	@override String get pencilSoundSetting => 'Ceruza hanghatás';
 	@override String get customDataDir => 'Egyedi adatkönyvtár';
 	@override String get autoStraightenLines => 'A vonalak automatikus kiegyenesítése';
 	@override String get shapeRecognitionDelay => 'Alakfelismerési késleltetés';
@@ -425,8 +424,8 @@ class _TranslationsSettingsPrefDescriptionsHu extends TranslationsSettingsPrefDe
 	@override String get autoClearWhiteboardOnExit => 'Továbbra is szinkronizálva lesz a többi eszközzel';
 	@override String get maxImageSize => 'Az ennél nagyobb képek tömörítve lesznek';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingHu hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingHu._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Kapcsolja ki az ujjal történő rajzolást, ha ceruzát észlel';
 	@override String get editorPromptRename => 'A jegyzeteket később bármikor átnevezheti';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingHu pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingHu._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryHu sentry = _TranslationsSettingsPrefDescriptionsSentryHu._(_root);
 	@override String get autosave => 'Automato-Save rövid késleltetés után, vagy soha';
 	@override String get simplifiedHomeLayout => 'Rögzített magasságot állít be minden hangjegy előnézetéhez';
@@ -825,18 +824,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingHu extends Translati
 	@override String get shown => 'Megakadályozza a véletlen átkapcsolást';
 	@override String get fixedOn => 'Az ujjlenyomat rögzítése engedélyezett állapotban van';
 	@override String get fixedOff => 'Az ujjrajzolás letiltva van rögzítve';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingHu extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingHu._(TranslationsHu root) : this._root = root, super.internal(root);
-
-	final TranslationsHu _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => 'Nincs hang';
-	@override String get onButNotInSilentMode => 'Engedélyezve (kivéve, ha néma módban van)';
-	@override String get onAlways => 'Engedélyezve (néma módban is)';
 }
 
 // Path: settings.prefDescriptions.sentry

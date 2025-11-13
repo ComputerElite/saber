@@ -187,7 +187,6 @@ class _TranslationsAppInfoIt extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber Copyright © 2022-${buildYear} Adil Hanney\nQuesto programma non ha alcuna garanzia. Questo è un software libero e sei libero di ridistribuirlo a determinate condizioni.';
-	@override String get dirty => 'GROSSOLANA';
 	@override String get debug => 'DEBUG';
 	@override String get sponsorButton => 'Tocca qui per sponsorizzarmi o acquistare altro spazio di archiviazione';
 	@override String get licenseButton => 'Tocca qui per visualizzare ulteriori informazioni sulla licenza';
@@ -402,6 +401,7 @@ class _TranslationsSettingsPrefLabelsIt extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'Svuota la lavagna dopo essere uscito dall\'app';
 	@override String get disableEraserAfterUse => 'Disattiva automaticamente la gomma';
 	@override String get hideFingerDrawingToggle => 'Nascondi l\'interruttore del disegno con le dita';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Disabilita automaticamente il disegno con le dita';
 	@override String get editorPromptRename => 'Richiede di rinominare nuove note';
 	@override String get recentColorsDontSavePresets => 'Non salvare i colori preimpostati nei colori recenti';
 	@override String get recentColorsLength => 'Quanti colori recenti memorizzare';
@@ -411,7 +411,6 @@ class _TranslationsSettingsPrefLabelsIt extends TranslationsSettingsPrefLabelsEn
 	@override String get autoStraightenLines => 'Raddrizzamento automatico delle linee';
 	@override String get simplifiedHomeLayout => 'Layout semplificato della home';
 	@override String get customDataDir => 'Cartella Saber personalizzata';
-	@override String get pencilSoundSetting => 'Effetto sonoro della matita';
 	@override String get sentry => 'Segnalazione di errori';
 }
 
@@ -429,6 +428,7 @@ class _TranslationsSettingsPrefDescriptionsIt extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'Torna automaticamente alla penna dopo aver utilizzato la gomma';
 	@override String get maxImageSize => 'Le immagini più grandi verranno compresse';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingIt hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingIt._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Disattiva il disegno con le dita quando viene rilevato uno stilo';
 	@override String get editorPromptRename => 'Puoi sempre rinominare le note in un secondo momento';
 	@override String get printPageIndicators => 'Mostra indicatori di pagina nelle esportazioni';
 	@override String get autosave => 'Salvataggio automatico dopo un breve ritardo o mai';
@@ -436,7 +436,6 @@ class _TranslationsSettingsPrefDescriptionsIt extends TranslationsSettingsPrefDe
 	@override String get autoStraightenLines => 'Raddrizza le linee lunghe senza dover utilizzare la penna sagomatrice';
 	@override String get simplifiedHomeLayout => 'Imposta un\'altezza fissa per ogni anteprima della nota';
 	@override String get shouldAlwaysAlertForUpdates => 'Segnalami aggiornamenti non appena sono disponibili';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingIt pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingIt._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryIt sentry = _TranslationsSettingsPrefDescriptionsSentryIt._(_root);
 }
 
@@ -827,18 +826,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingIt extends Translati
 	@override String get shown => 'Impedisce l\'attivazione accidentale';
 	@override String get fixedOn => 'Il disegno con le dita è fissato come abilitato';
 	@override String get fixedOff => 'Il disegno con le dita è fisso come disabilitato';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingIt extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingIt._(TranslationsIt root) : this._root = root, super.internal(root);
-
-	final TranslationsIt _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => 'Nessun suono';
-	@override String get onButNotInSilentMode => 'Abilitato (a meno che non sia in modalità silenziosa)';
-	@override String get onAlways => 'Abilitato (anche in modalità silenziosa)';
 }
 
 // Path: settings.prefDescriptions.sentry

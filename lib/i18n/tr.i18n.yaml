@@ -99,6 +99,7 @@ settings:
     autoClearWhiteboardOnExit: Uygulamadan çıkıldığında beyaz tahtayı temizle
     disableEraserAfterUse: Silgiden kaleme geçiş
     hideFingerDrawingToggle: Parmakla çizme kilidini sakla
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Parmak çizimini otomatik olarak devre dışı bırak
     editorPromptRename: Notları yeniden adlandırmak için uyar
     recentColorsDontSavePresets: Ön tanımlı renkleri son kullanılanlara kaydetme
     recentColorsLength: Kaç tane son kullanılan renk saklanacak
@@ -107,7 +108,6 @@ settings:
     autoStraightenLines: Çizgileri otomatik düzleştir
     simplifiedHomeLayout: Sadeleştirilmiş ana ekran düzeni
     customDataDir: Özel Saber klasörü
-    pencilSoundSetting: Kurşun kalem ses efekti
     sentry(OUTDATED): Hata raporlama
     autosave(OUTDATED): Otomatik koruma
   prefDescriptions: 
@@ -121,16 +121,13 @@ settings:
       shown: Yanlışlıkla değiştirilmesini engeller
       fixedOn: Parmakla çizim izni verildi ve sabitlendi
       fixedOff: Parmakla çizim izni verilmedi ve sabitlendi
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Bir kalem algılandığında parmakla çizimi kapatın
     editorPromptRename: Notlarınızı daha sonra da yeniden adlandırabilirsiniz
     printPageIndicators: Çıktılarda sayfa belirteçlerini göster
     shapeRecognitionDelay: Çizilen şekilleri tanımlama sıklığını belirler
     autoStraightenLines: Şekil aracını kullanmadığınızda da çizgileri düzleştirir
     simplifiedHomeLayout: Not önizlemelerinin uzunluklarını eşitler
     shouldAlwaysAlertForUpdates: Güncelleme mevcut olduğu gibi bana haber ver
-    pencilSoundSetting: 
-      off: Ses yok
-      onButNotInSilentMode: Etkin (sessiz modda değilse)
-      onAlways: Etkin (sessiz modda da)
     sentry: 
       active(OUTDATED): Aktif
       inactive(OUTDATED): Aktif olmayan
@@ -251,7 +248,6 @@ appInfo:
     Saber  Copyright © 2022-$buildYear  Adil Hanney
     Bu program hiçbir şeyi garanti etmez ve güvence vermez.
     Bu program özgür (free) bir yazılımdır ve belli koşullar sağlandığında yeniden dağıtıma müsaittir.
-  dirty: TEST
   debug: DEBUG
   sponsorButton: Beni sponsorlamak veya daha fazla alan satın almak için buraya tıkla
   licenseButton: Lisans bilgisinin detaylarını görmek için buraya tıkla

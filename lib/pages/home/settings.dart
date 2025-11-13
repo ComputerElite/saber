@@ -21,7 +21,7 @@ import 'package:saber/components/settings/settings_switch.dart';
 import 'package:saber/components/settings/update_manager.dart';
 import 'package:saber/components/theming/adaptive_alert_dialog.dart';
 import 'package:saber/components/theming/adaptive_toggle_buttons.dart';
-import 'package:saber/data/editor/pencil_sound.dart';
+import 'package:saber/components/theming/saber_theme.dart';
 import 'package:saber/data/file_manager/file_manager.dart';
 import 'package:saber/data/flavor_config.dart';
 import 'package:saber/data/locales.dart';
@@ -94,12 +94,6 @@ abstract class _SettingsStows {
     (AxisDirection value) => value.index,
     (int value) => AxisDirection.values[value],
   );
-
-  static final pencilSound = TransformedStow(
-    stows.pencilSound,
-    (PencilSoundSetting value) => value.index,
-    (int value) => PencilSoundSetting.values[value],
-  );
 }
 
 class _SettingsPageState extends State<SettingsPage> {
@@ -143,8 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final colorScheme = ColorScheme.of(context);
     final platform = Theme.of(context).platform;
-    final cupertino =
-        platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
+    final cupertino = platform.isCupertino;
 
     final requiresManualUpdates = FlavorConfig.appStore.isEmpty;
 
@@ -168,9 +161,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   t.home.titles.settings,
                   style: TextStyle(color: colorScheme.onSurface),
                 ),
-                centerTitle: cupertino,
-                titlePadding: EdgeInsetsDirectional.only(
-                  start: cupertino ? 0 : 16,
+                centerTitle: false,
+                titlePadding: const EdgeInsetsDirectional.only(
+                  start: 16,
                   bottom: 16,
                 ),
               ),
@@ -267,9 +260,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     }(), Icon(materialIcon, semanticLabel: 'Material')),
                     ToggleButtonsOption(() {
                       // Hack to allow screenshot golden tests
-                      if (kDebugMode &&
-                          (stows.platform.value == TargetPlatform.iOS ||
-                              stows.platform.value == TargetPlatform.macOS))
+                      if (kDebugMode && stows.platform.value.isCupertino)
                         return stows.platform.value.index;
                       if (usesCupertinoByDefault)
                         return defaultTargetPlatform.index;
@@ -371,33 +362,59 @@ class _SettingsPageState extends State<SettingsPage> {
                   icon: FontAwesomeIcons.eraser,
                   pref: stows.disableEraserAfterUse,
                 ),
-                SettingsSwitch(
-                  title: t.settings.prefLabels.hideFingerDrawingToggle,
-                  subtitle: () {
-                    if (!stows.hideFingerDrawingToggle.value) {
-                      return t
-                          .settings
-                          .prefDescriptions
-                          .hideFingerDrawing
-                          .shown;
-                    } else if (stows.editorFingerDrawing.value) {
-                      return t
-                          .settings
-                          .prefDescriptions
-                          .hideFingerDrawing
-                          .fixedOn;
-                    } else {
-                      return t
-                          .settings
-                          .prefDescriptions
-                          .hideFingerDrawing
-                          .fixedOff;
-                    }
-                  }(),
-                  icon: CupertinoIcons.hand_draw,
-                  pref: stows.hideFingerDrawingToggle,
-                  afterChange: (_) => setState(() {}),
+                ValueListenableBuilder(
+                  valueListenable: stows.hideFingerDrawingToggle,
+                  builder: (context, _, _) {
+                    return SettingsSwitch(
+                      title: t.settings.prefLabels.hideFingerDrawingToggle,
+                      subtitle: () {
+                        if (!stows.hideFingerDrawingToggle.value) {
+                          return t
+                              .settings
+                              .prefDescriptions
+                              .hideFingerDrawing
+                              .shown;
+                        } else if (stows.editorFingerDrawing.value) {
+                          return t
+                              .settings
+                              .prefDescriptions
+                              .hideFingerDrawing
+                              .fixedOn;
+                        } else {
+                          return t
+                              .settings
+                              .prefDescriptions
+                              .hideFingerDrawing
+                              .fixedOff;
+                        }
+                      }(),
+                      icon: CupertinoIcons.hand_draw_fill,
+                      pref: stows.hideFingerDrawingToggle,
+                    );
+                  },
                 ),
+                ValueListenableBuilder(
+                  valueListenable: stows.hideFingerDrawingToggle,
+                  builder: (context, hideFingerDrawing, _) {
+                    return Collapsible(
+                      collapsed: hideFingerDrawing,
+                      axis: CollapsibleAxis.vertical,
+                      child: SettingsSwitch(
+                        title: t
+                            .settings
+                            .prefLabels
+                            .autoDisableFingerDrawingWhenStylusDetected,
+                        subtitle: t
+                            .settings
+                            .prefDescriptions
+                            .autoDisableFingerDrawingWhenStylusDetected,
+                        icon: CupertinoIcons.pencil,
+                        pref: stows.autoDisableFingerDrawingWhenStylusDetected,
+                      ),
+                    );
+                  },
+                ),
+
                 SettingsSubtitle(subtitle: t.settings.prefCategories.editor),
                 SettingsSelection(
                   title: t.settings.prefLabels.editorToolbarAlignment,
@@ -476,24 +493,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   subtitle: t.settings.prefDescriptions.printPageIndicators,
                   icon: Icons.numbers,
                   pref: stows.printPageIndicators,
-                ),
-                SettingsSelection(
-                  title: t.settings.prefLabels.pencilSoundSetting,
-                  subtitle: stows.pencilSound.value.description,
-                  icon: stows.pencilSound.value.icon,
-                  pref: _SettingsStows.pencilSound,
-                  optionsWidth: 60,
-                  options: [
-                    for (final setting in PencilSoundSetting.values)
-                      ToggleButtonsOption(
-                        setting.index,
-                        Icon(setting.icon, semanticLabel: setting.description),
-                      ),
-                  ],
-                  afterChange: (_) {
-                    PencilSound.setAudioContext();
-                    setState(() {});
-                  },
                 ),
                 SettingsSubtitle(
                   subtitle: t.settings.prefCategories.performance,

@@ -187,7 +187,6 @@ class _TranslationsAppInfoRu extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber  Copyright © 2022-${buildYear}  Adil Hanney\nЭта программа поставляется без каких-либо гарантий. Это бесплатное программное обеспечение, и вы можете распространять его при определенных условиях.';
-	@override String get dirty => 'ГРЯЗНАЯ';
 	@override String get debug => 'ОТЛАДКА';
 	@override String get sponsorButton => 'Проспонсируйте меня или купите дополнительное пространство';
 	@override String get licenseButton => 'Просмотрите дополнительную информацию о лицензии';
@@ -402,6 +401,7 @@ class _TranslationsSettingsPrefLabelsRu extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'Очищать лист при выходе из приложения';
 	@override String get disableEraserAfterUse => 'Автоотключение ластика';
 	@override String get hideFingerDrawingToggle => 'Скрыть переключатель «Рисование пальцем»';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Автоматическое отключение рисования пальцем';
 	@override String get editorPromptRename => 'Предлагать переименовывать новые заметки';
 	@override String get recentColorsDontSavePresets => 'Не сохранять предустановленные цвета в последних цветах';
 	@override String get recentColorsLength => 'Количество последних сохраняемых цветов';
@@ -411,7 +411,6 @@ class _TranslationsSettingsPrefLabelsRu extends TranslationsSettingsPrefLabelsEn
 	@override String get autoStraightenLines => 'Автоматическое выпрямление линий';
 	@override String get simplifiedHomeLayout => 'Упрощённый главный экран';
 	@override String get customDataDir => 'Свой каталог Saber';
-	@override String get pencilSoundSetting => 'Звуковой эффект карандаша';
 	@override String get sentry => 'Сообщить об ошибке';
 }
 
@@ -429,6 +428,7 @@ class _TranslationsSettingsPrefDescriptionsRu extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'Автоматически переключается на перо после использования ластика';
 	@override String get maxImageSize => 'Большие изображения будут сжаты';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingRu hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingRu._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Отключить рисование пальцем при обнаружении стилуса';
 	@override String get editorPromptRename => 'Вы всегда можете переименовать заметки позже';
 	@override String get printPageIndicators => 'Показывать номера страниц при экспорте';
 	@override String get autosave => 'Автосохранение с задержкой';
@@ -436,7 +436,6 @@ class _TranslationsSettingsPrefDescriptionsRu extends TranslationsSettingsPrefDe
 	@override String get autoStraightenLines => 'Выпрямляет длинные линии без использования фигурного пера';
 	@override String get simplifiedHomeLayout => 'Фиксированная высота предварительного просмотра каждой заметки';
 	@override String get shouldAlwaysAlertForUpdates => 'Сообщать мне об обновлениях, как только они станут доступны';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingRu pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingRu._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryRu sentry = _TranslationsSettingsPrefDescriptionsSentryRu._(_root);
 }
 
@@ -827,18 +826,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingRu extends Translati
 	@override String get shown => 'Предотвращать случайное переключение';
 	@override String get fixedOn => '«Рисование пальцем» зафиксировано как включенное';
 	@override String get fixedOff => '«Рисование пальцем» зафиксировано как выключенное';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingRu extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingRu._(TranslationsRu root) : this._root = root, super.internal(root);
-
-	final TranslationsRu _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => 'Без звука';
-	@override String get onButNotInSilentMode => 'Включено (кроме тихого режима)';
-	@override String get onAlways => 'Включено (даже в беззвучном режиме)';
 }
 
 // Path: settings.prefDescriptions.sentry

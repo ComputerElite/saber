@@ -99,6 +99,7 @@ settings:
     autoClearWhiteboardOnExit: Lösche das Whiteboard nach Verlassen der Anwendung
     disableEraserAfterUse: Radierer automatisch deaktivieren
     hideFingerDrawingToggle: Umschalter des Finger-Zeichnens ausblenden
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Fingerzeichnen automatisch deaktivieren
     editorPromptRename: Beim Erstellen von Notizen einen Namen erfragen
     recentColorsDontSavePresets: Farbvorlagen nicht in den zuletzt genutzten Farben speichern
     recentColorsLength: Anzahl der zuletzt genutzten Farben
@@ -108,7 +109,6 @@ settings:
     autoStraightenLines: Linien automatisch begradigen
     simplifiedHomeLayout: Vereinfachtes Startbildschirmlayout
     customDataDir: Eigener Saber-Ordner
-    pencilSoundSetting: Bleistiftgeräusch
     sentry: Fehlerberichterstattung
   prefDescriptions: 
     hyperlegibleFont: Atkinson Hyperlegible verbessert die Lesbarkeit für Menschen mit eingeschränkter Sicht
@@ -121,6 +121,7 @@ settings:
       shown: Schützt vor versehentlichem Umschalten
       fixedOn: Finger-Zeichnen ist als aktiviert festgelegt
       fixedOff: Finger-Zeichnen ist als deaktiviert festgelegt
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Deaktivieren Sie das Zeichnen mit dem Finger, wenn ein Stift erkannt wird
     editorPromptRename: Notizen können später immer noch umbenannt werden
     printPageIndicators: Seitennummerierung bei Export anzeigen
     autosave: Nach kurzer Zeit Auto-Speichern oder nie
@@ -128,10 +129,6 @@ settings:
     autoStraightenLines: Lange Linien selbst ohne Form-Stift begradigen
     simplifiedHomeLayout: Legt eine feste Höhe für jede Notizvorschau fest
     shouldAlwaysAlertForUpdates: Über neue Updates informiert bleiben
-    pencilSoundSetting: 
-      off: Kein Geräusch
-      onButNotInSilentMode: Aktiv (außer im Stummmodus)
-      onAlways: Aktiv (sogar im Stummmodus)
     sentry: 
       active: Aktiv
       inactive: Inaktiv
@@ -251,7 +248,6 @@ appInfo:
   licenseNotice: |-
     Saber  Copyright © 2022-$buildYear  Adil Hanney
     Dieses Programm kommt ohne jegliche Gewährleistung. Dies ist freie Software und du bist herzlich eingeladen, diese unter bestimmten Bedingungen weiterzuverteilen.
-  dirty: TESTVERSION
   debug: DEBUG
   sponsorButton: Hier tippen, um mich zu unterstützen oder mehr Speicherplatz zu kaufen
   licenseButton: Hier tippen, um weitere Lizenzinformationen anzuzeigen

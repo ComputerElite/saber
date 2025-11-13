@@ -10,7 +10,6 @@ import 'package:saber/components/navbar/responsive_navbar.dart';
 import 'package:saber/components/settings/nextcloud_profile.dart';
 import 'package:saber/data/codecs/base64_codec.dart';
 import 'package:saber/data/codecs/quota_codec.dart';
-import 'package:saber/data/editor/pencil_sound.dart';
 import 'package:saber/data/flavor_config.dart';
 import 'package:saber/data/sentry/sentry_consent.dart';
 import 'package:saber/data/tools/_tool.dart';
@@ -171,12 +170,6 @@ class Stows {
     true,
     volatile: !_isOnMainIsolate,
   );
-  final pencilSound = PlainStow(
-    'pencilSound',
-    PencilSoundSetting.off,
-    codec: PencilSoundSetting.codec,
-    volatile: !_isOnMainIsolate,
-  );
 
   final simplifiedHomeLayout = PlainStow(
     'simplifiedHomeLayout',
@@ -209,6 +202,14 @@ class Stows {
   final hideFingerDrawingToggle = PlainStow(
     'hideFingerDrawingToggle',
     false,
+    volatile: !_isOnMainIsolate,
+  );
+
+  /// People don't know to turn off finger drawing when using a stylus,
+  /// so we can do it automatically.
+  final autoDisableFingerDrawingWhenStylusDetected = PlainStow(
+    'autoDisableFingerDrawingWhenStylusDetected',
+    true,
     volatile: !_isOnMainIsolate,
   );
 
@@ -381,7 +382,7 @@ class Stows {
   );
   final shouldAlwaysAlertForUpdates = PlainStow(
     'shouldAlwaysAlertForUpdates',
-    (kDebugMode || FlavorConfig.dirty) ? true : false,
+    kDebugMode ? true : false,
     volatile: !_isOnMainIsolate,
   );
 
@@ -394,7 +395,8 @@ class Stows {
     volatile: !_isOnMainIsolate,
   );
 
-  static bool get isDesktop =>
+  @pragma('vm:platform-const')
+  static final isDesktop =
       Platform.isLinux || Platform.isWindows || Platform.isMacOS;
 }
 

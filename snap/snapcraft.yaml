@@ -13,14 +13,12 @@ platforms:
 parts:
   saber:
     source: https://github.com/saber-notes/saber.git
-    source-tag: 'v1.27.1'
+    source-tag: 'v1.28.1'
     plugin: flutter
     build-packages:
       - execstack
       - libsecret-1-dev
       - libjsoncpp-dev
-      - libgstreamer1.0-dev
-      - libgstreamer-plugins-base1.0-dev
       - openjdk-21-jdk
     build-snaps:
       - cmake

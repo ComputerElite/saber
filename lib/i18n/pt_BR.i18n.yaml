@@ -63,7 +63,6 @@ home:
   noPreviewAvailable(OUTDATED): Nenhuma visualização disponível
 sentry: 
   consent: 
-    title(OUTDATED): Ajudar a melhorar o Saber?
     description: 
       question(OUTDATED): Você gostaria de relatar automaticamente erros inesperados? Isso me ajuda a identificar e corrigir problemas mais rapidamente.
       scope(OUTDATED): Os relatórios podem conter informações sobre o erro e seu dispositivo. Fiz todos os esforços para filtrar dados pessoais, mas alguns podem permanecer.
@@ -74,6 +73,7 @@ sentry:
       no(OUTDATED): Não
       yes(OUTDATED): Sim
       later(OUTDATED): Pergunte -me mais tarde
+    title(OUTDATED): Ajudar a melhorar o Saber?
 settings: 
   prefCategories: 
     general: Geral
@@ -99,13 +99,13 @@ settings:
     autoClearWhiteboardOnExit: Limpar o quadro branco depois de sair do aplicativo
     disableEraserAfterUse: Desativar automaticamente a borracha
     hideFingerDrawingToggle: Ocultar o botão de desenho com o dedo
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Desativar automaticamente o desenho do dedo
     editorPromptRename: Solicitar que você renomeie novas notas
     recentColorsDontSavePresets: Não salvar as cores predefinidas nas cores recentes
     printPageIndicators: Imprimir os indicadores de página
     sentry(OUTDATED): Relatório de erro
     autosave(OUTDATED): Save automática
     simplifiedHomeLayout(OUTDATED): Layout simplificado da casa
-    pencilSoundSetting(OUTDATED): Efeito sonoro de lápis
     customDataDir(OUTDATED): Diretório de dados personalizado
     autoStraightenLines(OUTDATED): Endireitar linhas automaticamente
     shapeRecognitionDelay(OUTDATED): Atraso no reconhecimento de forma
@@ -121,13 +121,10 @@ settings:
       shown: Evitar alternância acidental
       fixedOn: O desenho com o dedo está ativado
       fixedOff: O desenho com o dedo está desativado
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Desative o desenho com o dedo quando uma caneta for detectada
     editorPromptRename: Você pode sempre renomear as notas mais tarde
     printPageIndicators: Mostrar os indicadores de página nas exportações
     shouldAlwaysAlertForUpdates: Conte-me sobre atualizações assim que elas estiverem disponíveis
-    pencilSoundSetting: 
-      off(OUTDATED): Sem som
-      onButNotInSilentMode(OUTDATED): Ativado (a menos que esteja no modo silencioso)
-      onAlways(OUTDATED): Ativado (mesmo no modo silencioso)
     sentry: 
       active(OUTDATED): Ativo
       inactive(OUTDATED): Inativo
@@ -249,7 +246,6 @@ appInfo:
   licenseNotice: |-
     Saber  Copyright © 2022-$buildYear  Adil Hanney
     Este programa vem sem absolutamente nenhuma garantia. Este é um software livre e você pode redistribuí-lo sob certas condições.
-  dirty: DIRTY
   debug: DEBUG
   sponsorButton: Toque aqui para me patrocinar ou comprar mais armazenamento
   licenseButton: Toque aqui para ver mais informações de licença

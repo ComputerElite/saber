@@ -24,6 +24,7 @@ import 'package:saber/components/canvas/save_indicator.dart';
 import 'package:saber/components/theming/adaptive_alert_dialog.dart';
 import 'package:saber/components/theming/adaptive_icon.dart';
 import 'package:saber/components/theming/dynamic_material_app.dart';
+import 'package:saber/components/theming/saber_theme.dart';
 import 'package:saber/components/toolbar/color_bar.dart';
 import 'package:saber/components/toolbar/editor_bottom_sheet.dart';
 import 'package:saber/components/toolbar/editor_page_manager.dart';
@@ -33,7 +34,6 @@ import 'package:saber/data/editor/editor_core_info.dart';
 import 'package:saber/data/editor/editor_exporter.dart';
 import 'package:saber/data/editor/editor_history.dart';
 import 'package:saber/data/editor/page.dart';
-import 'package:saber/data/editor/pencil_sound.dart';
 import 'package:saber/data/extensions/change_notifier_extensions.dart';
 import 'package:saber/data/extensions/matrix4_extensions.dart';
 import 'package:saber/data/file_manager/file_manager.dart';
@@ -557,10 +557,7 @@ class EditorState extends State<Editor> {
     final position = page.renderBox!.globalToLocal(details.focalPoint);
     history.canRedo = false;
 
-    final bool shouldPlayPencilSound;
-
     if (currentTool is Pen) {
-      shouldPlayPencilSound = true;
       (currentTool as Pen).onDragStart(
         position,
         page,
@@ -568,7 +565,6 @@ class EditorState extends State<Editor> {
         currentPressure,
       );
     } else if (currentTool is Eraser) {
-      shouldPlayPencilSound = true;
       for (final stroke in (currentTool as Eraser).checkForOverlappingStrokes(
         position,
         page.strokes,
@@ -577,7 +573,6 @@ class EditorState extends State<Editor> {
       }
       removeExcessPages();
     } else if (currentTool is Select) {
-      shouldPlayPencilSound = false;
       final select = currentTool as Select;
       if (select.doneSelecting &&
           select.selectResult.pageIndex == dragPageIndex! &&
@@ -588,15 +583,8 @@ class EditorState extends State<Editor> {
         history.canRedo = true; // selection doesn't affect history
       }
     } else if (currentTool is LaserPointer) {
-      shouldPlayPencilSound = true;
       (currentTool as LaserPointer).onDragStart(position, page, dragPageIndex!);
-    } else {
-      shouldPlayPencilSound = false;
     }
-
-    if (stows.pencilSound.value != PencilSoundSetting.off &&
-        shouldPlayPencilSound)
-      PencilSound.resume();
 
     previousPosition = position;
     moveOffset = Offset.zero;
@@ -613,8 +601,6 @@ class EditorState extends State<Editor> {
     final page = coreInfo.pages[dragPageIndex!];
     final position = page.renderBox!.globalToLocal(details.focalPoint);
     final offset = position - previousPosition;
-
-    PencilSound.update(offset.distance);
 
     if (currentTool is Pen) {
       (currentTool as Pen).onDragUpdate(position, currentPressure);
@@ -653,7 +639,6 @@ class EditorState extends State<Editor> {
   void onDrawEnd(ScaleEndDetails details) {
     final page = coreInfo.pages[dragPageIndex!];
     bool shouldSave = true;
-    PencilSound.pause();
     setState(() {
       if (currentTool is Pen) {
         final newStroke = (currentTool as Pen).onDragEnd();
@@ -890,6 +875,8 @@ class EditorState extends State<Editor> {
   }
 
   void autosaveAfterDelay() {
+    if (history.isCurrentStateSaved) return cancelAutosaveAndMarkSaved();
+
     late final void Function() callback;
 
     void startTimer() {
@@ -914,6 +901,11 @@ class EditorState extends State<Editor> {
     startTimer();
   }
 
+  void cancelAutosaveAndMarkSaved() {
+    _delayedSaveTimer?.cancel();
+    savingState.value = SavingState.saved;
+  }
+
   Future<void> saveToFile() async {
     if (coreInfo.readOnly) return;
 
@@ -930,6 +922,7 @@ class EditorState extends State<Editor> {
         _delayedSaveTimer?.cancel();
         savingState.value = SavingState.saving;
     }
+    if (history.isCurrentStateSaved) return cancelAutosaveAndMarkSaved();
 
     await _renameFileNow();
 
@@ -960,6 +953,7 @@ class EditorState extends State<Editor> {
         FileManager.removeUnusedAssets(filePath, numAssets: assets.length),
       ]);
       savingState.value = SavingState.saved;
+      history.markLastChangeAsSaved();
     } catch (e) {
       log.severe('Failed to save file: $e', e);
       savingState.value = SavingState.waitingToSave;
@@ -1363,8 +1357,6 @@ class EditorState extends State<Editor> {
   Widget build(BuildContext context) {
     final colorScheme = ColorScheme.of(context);
     final platform = Theme.of(context).platform;
-    final cupertino =
-        platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
     final isToolbarVertical =
         stows.editorToolbarAlignment.value == AxisDirection.left ||
         stows.editorToolbarAlignment.value == AxisDirection.right;
@@ -1594,11 +1586,8 @@ class EditorState extends State<Editor> {
           redo: redo,
           isRedoPossible: history.canRedo,
           toggleFingerDrawing: () {
-            setState(() {
-              stows.editorFingerDrawing.value =
-                  !stows.editorFingerDrawing.value;
-              lastSeenPointerCount = 0;
-            });
+            stows.editorFingerDrawing.value = !stows.editorFingerDrawing.value;
+            lastSeenPointerCount = 0;
           },
           pickPhoto: _pickPhotos,
           paste: paste,
@@ -1745,7 +1734,7 @@ class EditorState extends State<Editor> {
             (DynamicMaterialApp.isFullscreen &&
                 !stows.editorToolbarShowInFullscreen.value)
             ? FloatingActionButton(
-                shape: cupertino ? const CircleBorder() : null,
+                shape: platform.isCupertino ? const CircleBorder() : null,
                 onPressed: () {
                   DynamicMaterialApp.setFullscreen(false, updateSystem: true);
                 },
@@ -2083,14 +2072,7 @@ class EditorState extends State<Editor> {
 
   @override
   void dispose() {
-    (() async {
-      if (_renameTimer?.isActive ?? false) {
-        _renameTimer!.cancel();
-        await _renameFileNow();
-        filenameTextEditingController.dispose();
-      }
-      await saveToFile();
-    })();
+    unawaited(_cleanUpAsync());
 
     DynamicMaterialApp.removeFullscreenListener(_setState);
 
@@ -2100,8 +2082,6 @@ class EditorState extends State<Editor> {
 
     _removeKeybindings();
 
-    coreInfo.dispose();
-
     // manually save pen properties since the listeners don't fire if a property is changed
     stows.lastFountainPenOptions.notifyListeners();
     stows.lastBallpointPenOptions.notifyListeners();
@@ -2110,5 +2090,18 @@ class EditorState extends State<Editor> {
     stows.lastShapePenOptions.notifyListeners();
 
     super.dispose();
+  }
+
+  Future<void> _cleanUpAsync() async {
+    try {
+      if (_renameTimer?.isActive ?? false) {
+        _renameTimer!.cancel();
+        await _renameFileNow();
+        filenameTextEditingController.dispose();
+      }
+      await saveToFile();
+    } finally {
+      coreInfo.dispose();
+    }
   }
 }

@@ -187,7 +187,6 @@ class _TranslationsAppInfoZhHantTw extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber  版權所有 © 2022-${buildYear}  Adil Hanney\nThis program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions.';
-	@override String get dirty => 'DIRTY';
 	@override String get debug => 'DEBUG';
 	@override String get sponsorButton => '點擊此處贊助我或購買更多儲存空間';
 	@override String get licenseButton => '點擊此處查看更多許可證資訊';
@@ -411,8 +410,8 @@ class _TranslationsSettingsPrefLabelsZhHantTw extends TranslationsSettingsPrefLa
 	@override String get autoStraightenLines => '自動拉直線條';
 	@override String get simplifiedHomeLayout => '簡化首頁佈局';
 	@override String get customDataDir => '自訂 Saber 資料夾';
-	@override String get pencilSoundSetting => '筆的音效';
 	@override String get sentry => '錯誤報告';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => '自動禁用手指繪圖';
 }
 
 // Path: settings.prefDescriptions
@@ -429,6 +428,7 @@ class _TranslationsSettingsPrefDescriptionsZhHantTw extends TranslationsSettings
 	@override String get disableEraserAfterUse => '使用橡皮擦後自動切換回筆';
 	@override String get maxImageSize => '大於此大小的圖片將被壓縮';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingZhHantTw hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingZhHantTw._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => '檢測到手寫筆時關閉手指繪圖';
 	@override String get editorPromptRename => '您以後隨時可以重新命名筆記';
 	@override String get printPageIndicators => '在匯出中顯示頁碼';
 	@override String get autosave => '在短暫延遲後自動儲存，或永不儲存';
@@ -436,7 +436,6 @@ class _TranslationsSettingsPrefDescriptionsZhHantTw extends TranslationsSettings
 	@override String get autoStraightenLines => '無需使用形狀筆即可拉直線條';
 	@override String get simplifiedHomeLayout => '為每個筆記預覽設定固定高度';
 	@override String get shouldAlwaysAlertForUpdates => '一旦有更新請告訴我';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingZhHantTw pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingZhHantTw._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryZhHantTw sentry = _TranslationsSettingsPrefDescriptionsSentryZhHantTw._(_root);
 }
 
@@ -827,18 +826,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingZhHantTw extends Tra
 	@override String get shown => '防止意外切換';
 	@override String get fixedOn => '手指繪圖固定為啟用';
 	@override String get fixedOff => '手指繪圖固定為禁用';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingZhHantTw extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingZhHantTw._(TranslationsZhHantTw root) : this._root = root, super.internal(root);
-
-	final TranslationsZhHantTw _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => '關閉';
-	@override String get onButNotInSilentMode => '已啟用（除非處於靜音模式）';
-	@override String get onAlways => '已啟用（即使在靜音模式下）';
 }
 
 // Path: settings.prefDescriptions.sentry

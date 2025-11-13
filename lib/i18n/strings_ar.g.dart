@@ -187,7 +187,6 @@ class _TranslationsAppInfoAr extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber حقوق نشر © 2022-${buildYear}  Adil Hanney\nهذا البرنامج لا يأتي مع أي ضمان على الإطلاق. هذا برنامج مجاني، ونرحب بإعادة توزيعه في ظل ظروف معينة.';
-	@override String get dirty => 'قذر';
 	@override String get debug => 'تصحيح أخطاء';
 	@override String get sponsorButton => 'انقر هنا لتدعمني أو شراء المزيد من مساحة التخزين';
 	@override String get licenseButton => 'انقر هنا لعرض المزيد من معلومات الترخيص';
@@ -402,6 +401,7 @@ class _TranslationsSettingsPrefLabelsAr extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'امسح السبورة بعد الخروج من التطبيق';
 	@override String get disableEraserAfterUse => 'تعطيل الممحاة تلقائيًا بعد الاستخدام';
 	@override String get hideFingerDrawingToggle => 'إخفاء زر الرسم بالإصبع';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'التعطيل التلقائي لرسم الإصبع';
 	@override String get editorPromptRename => 'مطالبتك بإعادة تسمية الملاحظات الجديدة';
 	@override String get recentColorsDontSavePresets => 'لا تحفظ الألوان المعينة مسبقًا كألوان حديثة';
 	@override String get recentColorsLength => 'كم عدد الألوان الحديثة التي يجب تخزينها';
@@ -410,7 +410,6 @@ class _TranslationsSettingsPrefLabelsAr extends TranslationsSettingsPrefLabelsEn
 	@override String get autoStraightenLines => 'استقامة الخطوط تلقائيًا';
 	@override String get simplifiedHomeLayout => 'تخطيط الصفحة الرئيسية المبسط';
 	@override String get customDataDir => 'مخصص Saber مجلد';
-	@override String get pencilSoundSetting => 'تأثير صوت القلم';
 	@override String get sentry => 'الإبلاغ خطأ';
 	@override String get autosave => 'تلقائي';
 }
@@ -429,13 +428,13 @@ class _TranslationsSettingsPrefDescriptionsAr extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'التبديل تلقائيًا إلى القلم بعد استخدام الممحاة';
 	@override String get maxImageSize => 'سيتم ضغط الصور الأكبر من هذا';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingAr hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingAr._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'قم بإيقاف تشغيل الرسم بالإصبع عند اكتشاف القلم';
 	@override String get editorPromptRename => 'يمكنك دائمًا إعادة تسمية الملاحظات لاحقًا';
 	@override String get printPageIndicators => 'تظهر مؤشرات الصفحة في الصادرات';
 	@override String get shapeRecognitionDelay => 'عدد مرات تحديث معاينة الشكل';
 	@override String get autoStraightenLines => 'استقامة الخطوط الطويلة بدون الحاجة لاستخدام قلم الشكل';
 	@override String get simplifiedHomeLayout => 'تعيين ارتفاع ثابت لكل معاينة ملاحظة';
 	@override String get shouldAlwaysAlertForUpdates => 'أبلغني عن التحديثات بمجرد توفرها';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingAr pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingAr._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryAr sentry = _TranslationsSettingsPrefDescriptionsSentryAr._(_root);
 	@override String get autosave => 'تلقائي بعد تأخير قصير ، أو أبدا';
 }
@@ -827,18 +826,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingAr extends Translati
 	@override String get shown => 'يمنع التبديل العرضي';
 	@override String get fixedOn => 'تم تفعيل الرسم بالإصبع';
 	@override String get fixedOff => 'تم تعطيل الرسم بالإصبع';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingAr extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingAr._(TranslationsAr root) : this._root = root, super.internal(root);
-
-	final TranslationsAr _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => 'بدون صوت';
-	@override String get onButNotInSilentMode => 'مفعل (ما لم يكن في وضع الصامت)';
-	@override String get onAlways => 'مفعل (حتى في وضع الصامت)';
 }
 
 // Path: settings.prefDescriptions.sentry

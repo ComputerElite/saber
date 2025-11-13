@@ -187,7 +187,6 @@ class _TranslationsAppInfoEo extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Kopirajto de Saber © 2022-${buildYear} Adil Hanney\nĈi tiu programo havas neniun garantion. Ĉi tio estas senpaga programaro, kaj vi bonvenas redistribui ĝin kun certaj kondiĉoj.';
-	@override String get dirty => 'MALPURA';
 	@override String get debug => 'SENERARIGADO';
 	@override String get sponsorButton => 'Frapu ĉi tie por sponsori min aŭ aĉeti pli da memorospaco';
 	@override String get licenseButton => 'Frapu ĉi tie por vidi pli da informoj pri la licenco';
@@ -402,6 +401,7 @@ class _TranslationsSettingsPrefLabelsEo extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'Malplenigu la tablon post foriro';
 	@override String get disableEraserAfterUse => 'Malaktivigu la forviŝilon';
 	@override String get hideFingerDrawingToggle => 'Kaŝu la fingrodesegnan ŝaltilon';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Aŭtomate malŝalti fingrodesegnadon';
 	@override String get editorPromptRename => 'Petu vin alinomi novajn notojn';
 	@override String get recentColorsDontSavePresets => 'Ne konservu kolorŝablonon en la lastuzitaj koloroj';
 	@override String get recentColorsLength => 'Nombro da lastuzitaj koloroj';
@@ -411,7 +411,6 @@ class _TranslationsSettingsPrefLabelsEo extends TranslationsSettingsPrefLabelsEn
 	@override String get autoStraightenLines => 'Aŭtomate rektigu liniojn';
 	@override String get simplifiedHomeLayout => 'Simpligita ĉefekranaranĝo';
 	@override String get customDataDir => 'Kutima Saber-dosierujo';
-	@override String get pencilSoundSetting => 'Krajona sonefekto';
 	@override String get sentry => 'Erarraportado';
 }
 
@@ -429,6 +428,7 @@ class _TranslationsSettingsPrefDescriptionsEo extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'Aŭtomate ŝanĝas reen al la plumo post uzi la forviŝilon';
 	@override String get maxImageSize => 'Pli grandaj bildoj densiĝos';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingEo hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingEo._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Malŝaltu fingrodesegnadon kiam grifelo estas detektita';
 	@override String get editorPromptRename => 'Vi ĉiam povas renomi notojn poste';
 	@override String get printPageIndicators => 'Montru paĝnumeradon post eksporto';
 	@override String get autosave => 'Aŭtomate konservas post iom da tempo aŭ neniam';
@@ -436,7 +436,6 @@ class _TranslationsSettingsPrefDescriptionsEo extends TranslationsSettingsPrefDe
 	@override String get autoStraightenLines => 'Rektigas longajn liniojn sen uzado de la formskribilon';
 	@override String get simplifiedHomeLayout => 'Fiksas la alton por ĉiu notantaŭrigardo';
 	@override String get shouldAlwaysAlertForUpdates => 'Informu min pri ĝisdatigoj tuj kiam ili disponebliĝos';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingEo pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingEo._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryEo sentry = _TranslationsSettingsPrefDescriptionsSentryEo._(_root);
 }
 
@@ -827,18 +826,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingEo extends Translati
 	@override String get shown => 'Malhelpas hazardan ŝaltadon';
 	@override String get fixedOn => 'Fingrodesegnado estas fiksita kiel ebligita';
 	@override String get fixedOff => 'Fingrodesegnado estas fiksita kiel malebligita';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingEo extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingEo._(TranslationsEo root) : this._root = root, super.internal(root);
-
-	final TranslationsEo _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => 'Silentigita';
-	@override String get onButNotInSilentMode => 'Ebligita (krom en silentoreĝimo)';
-	@override String get onAlways => 'Ebligita (eĉ en silentoreĝimo)';
 }
 
 // Path: settings.prefDescriptions.sentry

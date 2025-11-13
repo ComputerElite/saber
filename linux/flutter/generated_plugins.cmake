@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audioplayers_linux
   desktop_webview_window
   dynamic_color
   file_selector_linux
@@ -23,7 +22,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
   jni
-  pdfrx
+  pdfium_flutter
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

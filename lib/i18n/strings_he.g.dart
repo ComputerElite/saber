@@ -185,7 +185,6 @@ class _TranslationsAppInfoHe extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber  Copyright © 2022-${buildYear}  Adil Hanney\nתוכנית זו מגיעה ללא כל אחריות. זוהי תוכנה חופשית ואתה מוזמן להפיץ אותו מחדש בתנאים מסוימים.';
-	@override String get dirty => 'מלוכלך';
 	@override String get debug => 'דִּיבָּג';
 	@override String get sponsorButton => 'הקש כאן כדי לתת לי חסות או לקנות שטח אחסון נוסף';
 	@override String get licenseButton => 'הקש כאן כדי להציג פרטי רישיון נוספים';
@@ -400,13 +399,13 @@ class _TranslationsSettingsPrefLabelsHe extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'נקה אוטומטית את הלוח הלבן';
 	@override String get disableEraserAfterUse => 'השבת אוטומטית את המחק';
 	@override String get hideFingerDrawingToggle => 'הסתר את מתג ציור האצבע';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'השבתה אוטומטית של ציור אצבע';
 	@override String get editorPromptRename => 'מבקש ממך לשנות את שם הערות חדשות';
 	@override String get recentColorsDontSavePresets => 'אל תשמור צבעים מוגדרים מראש בצבעים אחרונים';
 	@override String get printPageIndicators => 'הדפסת עמודים מחוונים';
 	@override String get sentry => 'דיווח שגיאות';
 	@override String get autosave => 'שמור אוטומטי';
 	@override String get simplifiedHomeLayout => 'פריסת בית פשוטה';
-	@override String get pencilSoundSetting => 'אפקט צליל עיפרון';
 	@override String get customDataDir => 'ספריית נתונים מותאמת אישית';
 	@override String get autoStraightenLines => 'יישור קווים אוטומטית';
 	@override String get shapeRecognitionDelay => 'עיכוב זיהוי צורות';
@@ -427,10 +426,10 @@ class _TranslationsSettingsPrefDescriptionsHe extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'מעבר אוטומטי חזרה לעט לאחר שימוש במחק';
 	@override String get maxImageSize => 'תמונות גדולות יותר יידחסו';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'כבה את ציור האצבע כאשר מזוהה חרט';
 	@override String get editorPromptRename => 'תמיד תוכל לשנות את שם הפתקים מאוחר יותר';
 	@override String get printPageIndicators => 'הצג מחווני עמודים בייצוא';
 	@override String get shouldAlwaysAlertForUpdates => 'ספר לי על עדכונים ברגע שהם יהיו זמינים';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingHe pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingHe._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryHe sentry = _TranslationsSettingsPrefDescriptionsSentryHe._(_root);
 	@override String get autosave => 'יש לשעוג אוטומטית לאחר עיכוב קצר, או לעולם';
 	@override String get simplifiedHomeLayout => 'מגדיר גובה קבוע עבור כל תצוגה מקדימה של הערה';
@@ -825,18 +824,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe extends Translati
 	@override String get shown => 'מונע החלפת מצב בשוגג';
 	@override String get fixedOn => 'ציור אצבע קבוע כזמין';
 	@override String get fixedOff => 'ציור אצבע קבוע כלא זמין';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingHe extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingHe._(TranslationsHe root) : this._root = root, super.internal(root);
-
-	final TranslationsHe _root; // ignore: unused_field
-
-	// Translations
-	@override String get onButNotInSilentMode => 'מופעל (אלא אם כן במצב שקט)';
-	@override String get off => 'אין קול';
-	@override String get onAlways => 'מופעל (אפילו במצב שקט)';
 }
 
 // Path: settings.prefDescriptions.sentry

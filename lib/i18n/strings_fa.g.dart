@@ -185,7 +185,6 @@ class _TranslationsAppInfoFa extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber  Copyright © 2022-${buildYear}  Adil Hanney\nاین برنامه کاملاً بدون گارانتی ارائه می شود. این نرم‌افزار رایگان است و شما می‌توانید تحت شرایط خاصی آن را مجدداً توزیع کنید';
-	@override String get dirty => 'دیرتی';
 	@override String get debug => 'دیباگ';
 	@override String get sponsorButton => 'برای حمایت مالی از من یا خرید فضای ذخیره بیشتر، اینجا ضربه بزنید';
 	@override String get licenseButton => 'برای مشاهده اطلاعات بیشتر مجوز اینجا را ضربه بزنید';
@@ -400,6 +399,7 @@ class _TranslationsSettingsPrefLabelsFa extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'پس از خروج از برنامه، وایت برد پاک شود';
 	@override String get disableEraserAfterUse => 'پاک کن را به صورت خودکار غیرفعال کنید';
 	@override String get hideFingerDrawingToggle => 'ضامن طراحی انگشت را پنهان کنید';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'غیرفعال کردن خودکار طراحی با انگشت';
 	@override String get editorPromptRename => 'از شما می خواهد که نام یادداشت های جدید را تغییر دهید';
 	@override String get recentColorsDontSavePresets => 'رنگ های از پیش تعیین شده را در رنگ های اخیر ذخیره نکنید';
 	@override String get recentColorsLength => 'چند رنگ اخیر برای ذخیره';
@@ -408,7 +408,6 @@ class _TranslationsSettingsPrefLabelsFa extends TranslationsSettingsPrefLabelsEn
 	@override String get sentry => 'گزارش خطا';
 	@override String get autosave => 'خودرا';
 	@override String get simplifiedHomeLayout => 'چیدمان خانه ساده شده';
-	@override String get pencilSoundSetting => 'جلوه صدای مداد';
 	@override String get customDataDir => 'دایرکتوری داده های سفارشی';
 	@override String get autoStraightenLines => 'صاف کردن خودکار خطوط';
 }
@@ -427,11 +426,11 @@ class _TranslationsSettingsPrefDescriptionsFa extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'پس از استفاده از پاک کن به صورت خودکار به خودکار برمی گردد';
 	@override String get maxImageSize => 'تصاویر بزرگتر از این فشرده خواهند شد';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingFa hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingFa._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'هنگامی که یک قلم شناسایی شد، نقاشی با انگشت را خاموش کنید';
 	@override String get editorPromptRename => 'همیشه می توانید بعداً نام یادداشت ها را تغییر دهید';
 	@override String get printPageIndicators => 'نمایش نشانگرهای صفحه در خروجی';
 	@override String get shapeRecognitionDelay => 'به روز رسانی پیشنمایش شکل چند وقت یکبار انجام شود';
 	@override String get shouldAlwaysAlertForUpdates => 'به محض اینکه به‌روزرسانی‌ها در دسترس هستند، به من بگویید';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingFa pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingFa._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryFa sentry = _TranslationsSettingsPrefDescriptionsSentryFa._(_root);
 	@override String get autosave => 'پس از یک تأخیر کوتاه ، یا هرگز';
 	@override String get simplifiedHomeLayout => 'یک ارتفاع ثابت برای پیش نمایش هر یادداشت تنظیم می کند';
@@ -825,18 +824,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingFa extends Translati
 	@override String get shown => 'از جابجایی تصادفی جلوگیری می کند';
 	@override String get fixedOn => 'طراحی با انگشت به صورت فعال ثابت شده است';
 	@override String get fixedOff => 'طراحی با انگشت به عنوان غیرفعال ثابت است';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingFa extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingFa._(TranslationsFa root) : this._root = root, super.internal(root);
-
-	final TranslationsFa _root; // ignore: unused_field
-
-	// Translations
-	@override String get onAlways => 'فعال (حتی در حالت بی صدا)';
-	@override String get off => 'بدون صدا';
-	@override String get onButNotInSilentMode => 'فعال (مگر در حالت بی صدا)';
 }
 
 // Path: settings.prefDescriptions.sentry

@@ -99,6 +99,7 @@ settings:
     autoClearWhiteboardOnExit: Effacer le tableau blanc quand vous fermez l'application
     disableEraserAfterUse: Désactiver automatiquement la gomme après usage
     hideFingerDrawingToggle: Cacher l'icône d'activation/désactivation de tracé au doigt
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Désactivation automatique du dessin au doigt
     editorPromptRename: Vous rappeler de renommer les notes
     recentColorsDontSavePresets: Ne pas conserver les couleurs pré-définies parmi les couleurs récentes
     recentColorsLength: Nombre de couleurs récentes à conserver
@@ -107,7 +108,6 @@ settings:
     sentry(OUTDATED): Rapports d'erreur
     autosave(OUTDATED): S'attacher automatiquement
     simplifiedHomeLayout(OUTDATED): Aménagement d'une maison simplifié
-    pencilSoundSetting(OUTDATED): Effet sonore de crayon
     customDataDir(OUTDATED): Répertoire de données personnalisé
     autoStraightenLines(OUTDATED): Redresser automatiquement les lignes
   prefDescriptions: 
@@ -121,14 +121,11 @@ settings:
       shown: Empêcher l'activation/désactivation accidentelle
       fixedOn: Le tracé au doigt est fixé à activé
       fixedOff: Le tracé au doigt est fixé à désactivé
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): Désactiver le dessin au doigt lorsqu'un stylet est détecté
     editorPromptRename: Vous pourrez toujours les renommer plus tard
     printPageIndicators: Montrer les numéros de pages dans les exportations
     shapeRecognitionDelay: Avec quelle fréquence mettre à jour la prévisualisation de forme
     shouldAlwaysAlertForUpdates: Me prévenir dès qu'une mise à jour est disponible
-    pencilSoundSetting: 
-      off(OUTDATED): Pas de son
-      onButNotInSilentMode(OUTDATED): Activé (sauf en mode silencieux)
-      onAlways(OUTDATED): Activé (même en mode silencieux)
     sentry: 
       active(OUTDATED): Actif
       inactive(OUTDATED): Inactif
@@ -249,7 +246,6 @@ appInfo:
   licenseNotice: |-
     Saber  Copyright © 2022-$buildYear  Adil Hanney
     Ce programme est livré sans aucune garantie. Il s'agit d'un logiciel libre, et vous pouvez le diffuser sous certaines conditions.
-  dirty: DIRTY
   debug: DEBUG
   sponsorButton: Appuyer ici pour me soutenir ou acheter ou acheter plus d'espace de stockage
   licenseButton: Appuyer ici pour plus d'information de licence

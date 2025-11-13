@@ -185,7 +185,6 @@ class _TranslationsAppInfoJa extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber  Copyright © 2022-${buildYear}  Adil Hanney\nこのプログラムには一切の保証がありません。これはフリーソフトウェアであり、一定の条件下で再配布することを歓迎します。';
-	@override String get dirty => 'DIRTY';
 	@override String get debug => 'デバッグ';
 	@override String get sponsorButton => '私のスポンサーになる、またはストレージを購入する際は、ここをタップしてください。';
 	@override String get licenseButton => 'ライセンス情報を見るには、ここをタップして';
@@ -397,13 +396,13 @@ class _TranslationsSettingsPrefLabelsJa extends TranslationsSettingsPrefLabelsEn
 	@override String get preferGreyscale => 'グレースケールを優先';
 	@override String get maxImageSize => '最大画像サイズ';
 	@override String get autoClearWhiteboardOnExit => 'アプリを終了したらホワイトボードを消去する';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => '指の描画を自動的に無効にする';
 	@override String get editorPromptRename => '新しいメモの名前を変更するよう促す';
 	@override String get recentColorsDontSavePresets => '最近使用した色をプリセットに登録しない';
 	@override String get printPageIndicators => '印刷ページのインジケーター';
 	@override String get sentry => 'エラー報告';
 	@override String get autosave => '自動保存';
 	@override String get simplifiedHomeLayout => '簡素化されたホームレイアウト';
-	@override String get pencilSoundSetting => '鉛筆の効果音';
 	@override String get customDataDir => 'カスタムデータディレクトリ';
 	@override String get autoStraightenLines => '線を自動直線化する';
 	@override String get shapeRecognitionDelay => '形状認識の遅延';
@@ -426,9 +425,9 @@ class _TranslationsSettingsPrefDescriptionsJa extends TranslationsSettingsPrefDe
 	@override String get autoClearWhiteboardOnExit => '他のデバイスと同期されます';
 	@override String get maxImageSize => 'これより大きな画像は圧縮されます';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingJa hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingJa._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'スタイラスが検出されたときに指の描画をオフにする';
 	@override String get editorPromptRename => 'メモの名前は後でいつでも変更できます';
 	@override String get printPageIndicators => 'エクスポートにページインジケーターを表示';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingJa pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingJa._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryJa sentry = _TranslationsSettingsPrefDescriptionsSentryJa._(_root);
 	@override String get autosave => '短い遅延の後、または決して自動保存しません';
 	@override String get simplifiedHomeLayout => '各ノートのプレビューに固定の高さを設定します';
@@ -825,18 +824,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingJa extends Translati
 	@override String get fixedOn => '指の描画が有効に固定される';
 	@override String get shown => '偶発的な切り替えを防止します';
 	@override String get fixedOff => '指の描画が無効に固定される';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingJa extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingJa._(TranslationsJa root) : this._root = root, super.internal(root);
-
-	final TranslationsJa _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => '無音';
-	@override String get onButNotInSilentMode => '有効 (サイレントモードでない場合)';
-	@override String get onAlways => '有効（サイレントモードでも）';
 }
 
 // Path: settings.prefDescriptions.sentry

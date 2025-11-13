@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collapsible/collapsible.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart' as p;
 import 'package:saber/components/home/export_note_button.dart';
 import 'package:saber/components/home/grid_folders.dart';
 import 'package:saber/components/home/masonry_files.dart';
@@ -12,20 +13,19 @@ import 'package:saber/components/home/no_files.dart';
 import 'package:saber/components/home/path_components.dart';
 import 'package:saber/components/home/rename_note_button.dart';
 import 'package:saber/components/home/syncing_button.dart';
+import 'package:saber/components/theming/saber_theme.dart';
 import 'package:saber/data/file_manager/file_manager.dart';
 import 'package:saber/data/routes.dart';
 import 'package:saber/i18n/strings.g.dart';
 import 'package:saber/pages/editor/editor.dart';
 
 class BrowsePage extends StatefulWidget {
-  const BrowsePage({
-    super.key,
-    String? path,
-    @visibleForTesting this.overrideChildren,
-  }) : initialPath = path;
+  const BrowsePage({super.key, String? path}) : initialPath = path;
 
   final String? initialPath;
-  final DirectoryChildren? overrideChildren;
+
+  @visibleForTesting
+  static DirectoryChildren? overrideChildren;
 
   @override
   State<BrowsePage> createState() => _BrowsePageState();
@@ -34,7 +34,6 @@ class BrowsePage extends StatefulWidget {
 class _BrowsePageState extends State<BrowsePage> {
   DirectoryChildren? children;
 
-  final List<String?> pathHistory = [];
   String? path;
 
   final ValueNotifier<List<String>> selectedFiles = ValueNotifier([]);
@@ -77,7 +76,7 @@ class _BrowsePageState extends State<BrowsePage> {
     }
 
     children =
-        widget.overrideChildren ??
+        BrowsePage.overrideChildren ??
         await FileManager.getChildrenOfDirectory(path ?? '/');
 
     if (mounted) setState(() {});
@@ -86,10 +85,10 @@ class _BrowsePageState extends State<BrowsePage> {
   void onDirectoryTap(String folder) {
     selectedFiles.value = [];
     if (folder == '..') {
-      path = pathHistory.isEmpty ? null : pathHistory.removeLast();
+      path = p.dirname(path ?? '/');
+      if (path == '/') path = null;
     } else {
-      pathHistory.add(path);
-      path = "${path ?? ''}/$folder";
+      path = p.join(path ?? '/', folder);
     }
     context.go(HomeRoutes.browseFilePath(path ?? '/'));
     findChildrenOfPath();
@@ -99,9 +98,7 @@ class _BrowsePageState extends State<BrowsePage> {
     selectedFiles.value = [];
     if (newPath == null || newPath.isEmpty || newPath == '/') {
       newPath = null;
-      pathHistory.clear();
     }
-    pathHistory.add(path);
     path = newPath;
     context.go(HomeRoutes.browseFilePath(path ?? '/'));
     findChildrenOfPath();
@@ -117,9 +114,6 @@ class _BrowsePageState extends State<BrowsePage> {
   Widget build(BuildContext context) {
     final colorScheme = ColorScheme.of(context);
     final platform = Theme.of(context).platform;
-    final cupertino =
-        platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
-
     final crossAxisCount = MediaQuery.sizeOf(context).width ~/ 300 + 1;
 
     return Scaffold(
@@ -140,10 +134,10 @@ class _BrowsePageState extends State<BrowsePage> {
                   t.home.titles.browse,
                   style: TextStyle(color: colorScheme.onSurface),
                 ),
-                centerTitle: cupertino,
-                titlePadding: EdgeInsetsDirectional.only(
-                  start: cupertino ? 0 : 16,
-                  bottom: 8,
+                centerTitle: false,
+                titlePadding: const EdgeInsetsDirectional.only(
+                  start: 16,
+                  bottom: 8, // less than other pages for path components
                 ),
               ),
               actions: const [SyncingButton()],
@@ -212,7 +206,10 @@ class _BrowsePageState extends State<BrowsePage> {
           ],
         ),
       ),
-      floatingActionButton: NewNoteButton(cupertino: cupertino, path: path),
+      floatingActionButton: NewNoteButton(
+        cupertino: platform.isCupertino,
+        path: path,
+      ),
       persistentFooterButtons: selectedFiles.value.isEmpty
           ? null
           : [

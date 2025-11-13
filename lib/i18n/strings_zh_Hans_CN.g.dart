@@ -186,8 +186,7 @@ class _TranslationsAppInfoZhHansCn extends TranslationsAppInfoEn {
 	final TranslationsZhHansCn _root; // ignore: unused_field
 
 	// Translations
-	@override String licenseNotice({required Object buildYear}) => 'Saber  版权所有 © 2022-${buildYear}  Adil Hanney\nThis program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions.';
-	@override String get dirty => 'DIRTY';
+	@override String licenseNotice({required Object buildYear}) => 'Saber  版权所有 © 2022-${buildYear}  Adil Hanney\n本程序不附带任何担保。这是自由软件，您可以在特定条件下重新分发它。';
 	@override String get debug => 'DEBUG';
 	@override String get sponsorButton => '点击此处赞助我或购买更多存储空间';
 	@override String get licenseButton => '点击此处查看更多许可证信息';
@@ -204,7 +203,7 @@ class _TranslationsUpdateZhHansCn extends TranslationsUpdateEn {
 	@override String get updateAvailable => '可用更新';
 	@override String get updateAvailableDescription => '该应用的新版本可用，具有以下变更：';
 	@override String get update => '更新';
-	@override String get downloadNotAvailableYet => '该下载在您的平台暂不可用。请稍后重试。';
+	@override String get downloadNotAvailableYet => '您的平台暂无可用的下载版本，请稍后再查看。';
 }
 
 // Path: editor
@@ -226,7 +225,7 @@ class _TranslationsEditorZhHansCn extends TranslationsEditorEn {
 	@override late final _TranslationsEditorHudZhHansCn hud = _TranslationsEditorHudZhHansCn._(_root);
 	@override String get pages => '页面';
 	@override String get untitled => '未命名';
-	@override String get needsToSaveBeforeExiting => '正在保存您的更改。。。完成后您可以安全地退出编辑器';
+	@override String get needsToSaveBeforeExiting => '正在保存您的更改... 完成后您可以安全地退出编辑器';
 }
 
 // Path: home.tabs
@@ -401,7 +400,8 @@ class _TranslationsSettingsPrefLabelsZhHansCn extends TranslationsSettingsPrefLa
 	@override String get maxImageSize => '最大图片大小';
 	@override String get autoClearWhiteboardOnExit => '离开应用后清除白板';
 	@override String get disableEraserAfterUse => '自动禁用橡皮擦';
-	@override String get hideFingerDrawingToggle => '隐藏 切换手指绘制';
+	@override String get hideFingerDrawingToggle => '隐藏 切换手指绘图';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => '自动禁用手指绘图';
 	@override String get editorPromptRename => '提示您重命名新笔记';
 	@override String get recentColorsDontSavePresets => '不在最近使用的颜色中保存预设颜色';
 	@override String get recentColorsLength => '要存储多少种最近的颜色';
@@ -411,7 +411,6 @@ class _TranslationsSettingsPrefLabelsZhHansCn extends TranslationsSettingsPrefLa
 	@override String get autoStraightenLines => '自动拉直线';
 	@override String get simplifiedHomeLayout => '简化主页布局';
 	@override String get customDataDir => '自定义 Saber 文件夹';
-	@override String get pencilSoundSetting => '铅笔音效';
 	@override String get sentry => '错误报告';
 }
 
@@ -429,6 +428,7 @@ class _TranslationsSettingsPrefDescriptionsZhHansCn extends TranslationsSettings
 	@override String get disableEraserAfterUse => '使用橡皮擦后自动切换回笔';
 	@override String get maxImageSize => '更大的图片将会被压缩';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingZhHansCn hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingZhHansCn._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => '当检测到手写笔时关闭手指绘图';
 	@override String get editorPromptRename => '您可以总是稍后重命名笔记';
 	@override String get printPageIndicators => '在导出中显示页码';
 	@override String get autosave => '短暂延迟后自动保存，或永不保存';
@@ -436,7 +436,6 @@ class _TranslationsSettingsPrefDescriptionsZhHansCn extends TranslationsSettings
 	@override String get autoStraightenLines => '拉直长线，无需使用形状笔';
 	@override String get simplifiedHomeLayout => '为每个笔记预览设置固定高度';
 	@override String get shouldAlwaysAlertForUpdates => '在更新可用时尽快告诉我';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingZhHansCn pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingZhHansCn._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryZhHansCn sentry = _TranslationsSettingsPrefDescriptionsSentryZhHansCn._(_root);
 }
 
@@ -630,7 +629,7 @@ class _TranslationsEditorToolbarZhHansCn extends TranslationsEditorToolbarEn {
 	@override String get toggleEraser => '切换橡皮擦 (Ctrl E)';
 	@override String get photo => '照片';
 	@override String get text => '文本';
-	@override String get toggleFingerDrawing => '切换手写 (Ctrl F)';
+	@override String get toggleFingerDrawing => '切换手指绘图 (Ctrl F)';
 	@override String get undo => '撤销';
 	@override String get redo => '重做';
 	@override String get export => '导出 (Ctrl Shift S)';
@@ -721,7 +720,7 @@ class _TranslationsEditorSelectionBarZhHansCn extends TranslationsEditorSelectio
 
 	// Translations
 	@override String get delete => '删除';
-	@override String get duplicate => '重复';
+	@override String get duplicate => '复制';
 }
 
 // Path: editor.menu
@@ -737,7 +736,7 @@ class _TranslationsEditorMenuZhHansCn extends TranslationsEditorMenuEn {
 	@override String get duplicatePage => '复制页面';
 	@override String get deletePage => '删除页面';
 	@override String get lineHeight => '行高';
-	@override String get lineHeightDescription => '还控制已输入的笔记的文本大小';
+	@override String get lineHeightDescription => '同时控制已输入的笔记的文本大小';
 	@override String get lineThickness => '线条粗细';
 	@override String get lineThicknessDescription => '背景线条粗细';
 	@override String get backgroundImageFit => '背景图像拟合';
@@ -825,20 +824,8 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingZhHansCn extends Tra
 
 	// Translations
 	@override String get shown => '防止意外切换';
-	@override String get fixedOn => '手指绘制固定为启用状态';
-	@override String get fixedOff => '手指绘制固定为禁用状态';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingZhHansCn extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingZhHansCn._(TranslationsZhHansCn root) : this._root = root, super.internal(root);
-
-	final TranslationsZhHansCn _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => '没有音效';
-	@override String get onButNotInSilentMode => '启用（除非在静音模式下）';
-	@override String get onAlways => '启用（即使在静音模式下）';
+	@override String get fixedOn => '手指绘图固定为启用状态';
+	@override String get fixedOff => '手指绘图固定为禁用状态';
 }
 
 // Path: settings.prefDescriptions.sentry
@@ -926,5 +913,5 @@ class _TranslationsEditorMenuBgPatternsZhHansCn extends TranslationsEditorMenuBg
 	@override String get dots => '点';
 	@override String get staffs => '五线谱';
 	@override String get tablature => '绘画';
-	@override String get cornell => 'Cornell';
+	@override String get cornell => '康奈尔';
 }

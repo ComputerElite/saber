@@ -185,7 +185,6 @@ class _TranslationsAppInfoPtBr extends TranslationsAppInfoEn {
 
 	// Translations
 	@override String licenseNotice({required Object buildYear}) => 'Saber  Copyright © 2022-${buildYear}  Adil Hanney\nEste programa vem sem absolutamente nenhuma garantia. Este é um software livre e você pode redistribuí-lo sob certas condições.';
-	@override String get dirty => 'DIRTY';
 	@override String get debug => 'DEBUG';
 	@override String get sponsorButton => 'Toque aqui para me patrocinar ou comprar mais armazenamento';
 	@override String get licenseButton => 'Toque aqui para ver mais informações de licença';
@@ -357,9 +356,9 @@ class _TranslationsSentryConsentPtBr extends TranslationsSentryConsentEn {
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Ajudar a melhorar o Saber?';
 	@override late final _TranslationsSentryConsentDescriptionPtBr description = _TranslationsSentryConsentDescriptionPtBr._(_root);
 	@override late final _TranslationsSentryConsentAnswersPtBr answers = _TranslationsSentryConsentAnswersPtBr._(_root);
+	@override String get title => 'Ajudar a melhorar o Saber?';
 }
 
 // Path: settings.prefCategories
@@ -400,13 +399,13 @@ class _TranslationsSettingsPrefLabelsPtBr extends TranslationsSettingsPrefLabels
 	@override String get autoClearWhiteboardOnExit => 'Limpar o quadro branco depois de sair do aplicativo';
 	@override String get disableEraserAfterUse => 'Desativar automaticamente a borracha';
 	@override String get hideFingerDrawingToggle => 'Ocultar o botão de desenho com o dedo';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Desativar automaticamente o desenho do dedo';
 	@override String get editorPromptRename => 'Solicitar que você renomeie novas notas';
 	@override String get recentColorsDontSavePresets => 'Não salvar as cores predefinidas nas cores recentes';
 	@override String get printPageIndicators => 'Imprimir os indicadores de página';
 	@override String get sentry => 'Relatório de erro';
 	@override String get autosave => 'Save automática';
 	@override String get simplifiedHomeLayout => 'Layout simplificado da casa';
-	@override String get pencilSoundSetting => 'Efeito sonoro de lápis';
 	@override String get customDataDir => 'Diretório de dados personalizado';
 	@override String get autoStraightenLines => 'Endireitar linhas automaticamente';
 	@override String get shapeRecognitionDelay => 'Atraso no reconhecimento de forma';
@@ -427,10 +426,10 @@ class _TranslationsSettingsPrefDescriptionsPtBr extends TranslationsSettingsPref
 	@override String get disableEraserAfterUse => 'Voltar automaticamente para a caneta depois de usar a borracha';
 	@override String get maxImageSize => 'Imagens maiores que isso serão compactadas';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingPtBr hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingPtBr._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Desative o desenho com o dedo quando uma caneta for detectada';
 	@override String get editorPromptRename => 'Você pode sempre renomear as notas mais tarde';
 	@override String get printPageIndicators => 'Mostrar os indicadores de página nas exportações';
 	@override String get shouldAlwaysAlertForUpdates => 'Conte-me sobre atualizações assim que elas estiverem disponíveis';
-	@override late final _TranslationsSettingsPrefDescriptionsPencilSoundSettingPtBr pencilSoundSetting = _TranslationsSettingsPrefDescriptionsPencilSoundSettingPtBr._(_root);
 	@override late final _TranslationsSettingsPrefDescriptionsSentryPtBr sentry = _TranslationsSettingsPrefDescriptionsSentryPtBr._(_root);
 	@override String get autosave => 'Salvamento automático após um pequeno atraso, ou nunca';
 	@override String get simplifiedHomeLayout => 'Define uma altura fixa para cada pré-visualização de nota';
@@ -825,18 +824,6 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingPtBr extends Transla
 	@override String get shown => 'Evitar alternância acidental';
 	@override String get fixedOn => 'O desenho com o dedo está ativado';
 	@override String get fixedOff => 'O desenho com o dedo está desativado';
-}
-
-// Path: settings.prefDescriptions.pencilSoundSetting
-class _TranslationsSettingsPrefDescriptionsPencilSoundSettingPtBr extends TranslationsSettingsPrefDescriptionsPencilSoundSettingEn {
-	_TranslationsSettingsPrefDescriptionsPencilSoundSettingPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
-
-	final TranslationsPtBr _root; // ignore: unused_field
-
-	// Translations
-	@override String get off => 'Sem som';
-	@override String get onButNotInSilentMode => 'Ativado (a menos que esteja no modo silencioso)';
-	@override String get onAlways => 'Ativado (mesmo no modo silencioso)';
 }
 
 // Path: settings.prefDescriptions.sentry

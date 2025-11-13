@@ -52,7 +52,15 @@ void main() {
     );
 
     setUpAll(() async {
-      final recentFiles = <String>[];
+      const demoFiles = <String>[
+        // These files will be at the top of recent files
+        '/Annotate images and diagrams.sbn2',
+        '/Golden ratio.sbn2',
+        '/Import PDFs.sbn2',
+        '/Metric Spaces Week 1.sbn2',
+        '/You can type notes too!.sbn2',
+      ];
+      final fillerFiles = <String>[];
       await Future.wait(
         Directory('test/demo_notes/').listSync().whereType<File>().map((
           file,
@@ -60,7 +68,7 @@ void main() {
           /// The file name starting with a slash
           final fileName = file.path.substring(file.path.lastIndexOf('/'));
           if (fileName.endsWith('.sbn2') || fileName.endsWith('.sbn')) {
-            recentFiles.add(fileName);
+            if (!demoFiles.contains(fileName)) fillerFiles.add(fileName);
           }
           final bytes = await file.readAsBytes();
           final dstFile = FileManager.getFile(fileName);
@@ -68,24 +76,24 @@ void main() {
           return dstFile.writeAsBytes(bytes);
         }),
       );
-      stows.recentFiles.value = recentFiles..sort();
+      stows.recentFiles.value = [...demoFiles, ...fillerFiles..sort()];
     });
 
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: const Color(0xffdae2ff),
-      surface: const Color(0xfffefbff),
-    );
-    final materialTheme = SaberTheme.createTheme(
-      colorScheme,
+    const seedColor = YaruColors.blue;
+    final materialTheme = SaberTheme.createThemeFromSeed(
+      seedColor,
+      Brightness.light,
       TargetPlatform.android,
     );
-    final cupertinoTheme = SaberTheme.createTheme(
-      colorScheme,
+    final cupertinoTheme = SaberTheme.createThemeFromSeed(
+      seedColor,
+      Brightness.light,
       TargetPlatform.iOS,
     );
-    const yaruTheme = YaruThemeData(
-      variant: YaruVariant.orange,
-      useMaterial3: true,
+    final yaruTheme = SaberTheme.createThemeFromSeed(
+      seedColor,
+      Brightness.light,
+      TargetPlatform.linux,
     );
 
     _screenshot(
@@ -123,7 +131,7 @@ void _screenshot({
   ScreenshotFrameColors? frameColors,
   required ThemeData materialTheme,
   required ThemeData cupertinoTheme,
-  required YaruThemeData yaruTheme,
+  required ThemeData yaruTheme,
   required String goldenFileName,
   required Widget child,
 }) {
@@ -148,12 +156,14 @@ void _screenshot({
           for (final locale in localeNames.keys)
             if (!localesWithFontIssues.contains(locale)) ...[
               (locale, GoldenScreenshotDevices.flathub),
+              (locale, GoldenScreenshotDevices.androidTablet),
               (locale, GoldenScreenshotDevices.androidPhone),
             ],
         }
       : {
           // limited screenshots are used to speed up tests
           ('en', GoldenScreenshotDevices.flathub),
+          ('en', GoldenScreenshotDevices.iphone),
           ('en', GoldenScreenshotDevices.androidPhone),
         };
 
@@ -171,7 +181,7 @@ void _screenshot({
 
         final widget = ScreenshotApp.withConditionalTitlebar(
           theme: switch (device.platform) {
-            TargetPlatform.linux => yaruTheme.theme,
+            TargetPlatform.linux => yaruTheme,
             TargetPlatform.iOS || TargetPlatform.macOS => cupertinoTheme,
             _ => materialTheme,
           },
@@ -195,9 +205,7 @@ void _screenshot({
           await tester.pump();
         }
 
-        await tester.precacheImagesInWidgetTree();
-        await tester.precacheTopbarImages();
-        await tester.loadFonts(overriddenFonts: saberSansSerifFontFallbacks);
+        await tester.loadAssets(overriddenFonts: saberSansSerifFontFallbacks);
         await tester.pumpAndSettle();
 
         await tester.expectScreenshot(

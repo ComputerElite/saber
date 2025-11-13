@@ -99,6 +99,7 @@ settings:
     autoClearWhiteboardOnExit: امسح السبورة بعد الخروج من التطبيق
     disableEraserAfterUse: تعطيل الممحاة تلقائيًا بعد الاستخدام
     hideFingerDrawingToggle: إخفاء زر الرسم بالإصبع
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): التعطيل التلقائي لرسم الإصبع
     editorPromptRename: مطالبتك بإعادة تسمية الملاحظات الجديدة
     recentColorsDontSavePresets: لا تحفظ الألوان المعينة مسبقًا كألوان حديثة
     recentColorsLength: كم عدد الألوان الحديثة التي يجب تخزينها
@@ -107,7 +108,6 @@ settings:
     autoStraightenLines: استقامة الخطوط تلقائيًا
     simplifiedHomeLayout: تخطيط الصفحة الرئيسية المبسط
     customDataDir: مخصص Saber مجلد
-    pencilSoundSetting: تأثير صوت القلم
     sentry(OUTDATED): الإبلاغ خطأ
     autosave(OUTDATED): تلقائي
   prefDescriptions: 
@@ -121,16 +121,13 @@ settings:
       shown: يمنع التبديل العرضي
       fixedOn: تم تفعيل الرسم بالإصبع
       fixedOff: تم تعطيل الرسم بالإصبع
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): قم بإيقاف تشغيل الرسم بالإصبع عند اكتشاف القلم
     editorPromptRename: يمكنك دائمًا إعادة تسمية الملاحظات لاحقًا
     printPageIndicators: تظهر مؤشرات الصفحة في الصادرات
     shapeRecognitionDelay: عدد مرات تحديث معاينة الشكل
     autoStraightenLines: استقامة الخطوط الطويلة بدون الحاجة لاستخدام قلم الشكل
     simplifiedHomeLayout: تعيين ارتفاع ثابت لكل معاينة ملاحظة
     shouldAlwaysAlertForUpdates: أبلغني عن التحديثات بمجرد توفرها
-    pencilSoundSetting: 
-      off: بدون صوت
-      onButNotInSilentMode: مفعل (ما لم يكن في وضع الصامت)
-      onAlways: مفعل (حتى في وضع الصامت)
     sentry: 
       active(OUTDATED): نشيط
       inactive(OUTDATED): غير نشط
@@ -250,7 +247,6 @@ appInfo:
   licenseNotice: |-
     Saber حقوق نشر © 2022-$buildYear  Adil Hanney
     هذا البرنامج لا يأتي مع أي ضمان على الإطلاق. هذا برنامج مجاني، ونرحب بإعادة توزيعه في ظل ظروف معينة.
-  dirty: قذر
   debug: تصحيح أخطاء
   sponsorButton: انقر هنا لتدعمني أو شراء المزيد من مساحة التخزين
   licenseButton: انقر هنا لعرض المزيد من معلومات الترخيص

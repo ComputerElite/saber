@@ -99,13 +99,13 @@ settings:
     autoClearWhiteboardOnExit: נקה אוטומטית את הלוח הלבן
     disableEraserAfterUse: השבת אוטומטית את המחק
     hideFingerDrawingToggle: הסתר את מתג ציור האצבע
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): השבתה אוטומטית של ציור אצבע
     editorPromptRename: מבקש ממך לשנות את שם הערות חדשות
     recentColorsDontSavePresets: אל תשמור צבעים מוגדרים מראש בצבעים אחרונים
     printPageIndicators: הדפסת עמודים מחוונים
     sentry(OUTDATED): דיווח שגיאות
     autosave(OUTDATED): שמור אוטומטי
     simplifiedHomeLayout(OUTDATED): פריסת בית פשוטה
-    pencilSoundSetting(OUTDATED): אפקט צליל עיפרון
     customDataDir(OUTDATED): ספריית נתונים מותאמת אישית
     autoStraightenLines(OUTDATED): יישור קווים אוטומטית
     shapeRecognitionDelay(OUTDATED): עיכוב זיהוי צורות
@@ -121,13 +121,10 @@ settings:
       shown: מונע החלפת מצב בשוגג
       fixedOn: ציור אצבע קבוע כזמין
       fixedOff: ציור אצבע קבוע כלא זמין
+    autoDisableFingerDrawingWhenStylusDetected(OUTDATED): כבה את ציור האצבע כאשר מזוהה חרט
     editorPromptRename: תמיד תוכל לשנות את שם הפתקים מאוחר יותר
     printPageIndicators: הצג מחווני עמודים בייצוא
     shouldAlwaysAlertForUpdates: ספר לי על עדכונים ברגע שהם יהיו זמינים
-    pencilSoundSetting: 
-      onButNotInSilentMode(OUTDATED): מופעל (אלא אם כן במצב שקט)
-      off(OUTDATED): אין קול
-      onAlways(OUTDATED): מופעל (אפילו במצב שקט)
     sentry: 
       active(OUTDATED): פָּעִיל
       inactive(OUTDATED): לֹא פָּעִיל
@@ -250,7 +247,6 @@ appInfo:
   licenseNotice: |-
     Saber  Copyright © 2022-$buildYear  Adil Hanney
     תוכנית זו מגיעה ללא כל אחריות. זוהי תוכנה חופשית ואתה מוזמן להפיץ אותו מחדש בתנאים מסוימים.
-  dirty: מלוכלך
   debug: דִּיבָּג
   sponsorButton: הקש כאן כדי לתת לי חסות או לקנות שטח אחסון נוסף
   licenseButton: הקש כאן כדי להציג פרטי רישיון נוספים
