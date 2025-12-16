@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:saber/data/is_this_a_test.dart';
 import 'package:saber/data/prefs.dart';
-import 'package:saber/data/sentry/sentry_consent.dart';
 import 'package:saber/data/sentry/sentry_filter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
@@ -17,9 +17,8 @@ export 'package:sentry_flutter/sentry_flutter.dart' show SentryWidget;
 /// - false if the foss patches were applied before this build
 /// - false on Linux (except in tests)
 /// - true otherwise
-bool get isSentryAvailable =>
-    !Platform.isLinux ||
-    (kDebugMode && Platform.environment.containsKey('FLUTTER_TEST'));
+@pragma('vm:platform-const-if', !kDebugMode)
+bool get isSentryAvailable => !Platform.isLinux || isThisATest;
 
 /// Whether Sentry was initialized when the app started.
 ///
@@ -34,9 +33,9 @@ FutureOr<void> initSentry(FutureOr<void> Function() appRunner) async {
   Stows.markAsOnMainIsolate();
   await stows.sentryConsent.waitUntilRead();
   _isSentryEnabled = switch (stows.sentryConsent.value) {
-    SentryConsent.unknown => false,
-    SentryConsent.granted => true,
-    SentryConsent.denied => false,
+    .unknown => false,
+    .granted => true,
+    .denied => false,
   };
 
   if (!isSentryAvailable || !isSentryEnabled) {

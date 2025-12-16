@@ -9,7 +9,6 @@ import 'package:path/path.dart' as p;
 import 'package:saber/components/canvas/canvas.dart';
 import 'package:saber/components/canvas/image/editor_image.dart';
 import 'package:saber/components/canvas/pencil_shader.dart';
-import 'package:saber/components/theming/font_fallbacks.dart';
 import 'package:saber/data/editor/editor_core_info.dart';
 import 'package:saber/data/editor/editor_exporter.dart';
 import 'package:saber/data/editor/page.dart';
@@ -49,6 +48,13 @@ void main() {
             .map((file) => file.path.substring('test/sbn_examples/'.length))
             .toList()
           ..add(laserSbn);
+
+    var hasGhostscript = true;
+    final gsCheck = Process.runSync('gs', ['--version'], runInShell: true);
+    if (gsCheck.exitCode != 0) {
+      debugPrint('Please install Ghostscript to test PDF exports.');
+      hasGhostscript = false;
+    }
 
     for (final sbnName in sbnExamples) {
       group(sbnName, () {
@@ -102,15 +108,15 @@ void main() {
               page: page,
             ),
           );
-          await tester.loadAssets(overriddenFonts: saberSansSerifFontFallbacks);
           await tester.pumpWidget(
             _buildCanvas(
-              brightness: Brightness.light,
+              brightness: .light,
               path: path,
               page: page,
               coreInfo: coreInfo,
             ),
           );
+          await tester.loadAssets(alsoLoadTheseFonts: ['Dekko']);
           await tester.pumpAndSettle();
 
           await expectLater(
@@ -126,15 +132,15 @@ void main() {
               page: page,
             ),
           );
-          await tester.loadAssets(overriddenFonts: saberSansSerifFontFallbacks);
           await tester.pumpWidget(
             _buildCanvas(
-              brightness: Brightness.dark,
+              brightness: .dark,
               path: path,
               page: page,
               coreInfo: coreInfo,
             ),
           );
+          await tester.loadAssets(alsoLoadTheseFonts: ['Dekko']);
           await tester.pumpAndSettle();
 
           await expectLater(
@@ -150,16 +156,16 @@ void main() {
               page: page,
             ),
           );
-          await tester.loadAssets(overriddenFonts: saberSansSerifFontFallbacks);
           await tester.pumpWidget(
             _buildCanvas(
-              brightness: Brightness.light,
+              brightness: .light,
               path: path,
               page: page,
               coreInfo: coreInfo,
               currentScale: double.minPositive, // Very zoomed out
             ),
           );
+          await tester.loadAssets(alsoLoadTheseFonts: ['Dekko']);
           await tester.pumpAndSettle();
 
           await expectLater(
@@ -169,15 +175,6 @@ void main() {
         });
 
         if (sbnName != laserSbn) {
-          var hasGhostscript = true;
-          final gsCheck = Process.runSync('gs', [
-            '--version',
-          ], runInShell: true);
-          if (gsCheck.exitCode != 0) {
-            debugPrint('Please install Ghostscript to test PDF exports.');
-            hasGhostscript = false;
-          }
-
           testGoldens('(PDF)', (tester) async {
             final context = await _getBuildContext(tester, page.size);
 
@@ -195,6 +192,7 @@ void main() {
             await tester.runAsync(
               () => Process.run('gs', [
                 '-sDEVICE=pngalpha',
+                '-sPageList=1',
                 '-o',
                 pngFile.path,
                 pdfFile.path,
@@ -278,15 +276,15 @@ void main() {
           page: importedCoreInfo.pages.first,
         ),
       );
-      await tester.loadAssets(overriddenFonts: saberSansSerifFontFallbacks);
       await tester.pumpWidget(
         _buildCanvas(
-          brightness: Brightness.light,
+          brightness: .light,
           path: importedPath,
           page: importedCoreInfo.pages.first,
           coreInfo: importedCoreInfo,
         ),
       );
+      await tester.loadAssets(alsoLoadTheseFonts: ['Dekko']);
       await tester.pumpAndSettle();
 
       await expectLater(
@@ -325,6 +323,9 @@ Future<BuildContext> _getBuildContext(
     ),
   );
 
+  await tester.loadAssets(alsoLoadTheseFonts: ['Dekko']);
+  await tester.pump();
+
   return completer.future;
 }
 
@@ -354,7 +355,7 @@ Widget _buildCanvas({
                 currentStrokeDetectedShape: null,
                 currentSelection: null,
                 setAsBackground: null,
-                currentToolIsSelect: false,
+                currentTool: LaserPointer.currentLaserPointer,
                 currentScale: currentScale,
               ),
             ),

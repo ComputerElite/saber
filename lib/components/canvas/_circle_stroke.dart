@@ -6,7 +6,6 @@ import 'package:one_dollar_unistroke_recognizer/one_dollar_unistroke_recognizer.
 import 'package:perfect_freehand/perfect_freehand.dart';
 import 'package:saber/components/canvas/_stroke.dart';
 import 'package:saber/data/editor/page.dart';
-import 'package:saber/data/tools/_tool.dart';
 
 class CircleStroke extends Stroke {
   Offset center;
@@ -54,7 +53,7 @@ class CircleStroke extends Stroke {
       options: StrokeOptions.fromJson(json),
       pageIndex: pageIndex,
       page: page,
-      toolId: ToolId.parsePenType(json['ty'], fallback: ToolId.shapePen),
+      toolId: .parsePenType(json['ty'], fallback: .shapePen),
       center: Offset(json['cx'] ?? 0, json['cy'] ?? 0),
       radius: json['r'] ?? 0,
     );
@@ -80,8 +79,8 @@ class CircleStroke extends Stroke {
   /// A list of 24/N points that form a circle
   /// with [center] and [radius].
   @override
-  List<Offset> getPolygon(int N) {
-    final numPoints = 24 ~/ N;
+  List<Offset> getPolygon({required StrokeQuality quality}) {
+    final numPoints = 24 ~/ quality.N;
     return List.generate(numPoints, (i) => i / numPoints * 2 * pi)
         .map((radians) => Offset(cos(radians), sin(radians)))
         .map((unitDir) => unitDir * radius + center)

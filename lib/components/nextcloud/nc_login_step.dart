@@ -79,7 +79,8 @@ class _NcLoginStepState extends State<NcLoginStep> {
   void initState() {
     super.initState();
     _serverUrlController.addListener(() {
-      _serverUrlValid.value = validator.url(_serverUrlController.text);
+      final url = _prependHttpsIfMissing(_serverUrlController.text);
+      _serverUrlValid.value = validator.url(url);
     });
   }
 
@@ -90,6 +91,13 @@ class _NcLoginStepState extends State<NcLoginStep> {
     super.dispose();
   }
 
+  static String _prependHttpsIfMissing(String url) {
+    if (!url.startsWith(RegExp(r'https?://'))) {
+      return 'https://$url';
+    }
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = ColorScheme.of(context);
@@ -97,7 +105,7 @@ class _NcLoginStepState extends State<NcLoginStep> {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final screenHeight = MediaQuery.sizeOf(context).height;
     return ListView(
-      padding: EdgeInsets.symmetric(
+      padding: .symmetric(
         horizontal: screenWidth > width ? (screenWidth - width) / 2 : 16,
         vertical: 16,
       ),
@@ -130,7 +138,7 @@ class _NcLoginStepState extends State<NcLoginStep> {
         ),
         const SizedBox(height: 32),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: .end,
           children: [
             SvgPicture.asset('assets/icon/icon.svg', width: 32, height: 32),
             const SizedBox(width: 16),
@@ -155,7 +163,7 @@ class _NcLoginStepState extends State<NcLoginStep> {
             linkToSignup: (text) => TextSpan(
               text: text,
               style: TextStyle(
-                color: colorScheme.brightness == Brightness.dark
+                color: colorScheme.brightness == .dark
                     ? saberColor
                     : saberColorDarkened,
               ),
@@ -168,7 +176,7 @@ class _NcLoginStepState extends State<NcLoginStep> {
         ),
         const SizedBox(height: 32),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: .end,
           children: [
             SvgPicture.asset(
               'assets/images/nextcloud-logo.svg',
@@ -186,11 +194,13 @@ class _NcLoginStepState extends State<NcLoginStep> {
         ),
         const SizedBox(height: 16),
         TextField(
+          autocorrect: false,
+          autofillHints: const [AutofillHints.url],
+          controller: _serverUrlController,
           decoration: InputDecoration(
             labelText: t.login.ncLoginStep.serverUrl,
             hintText: 'https://nc.example.com',
           ),
-          controller: _serverUrlController,
         ),
         const SizedBox(height: 4),
         ValueListenableBuilder(
@@ -199,12 +209,10 @@ class _NcLoginStepState extends State<NcLoginStep> {
             return ElevatedButton(
               onPressed: valid
                   ? () {
-                      var text = _serverUrlController.text;
-                      if (!text.startsWith(RegExp(r'https?://'))) {
-                        text = 'https://$text';
-                        _serverUrlController.text = text;
-                      }
-                      startLoginFlow(Uri.parse(text));
+                      _serverUrlController.text = _prependHttpsIfMissing(
+                        _serverUrlController.text,
+                      );
+                      startLoginFlow(Uri.parse(_serverUrlController.text));
                     }
                   : null,
               style: buttonColorStyle(ncColor),
@@ -255,7 +263,7 @@ class _LoginFlowDialogState extends State<_LoginFlowDialog> {
     return AlertDialog.adaptive(
       title: Text(t.login.ncLoginStep.loginFlow.pleaseAuthorize),
       content: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           Text(t.login.ncLoginStep.loginFlow.followPrompts),
           TextButton(

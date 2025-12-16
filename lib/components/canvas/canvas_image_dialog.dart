@@ -72,8 +72,14 @@ class _CanvasImageDialogState extends State<CanvasImageDialog> {
           final List<int> bytes;
           switch (widget.image) {
             case final PdfEditorImage image:
-              if (!image.loadedIn) await image.loadIn();
-              bytes = image.pdfBytes!;
+              bytes =
+                  image.pdfBytes ??
+                  await image.pdfFile?.readAsBytes() ??
+                  (throw ArgumentError.value(
+                    image,
+                    'image',
+                    'PDF image has no bytes or file',
+                  ));
             case final SvgEditorImage image:
               bytes = switch (image.svgLoader) {
                 (final SvgStringLoader loader) => utf8.encode(
@@ -179,15 +185,15 @@ class _CanvasImageDialogItem extends StatelessWidget {
     final colorScheme = ColorScheme.of(context);
     return Material(
       color: colorScheme.primary.withValues(alpha: 0.05),
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: .circular(8),
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          padding: const .symmetric(horizontal: 8, vertical: 16),
           child: Column(
             children: [
               Expanded(child: child),
-              Text(title, textAlign: TextAlign.center),
+              Text(title, textAlign: .center),
             ],
           ),
         ),

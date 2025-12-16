@@ -12,11 +12,11 @@ on:
 jobs:
   check-rust-version:
     name: Check if the Rust version is up to date
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Find local rust version
         run: |

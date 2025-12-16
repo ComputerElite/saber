@@ -6,17 +6,6 @@ import 'package:saber/data/prefs.dart';
 import 'package:yaru/yaru.dart';
 
 abstract class SaberTheme {
-  static TextTheme? createTextTheme(Brightness brightness) {
-    if (stows.hyperlegibleFont.value) {
-      return ThemeData(brightness: brightness).textTheme.withFont(
-        fontFamily: 'AtkinsonHyperlegibleNext',
-        fontFamilyFallback: saberSansSerifFontFallbacks,
-      );
-    } else {
-      return null;
-    }
-  }
-
   static ThemeData createTheme(
     ColorScheme colorScheme,
     TargetPlatform platform,
@@ -26,18 +15,13 @@ abstract class SaberTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      textTheme: createTextTheme(colorScheme.brightness),
+      textTheme: _Components.textTheme(colorScheme.brightness),
       platform: platform,
-      pageTransitionsTheme: _pageTransitionsTheme,
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        // ignore: deprecated_member_use
-        year2023: false,
-        stopIndicatorColor: Colors.transparent,
-      ),
-      cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
-        applyThemeToAll: true,
-      ),
-      appBarTheme: const AppBarTheme(centerTitle: false),
+      progressIndicatorTheme: _Components.progressIndicatorTheme,
+      cardColor: colorScheme.surface,
+      cardTheme: _Components.cardTheme(colorScheme),
+      cupertinoOverrideTheme: _Components.cupertinoOverrideTheme,
+      appBarTheme: _Components.appBarTheme,
     );
   }
 
@@ -52,7 +36,7 @@ abstract class SaberTheme {
     bool highContrast = false,
   }) {
     late final yaruVariant = YaruBuilder.getYaruVariant(seedColor);
-    if (platform == TargetPlatform.linux) {
+    if (platform == .linux) {
       return getThemeFromYaru(
         YaruThemeData(variant: yaruVariant),
         brightness,
@@ -63,7 +47,7 @@ abstract class SaberTheme {
 
     final ColorScheme colorScheme;
     if (platform.usesYaruColors) {
-      colorScheme = brightness == Brightness.light
+      colorScheme = brightness == .light
           ? yaruVariant.theme.colorScheme
           : yaruVariant.darkTheme.colorScheme;
     } else {
@@ -75,18 +59,6 @@ abstract class SaberTheme {
     return createTheme(colorScheme, platform);
   }
 
-  /// Synced with [PageTransitionsTheme._defaultBuilders]
-  /// but with PredictiveBackPageTransitionsBuilder for Android.
-  static const _pageTransitionsTheme = PageTransitionsTheme(
-    builders: {
-      TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
-      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-      TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-      TargetPlatform.windows: ZoomPageTransitionsBuilder(),
-      TargetPlatform.linux: ZoomPageTransitionsBuilder(),
-    },
-  );
-
   /// Adjusts certain colors in the [ColorScheme].
   static ColorScheme _adjustColorScheme(
     ColorScheme colorScheme,
@@ -94,7 +66,7 @@ abstract class SaberTheme {
   ) {
     return colorScheme.copyWith(
       surface: platform.isCupertino
-          ? (colorScheme.brightness == Brightness.light
+          ? (colorScheme.brightness == .light
                 ? CupertinoColors.white
                 : CupertinoColors.darkBackgroundGray)
           : null,
@@ -116,31 +88,75 @@ abstract class SaberTheme {
     bool highContrast,
   ) {
     final base = highContrast
-        ? (brightness == Brightness.light
-              ? yaruHighContrastLight
-              : yaruHighContrastDark)
-        : (brightness == Brightness.light
+        ? (brightness == .light ? yaruHighContrastLight : yaruHighContrastDark)
+        : (brightness == .light
               ? yaru.theme ?? yaruLight
               : yaru.darkTheme ?? yaruDark);
     return base.copyWith(
       platform: platform,
-      textTheme: createTextTheme(brightness),
+      textTheme: _Components.textTheme(brightness),
+      progressIndicatorTheme: _Components.progressIndicatorTheme,
+      cardTheme: _Components.cardTheme(base.colorScheme),
+      cupertinoOverrideTheme: _Components.cupertinoOverrideTheme,
+      // Leave Yaru's app bar theme, since it adds a border bottom.
+      // appBarTheme: _Components.appBarTheme,
     );
   }
+}
+
+abstract class _Components {
+  static TextTheme? textTheme(Brightness brightness) {
+    if (stows.hyperlegibleFont.value) {
+      return ThemeData(brightness: brightness).textTheme.withFont(
+        fontFamily: 'AtkinsonHyperlegibleNext',
+        fontFamilyFallback: saberSansSerifFontFallbacks,
+      );
+    } else {
+      return null;
+    }
+  }
+
+  static const progressIndicatorTheme = ProgressIndicatorThemeData(
+    // ignore: deprecated_member_use
+    year2023: false,
+    stopIndicatorColor: Colors.transparent,
+  );
+
+  static CardThemeData cardTheme(ColorScheme colorScheme) {
+    return CardThemeData(
+      elevation: 0,
+      color: colorScheme.surface,
+      surfaceTintColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: .circular(kYaruContainerRadius),
+        side: BorderSide(
+          color: colorScheme.onSurface.withValues(alpha: 0.12),
+          width: 2,
+        ),
+      ),
+    );
+  }
+
+  static const cupertinoOverrideTheme = NoDefaultCupertinoThemeData(
+    applyThemeToAll: true,
+  );
+
+  static const appBarTheme = AppBarTheme(centerTitle: false);
 }
 
 extension SaberThemePlatform on TargetPlatform {
   /// iOS uses Yaru's colorscheme since it looks more native than M3.
   bool get usesYaruColors => switch (this) {
-    TargetPlatform.linux => true,
-    TargetPlatform.iOS => true,
-    TargetPlatform.macOS => true,
+    .linux => true,
+    .iOS => true,
+    .macOS => true,
     _ => false,
   };
 
   bool get isCupertino => switch (this) {
-    TargetPlatform.iOS => true,
-    TargetPlatform.macOS => true,
+    .iOS => true,
+    .macOS => true,
     _ => false,
   };
 }

@@ -8,13 +8,11 @@ import 'package:saber/components/canvas/pencil_shader.dart';
 import 'package:saber/components/home/syncing_button.dart';
 import 'package:saber/components/settings/app_info.dart';
 import 'package:saber/components/settings/nextcloud_profile.dart';
-import 'package:saber/components/theming/font_fallbacks.dart';
 import 'package:saber/components/theming/saber_theme.dart';
 import 'package:saber/data/file_manager/file_manager.dart';
 import 'package:saber/data/flavor_config.dart';
 import 'package:saber/data/locales.dart';
 import 'package:saber/data/prefs.dart';
-import 'package:saber/data/sentry/sentry_consent.dart';
 import 'package:saber/data/sentry/sentry_init.dart';
 import 'package:saber/i18n/strings.g.dart';
 import 'package:saber/pages/editor/editor.dart';
@@ -42,7 +40,7 @@ void main() {
 
     stows.lastStorageQuota.value = TestUser.getQuota();
     stows.username.value = 'myusername';
-    stows.sentryConsent.value = SentryConsent.granted;
+    stows.sentryConsent.value = .granted;
 
     setUpAll(
       () => Future.wait([
@@ -82,19 +80,15 @@ void main() {
     const seedColor = YaruColors.blue;
     final materialTheme = SaberTheme.createThemeFromSeed(
       seedColor,
-      Brightness.light,
-      TargetPlatform.android,
+      .light,
+      .android,
     );
     final cupertinoTheme = SaberTheme.createThemeFromSeed(
       seedColor,
-      Brightness.light,
-      TargetPlatform.iOS,
+      .light,
+      .iOS,
     );
-    final yaruTheme = SaberTheme.createThemeFromSeed(
-      seedColor,
-      Brightness.light,
-      TargetPlatform.linux,
-    );
+    final yaruTheme = SaberTheme.createThemeFromSeed(seedColor, .light, .linux);
 
     _screenshot(
       materialTheme: materialTheme,
@@ -175,14 +169,14 @@ void _screenshot({
         await tester.runAsync(() => LocaleSettings.setLocaleRaw(localeCode));
 
         if (goldenFileName == '4_settings') {
-          NextcloudProfile.forceLoginStep = LoginStep.done;
+          NextcloudProfile.forceLoginStep = .done;
           addTearDown(() => NextcloudProfile.forceLoginStep = null);
         }
 
         final widget = ScreenshotApp.withConditionalTitlebar(
           theme: switch (device.platform) {
-            TargetPlatform.linux => yaruTheme,
-            TargetPlatform.iOS || TargetPlatform.macOS => cupertinoTheme,
+            .linux => yaruTheme,
+            .iOS || .macOS => cupertinoTheme,
             _ => materialTheme,
           },
           device: device,
@@ -205,7 +199,7 @@ void _screenshot({
           await tester.pump();
         }
 
-        await tester.loadAssets(overriddenFonts: saberSansSerifFontFallbacks);
+        await tester.loadAssets();
         await tester.pumpAndSettle();
 
         await tester.expectScreenshot(

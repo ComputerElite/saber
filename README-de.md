@@ -1,10 +1,10 @@
 # <img src="https://github.com/saber-notes/saber/raw/main/assets/icon/icon.png" width="30" height="30" alt="Logo"> Saber
 
-[<img src='https://github.com/saber-notes/saber/blob/main/assets_raw/badges/google-play-badge.png'
+[<img src='https://github.com/saber-notes/saber/blob/main/assets_raw/badges/google-play-badge.svg'
     alt='Get it on Google Play'
     height=50>][google_play]
 &nbsp;
-[<img src="https://github.com/saber-notes/saber/blob/main/assets_raw/badges/f-droid-badge.png"
+[<img src="https://github.com/saber-notes/saber/blob/main/assets_raw/badges/f-droid-badge.svg"
     alt="Get it on F-Droid"
     height=50>][f-droid]
 &nbsp;
@@ -20,7 +20,7 @@
     alt="Download on Flathub"
     height=50>][flathub]
 &nbsp;
-[<img src="https://github.com/saber-notes/saber/blob/main/assets_raw/badges/appimage-logo.png"
+[<img src="https://github.com/saber-notes/saber/blob/main/assets_raw/badges/appimage-logo.svg"
     alt="Get it as an AppImage"
     height=50>][download_appimage]
 
@@ -52,7 +52,6 @@ Entdecke einen völlig neuen Weg um mit Saber deine Gedanken zu sammeln und zu o
 [![Flathub](https://img.shields.io/flathub/downloads/com.adilhanney.saber?label=Flathub%20downloads)](https://flathub.org/apps/details/com.adilhanney.saber)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/adil192)](https://github.com/sponsors/adil192)
 [![GitHub](https://img.shields.io/github/license/saber-notes/saber)](https://github.com/saber-notes/saber/blob/main/LICENSE.md)
-[![codecov](https://codecov.io/gh/saber-notes/saber/branch/main/graph/badge.svg?token=EGQSN0THW2)](https://codecov.io/gh/saber-notes/saber)
 
 <details open>
 <summary>Klicken um Screenshots ein- oder auszublenden</summary>
@@ -117,8 +116,8 @@ an (derzeit nur in Englisch verfügbar).
 [google_play]: https://play.google.com/store/apps/details?id=com.adilhanney.saber
 [snap]: https://snapcraft.io/saber
 [app_store]: https://apps.apple.com/us/app/saber/id1671523739
-[download_windows]: https://github.com/saber-notes/saber/releases/download/v1.28.1/SaberInstaller_v1.28.1.exe
-[download_appimage]: https://github.com/saber-notes/saber/releases/download/v1.28.1/Saber-1.28.1-x86_64.AppImage
+[download_windows]: https://github.com/saber-notes/saber/releases/download/v1.29.1/SaberInstaller_v1.29.1.exe
+[download_appimage]: https://github.com/saber-notes/saber/releases/download/v1.29.1/Saber-1.29.1-x86_64.AppImage
 
 [nextcloud]: https://nc.saber.adil.hanney.org/
 

@@ -35,8 +35,10 @@ class Stroke {
   final StrokeOptions options;
 
   List<Offset>? _lowQualityPolygon, _highQualityPolygon;
-  List<Offset> get lowQualityPolygon => _lowQualityPolygon ??= getPolygon(4);
-  List<Offset> get highQualityPolygon => _highQualityPolygon ??= getPolygon(1);
+  List<Offset> get lowQualityPolygon =>
+      _lowQualityPolygon ??= getPolygon(quality: .low);
+  List<Offset> get highQualityPolygon =>
+      _highQualityPolygon ??= getPolygon(quality: .high);
 
   Path? _lowQualityPath, _highQualityPath;
   Path get lowQualityPath =>
@@ -44,7 +46,7 @@ class Stroke {
   Path get highQualityPath => _highQualityPath ??= getPath(highQualityPolygon);
 
   void shift(Offset offset) {
-    if (offset == Offset.zero) return;
+    if (offset == .zero) return;
 
     points.shift(offset);
     _lowQualityPolygon?.shift(offset);
@@ -97,8 +99,16 @@ class Stroke {
         log.severe('Unknown shape: ${json['shape']}');
     }
 
+    final ToolId toolId = .parsePenType(json['ty'], fallback: .fountainPen);
+
     final options = StrokeOptions.fromJson(json);
     final pressureEnabled = json['pe'] ?? defaultPressureEnabled;
+    if (toolId == .shapePen) {
+      // Set smoothing and streamline to 0 for ShapePen
+      // to mitigate https://github.com/saber-notes/saber/issues/1587
+      options.smoothing = 0;
+      options.streamline = 0;
+    }
 
     final Color color;
     switch (json['c']) {
@@ -137,7 +147,7 @@ class Stroke {
       options: options,
       pageIndex: pageIndex,
       page: page,
-      toolId: ToolId.parsePenType(json['ty'], fallback: ToolId.fountainPen),
+      toolId: toolId,
     )..points.addAll(points);
   }
   Map<String, dynamic> toJson() {
@@ -210,16 +220,23 @@ class Stroke {
   }
 
   @protected
-  List<Offset> getPolygon(int N) {
+  List<Offset> getPolygon({required StrokeQuality quality}) {
     if (!pressureEnabled) {
       options.simulatePressure = false;
     }
     final rememberSimulatedPressure =
-        N <= 1 && options.simulatePressure && options.isComplete;
+        quality == .high && options.simulatePressure && options.isComplete;
 
     final polygon = getStroke(
-      skipPoints(points, N),
-      options: options,
+      skipPoints(points, quality.N),
+      options: switch (quality) {
+        .low => options.copyWith(
+          simulatePressure: false,
+          smoothing: 0,
+          streamline: 0,
+        ),
+        .high => options,
+      },
       rememberSimulatedPressure: rememberSimulatedPressure,
     );
 
@@ -392,4 +409,14 @@ class Stroke {
     page: page,
     toolId: toolId,
   )..points.addAll(points);
+}
+
+enum StrokeQuality {
+  low(4),
+  high(1);
+
+  const StrokeQuality(this.N);
+
+  /// We use every Nth point for this quality level.
+  final int N;
 }

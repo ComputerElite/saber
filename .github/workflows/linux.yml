@@ -35,7 +35,7 @@ jobs:
     name: Build Linux (${{ matrix.arch.target-platform }})
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: "./.github/shared_workflows/install_apt_dependencies"
 
@@ -49,7 +49,6 @@ jobs:
             macos/Flutter/ephemeral/
             windows/flutter/ephemeral/
             .flutter-plugins-dependencies
-            pubspec.lock
           key: ${{ runner.OS }}-${{ matrix.arch.cache-name }}-${{ hashFiles('**/pubspec.lock') }}-${{ hashFiles('**/*.dart') }}
           restore-keys: |
             ${{ runner.OS }}-${{ matrix.arch.cache-name }}-
@@ -117,7 +116,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install AppImage dependencies
         run: |
@@ -179,7 +178,7 @@ jobs:
       options: --privileged
     steps:
       - name: Checkout flathub repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: flathub/com.adilhanney.saber
           submodules: recursive

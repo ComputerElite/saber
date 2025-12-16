@@ -1,17 +1,15 @@
 import 'dart:math';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart' hide TextStyle;
+import 'package:flutter/material.dart';
 import 'package:one_dollar_unistroke_recognizer/one_dollar_unistroke_recognizer.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:perfect_freehand/perfect_freehand.dart';
 import 'package:saber/components/canvas/_circle_stroke.dart';
 import 'package:saber/components/canvas/_rectangle_stroke.dart';
 import 'package:saber/components/canvas/_stroke.dart';
-import 'package:saber/components/theming/font_fallbacks.dart';
 import 'package:saber/data/editor/page.dart';
 import 'package:saber/data/extensions/color_extensions.dart';
-import 'package:saber/data/tools/_tool.dart';
 import 'package:saber/data/tools/highlighter.dart';
 import 'package:saber/data/tools/laser_pointer.dart';
 import 'package:saber/data/tools/select.dart';
@@ -31,6 +29,7 @@ class CanvasPainter extends CustomPainter {
     required this.pageIndex,
     required this.totalPages,
     required this.currentScale,
+    required this.defaultTextStyle,
   });
 
   final bool invert;
@@ -44,6 +43,7 @@ class CanvasPainter extends CustomPainter {
   final int pageIndex;
   final int totalPages;
   final double currentScale;
+  final TextStyle defaultTextStyle;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -85,7 +85,7 @@ class CanvasPainter extends CustomPainter {
 
     Color? lastColor;
     for (final stroke in strokes) {
-      if (stroke.toolId != ToolId.highlighter) continue;
+      if (stroke.toolId != .highlighter) continue;
 
       final color = stroke.color.withValues(alpha: 1).withInversion(invert);
 
@@ -108,7 +108,7 @@ class CanvasPainter extends CustomPainter {
     late final paint = Paint();
 
     for (final stroke in strokes) {
-      if (stroke.toolId == ToolId.highlighter) continue;
+      if (stroke.toolId == .highlighter) continue;
 
       var color = stroke.color.withInversion(invert);
       if (currentSelection?.strokes.contains(stroke) ?? false) {
@@ -118,7 +118,7 @@ class CanvasPainter extends CustomPainter {
       paint.color = color;
       paint.shader = null;
       paint.maskFilter = null;
-      if (stroke.toolId == ToolId.pencil) {
+      if (stroke.toolId == .pencil) {
         if (shouldUsePencilShader(stroke.options.size)) {
           paint.color = Colors.white;
           paint.shader = page.pencilShader
@@ -135,7 +135,7 @@ class CanvasPainter extends CustomPainter {
 
       late final shapePaint = Paint()
         ..color = paint.color
-        ..style = PaintingStyle.stroke
+        ..style = .stroke
         ..strokeWidth = stroke.options.size;
 
       if (stroke is CircleStroke) {
@@ -165,7 +165,7 @@ class CanvasPainter extends CustomPainter {
     paint.color = color;
     paint.shader = null;
     paint.maskFilter = null;
-    if (currentStroke!.toolId == ToolId.pencil) {
+    if (currentStroke!.toolId == .pencil) {
       paint.color = Colors.white;
       paint.shader = page.pencilShader
         ..setFloat(0, color.r)
@@ -198,7 +198,7 @@ class CanvasPainter extends CustomPainter {
     final color = currentStroke?.color.withInversion(invert) ?? Colors.black;
     final shapePaint = Paint()
       ..color = Color.lerp(color, primaryColor, 0.5)!.withValues(alpha: 0.7)
-      ..style = PaintingStyle.stroke
+      ..style = .stroke
       ..strokeWidth = currentStroke?.options.size ?? 3;
 
     switch (shape.name) {
@@ -246,7 +246,7 @@ class CanvasPainter extends CustomPainter {
       Paint()
         ..color = primaryColor
         ..strokeWidth = 3
-        ..style = PaintingStyle.stroke,
+        ..style = .stroke,
     );
   }
 
@@ -255,26 +255,28 @@ class CanvasPainter extends CustomPainter {
   void _drawPageIndicator(Canvas canvas, Size pageSize) {
     if (!showPageIndicator) return;
 
-    final style = ParagraphStyle(
-      textAlign: TextAlign.end,
-      textDirection: TextDirection.ltr,
+    final style = ui.ParagraphStyle(
+      textAlign: .end,
+      textDirection: .ltr,
       maxLines: 1,
     );
 
-    final ParagraphBuilder builder = ParagraphBuilder(style)
+    final builder = ui.ParagraphBuilder(style)
       ..pushStyle(
-        TextStyle(
+        ui.TextStyle(
           color: Colors.black.withInversion(invert).withValues(alpha: 0.5),
           fontSize: _pageIndicatorFontSize,
-          fontFamily: 'Inter',
-          fontFamilyFallback: saberSansSerifFontFallbacks,
+          fontFamily: defaultTextStyle.fontFamily,
+          fontFamilyFallback: defaultTextStyle.fontFamilyFallback,
         ),
       )
       ..addText('${pageIndex + 1} / $totalPages');
 
     final paragraph = builder.build();
     paragraph.layout(
-      ParagraphConstraints(width: pageSize.width - 2 * _pageIndicatorPadding),
+      ui.ParagraphConstraints(
+        width: pageSize.width - 2 * _pageIndicatorPadding,
+      ),
     );
 
     canvas.drawParagraph(

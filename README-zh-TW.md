@@ -1,10 +1,10 @@
 # <img src="https://github.com/saber-notes/saber/raw/main/assets/icon/icon.png" width="30" height="30" alt="Logo"> Saber
 
-[<img src='https://github.com/saber-notes/saber/blob/main/assets_raw/badges/google-play-badge.png'
+[<img src='https://github.com/saber-notes/saber/blob/main/assets_raw/badges/google-play-badge.svg'
     alt='在 Google Play 上取得'
     height=50>][google_play]
 &nbsp;
-[<img src="https://github.com/saber-notes/saber/blob/main/assets_raw/badges/f-droid-badge.png"
+[<img src="https://github.com/saber-notes/saber/blob/main/assets_raw/badges/f-droid-badge.svg"
     alt="在 F-Droid 上取得"
     height=50>][f-droid]
 &nbsp;
@@ -20,7 +20,7 @@
     alt="在 Flathub 上下載"
     height=50>][flathub]
 &nbsp;
-[<img src="https://github.com/saber-notes/saber/blob/main/assets_raw/badges/appimage-logo.png"
+[<img src="https://github.com/saber-notes/saber/blob/main/assets_raw/badges/appimage-logo.svg"
     alt="取得 AppImage"
     height=50>][download_appimage]
 
@@ -54,7 +54,6 @@ Saber具有使筆記井井有條所需的一切功能。在無限嵌套的資料
 [![Flathub](https://img.shields.io/flathub/downloads/com.adilhanney.saber?label=Flathub%20downloads)](https://flathub.org/apps/details/com.adilhanney.saber)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/adil192)](https://github.com/sponsors/adil192)
 [![GitHub](https://img.shields.io/github/license/saber-notes/saber)](https://github.com/saber-notes/saber/blob/main/LICENSE.md)
-[![codecov](https://codecov.io/gh/saber-notes/saber/branch/main/graph/badge.svg?token=EGQSN0THW2)](https://codecov.io/gh/saber-notes/saber)
 
 <details open>
 <summary>點擊即可顯示/隱藏螢幕截圖</summary>
@@ -119,8 +118,8 @@ Saber具有使筆記井井有條所需的一切功能。在無限嵌套的資料
 [google_play]: https://play.google.com/store/apps/details?id=com.adilhanney.saber
 [snap]: https://snapcraft.io/saber
 [app_store]: https://apps.apple.com/us/app/saber/id1671523739
-[download_windows]: https://github.com/saber-notes/saber/releases/download/v1.28.1/SaberInstaller_v1.28.1.exe
-[download_appimage]: https://github.com/saber-notes/saber/releases/download/v1.28.1/Saber-1.28.1-x86_64.AppImage
+[download_windows]: https://github.com/saber-notes/saber/releases/download/v1.29.1/SaberInstaller_v1.29.1.exe
+[download_appimage]: https://github.com/saber-notes/saber/releases/download/v1.29.1/Saber-1.29.1-x86_64.AppImage
 [nextcloud]: https://nc.saber.adil.hanney.org/
 [privacy]: https://github.com/saber-notes/saber/blob/main/privacy_policy.md
 [license]: https://github.com/saber-notes/saber/blob/main/LICENSE.md
