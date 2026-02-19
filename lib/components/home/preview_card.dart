@@ -6,6 +6,7 @@ import 'package:saber/components/canvas/_stroke.dart';
 import 'package:saber/components/canvas/inner_canvas.dart';
 import 'package:saber/components/canvas/invert_widget.dart';
 import 'package:saber/components/home/sync_indicator.dart';
+import 'package:saber/data/extensions/color_extensions.dart';
 import 'package:saber/data/file_manager/file_manager.dart';
 import 'package:saber/data/is_this_a_test.dart';
 import 'package:saber/data/prefs.dart';
@@ -106,81 +107,108 @@ class _PreviewCardState extends State<PreviewCard> {
         onSecondaryTap: _toggleCardSelection,
         onLongPress: _toggleCardSelection,
         child: Column(
-          mainAxisSize: .min,
+          mainAxisSize: stows.simplifiedHomeLayout.value ? .max : .min,
           children: [
-            Stack(
-              children: [
-                ListenableBuilder(
-                  listenable: thumbnail,
-                  builder: (context, _) => AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: ConstrainedBox(
-                      key: ValueKey(thumbnail.updateCount),
-                      constraints: const BoxConstraints(minHeight: 100),
-                      child: Padding(
-                        padding: const EdgeInsets.all(kYaruFocusBorderWidth),
-                        child: ClipRRect(
-                          borderRadius: const .only(
-                            topLeft: .circular(kYaruContainerRadius),
-                            topRight: .circular(kYaruContainerRadius),
-                          ),
-                          child: InvertWidget(
-                            invert: invert,
-                            child: thumbnail.doesImageExist
-                                ? Image(image: thumbnail.image!)
-                                : const _FallbackThumbnail(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  left: -1,
-                  top: -1,
-                  right: -1,
-                  bottom: -1,
-                  child: ValueListenableBuilder(
-                    valueListenable: expanded,
-                    builder: (context, expanded, child) => AnimatedOpacity(
-                      opacity: expanded ? 1 : 0,
-                      duration: const Duration(milliseconds: 200),
-                      child: IgnorePointer(ignoring: !expanded, child: child!),
-                    ),
-                    child: GestureDetector(
-                      onTap: _toggleCardSelection,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: .topCenter,
-                            end: .bottomCenter,
-                            colors: [
-                              colorScheme.surface.withValues(alpha: 0.2),
-                              colorScheme.surface.withValues(alpha: 0.8),
-                              colorScheme.surface.withValues(alpha: 1),
-                            ],
-                          ),
-                        ),
-                        child: ColoredBox(
-                          color: colorScheme.primary.withValues(alpha: 0.05),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SyncIndicator(filePath: widget.filePath),
-              ],
-            ),
             Flexible(
-              child: Padding(
-                padding: const .all(8),
-                child: Text(
-                  widget.filePath.substring(
-                    widget.filePath.lastIndexOf('/') + 1,
+              fit: stows.simplifiedHomeLayout.value ? .tight : .loose,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    top: kYaruContainerRadius,
+                    left: kYaruFocusBorderWidth,
+                    right: kYaruFocusBorderWidth,
+                    child: ColoredBox(
+                      color: InnerCanvas.defaultBackgroundColor.withInversion(
+                        invert,
+                      ),
+                    ),
                   ),
-                  maxLines: 2,
-                  overflow: .ellipsis,
-                ),
+                  ListenableBuilder(
+                    listenable: thumbnail,
+                    builder: (context, _) => AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: ConstrainedBox(
+                        key: ValueKey(thumbnail.updateCount),
+                        constraints: const BoxConstraints(
+                          minWidth: double.infinity,
+                          minHeight: 100,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: kYaruFocusBorderWidth,
+                            left: kYaruFocusBorderWidth,
+                            right: kYaruFocusBorderWidth,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: const .only(
+                              topLeft: .circular(
+                                kYaruContainerRadius - kYaruFocusBorderWidth,
+                              ),
+                              topRight: .circular(
+                                kYaruContainerRadius - kYaruFocusBorderWidth,
+                              ),
+                            ),
+                            child: InvertWidget(
+                              invert: invert,
+                              child: thumbnail.doesImageExist
+                                  ? Image(
+                                      image: thumbnail.image!,
+                                      alignment: .topCenter,
+                                      fit: .cover,
+                                    )
+                                  : const _FallbackThumbnail(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned.fill(
+                    left: -1,
+                    top: -1,
+                    right: -1,
+                    bottom: -1,
+                    child: ValueListenableBuilder(
+                      valueListenable: expanded,
+                      builder: (context, expanded, child) => AnimatedOpacity(
+                        opacity: expanded ? 1 : 0,
+                        duration: const Duration(milliseconds: 200),
+                        child: IgnorePointer(
+                          ignoring: !expanded,
+                          child: child!,
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: _toggleCardSelection,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: .topCenter,
+                              end: .bottomCenter,
+                              colors: [
+                                colorScheme.surface.withValues(alpha: 0.2),
+                                colorScheme.surface.withValues(alpha: 0.8),
+                                colorScheme.surface.withValues(alpha: 1),
+                              ],
+                            ),
+                          ),
+                          child: ColoredBox(
+                            color: colorScheme.primary.withValues(alpha: 0.05),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SyncIndicator(filePath: widget.filePath),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const .all(8),
+              child: Text(
+                widget.filePath.substring(widget.filePath.lastIndexOf('/') + 1),
+                maxLines: 2,
+                overflow: .ellipsis,
               ),
             ),
           ],

@@ -7,29 +7,19 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:saber/components/canvas/_circle_stroke.dart';
 import 'package:saber/components/canvas/_rectangle_stroke.dart';
 import 'package:saber/components/canvas/_stroke.dart';
+import 'package:saber/components/canvas/canvas_preview.dart';
 import 'package:saber/components/canvas/inner_canvas.dart';
 import 'package:saber/data/editor/editor_core_info.dart';
 import 'package:screenshot/screenshot.dart';
 
 abstract class EditorExporter {
-  /// The primary color used in exports.
-  /// This is independent to the user's color theme,
-  /// so that the export will look the same when
-  /// exported from different devices.
-  /// See also [secondaryColor].
-  static const primaryColor = Colors.blue;
-
-  /// The secondary color used in exports.
-  /// See also [primaryColor].
-  static const secondaryColor = Colors.red;
-
   /// Most* strokes can be drawn to the PDF canvas as vector graphics.
   /// This function returns true if [stroke] is one of those strokes.
   ///
   /// Strokes that can't be drawn as vector graphics include:
   /// - Highlighter strokes, because PDFs don't support transparency
   /// - Pencil strokes, which need a special shader to look correct
-  static bool _shouldRasterizeStroke(Stroke stroke) {
+  static bool shouldRasterizeStroke(Stroke stroke) {
     return stroke.toolId == .highlighter || stroke.toolId == .pencil;
   }
 
@@ -55,7 +45,6 @@ abstract class EditorExporter {
           coreInfo: coreInfo,
           pageIndex: pageIndex,
           screenshotController: screenshotController,
-          context: context,
         ),
       ),
     );
@@ -78,7 +67,7 @@ abstract class EditorExporter {
                   ).flatten();
 
                   final strokes = page.strokes.where(
-                    (stroke) => !_shouldRasterizeStroke(stroke),
+                    (stroke) => !shouldRasterizeStroke(stroke),
                   );
                   for (final stroke in strokes) {
                     final strokeColor = PdfColor.fromInt(
@@ -143,55 +132,90 @@ abstract class EditorExporter {
   ///
   /// Note that screenshots do not include most* strokes
   /// because they're added separately to the PDF as vector graphics.
-  /// See [_shouldRasterizeStroke] for more details.
+  /// See [shouldRasterizeStroke] for more details, or set
+  /// [rasterizeAllStrokes] to true to include all strokes in the screenshot.
   static Future<Uint8List> screenshotPage({
     required EditorCoreInfo coreInfo,
     required int pageIndex,
     required ScreenshotController screenshotController,
-    required BuildContext context,
+    bool rasterizeAllStrokes = false,
+    Size? targetSize,
+    double? cropHeight,
+    double pixelRatio = 2,
   }) async {
-    final pageSize = coreInfo.pages[pageIndex].size;
-    return await screenshotController.captureFromWidget(
-      Localizations(
+    final page = coreInfo.pages[pageIndex].cloneForRasterization(
+      rasterizeAllStrokes: rasterizeAllStrokes,
+    );
+    try {
+      targetSize ??= page.size;
+      coreInfo = coreInfo.copyWith(
+        pages: [
+          for (var i = 0; i < coreInfo.pages.length; ++i)
+            if (i == pageIndex) page else coreInfo.pages[i],
+        ],
+      );
+      return await screenshotController.captureFromWidget(
+        EditorExporterTheme(
+          targetSize: targetSize,
+          child: CanvasPreview(
+            pageIndex: pageIndex,
+            height: cropHeight,
+            coreInfo: coreInfo,
+          ),
+        ),
+        pixelRatio: pixelRatio,
+        targetSize: targetSize,
+      );
+    } finally {
+      page.disposeClonedData();
+    }
+  }
+}
+
+/// Applies a consistent theme to its [child] so that exports
+/// look the same regardless of the user's current theme or device.
+class EditorExporterTheme extends StatelessWidget {
+  const EditorExporterTheme({
+    super.key,
+    required this.targetSize,
+    required this.child,
+  });
+
+  final Size targetSize;
+  final Widget child;
+
+  static final theme = ThemeData(
+    brightness: .light,
+    colorScheme: const ColorScheme.light(
+      primary: Colors.blue,
+      secondary: Colors.red,
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaQuery(
+      data: MediaQueryData(size: targetSize),
+      child: Localizations(
         // needed to avoid errors with Quill, but not actually used
         locale: const Locale('en', 'US'),
         delegates: GlobalMaterialLocalizations.delegates,
         child: Theme(
-          data: ThemeData(
-            brightness: .light,
-            colorScheme: const ColorScheme.light(
-              primary: primaryColor,
-              secondary: secondaryColor,
+          data: theme,
+          child: DefaultTextStyle(
+            style: theme.textTheme.bodyMedium!,
+            child: SizedBox(
+              width: targetSize.width,
+              height: targetSize.height,
+              child: FittedBox(
+                fit: BoxFit.cover,
+                alignment: Alignment.topLeft,
+                child: child,
+              ),
             ),
-          ),
-          child: InnerCanvas(
-            pageIndex: pageIndex,
-            width: pageSize.width,
-            height: pageSize.height,
-            isPrint: true,
-            textEditing: false,
-            coreInfo: coreInfo.copyWith(
-              pages: coreInfo.pages
-                  .map(
-                    (page) => page.copyWith(
-                      strokes: page.strokes
-                          .where(_shouldRasterizeStroke)
-                          .toList(),
-                    ),
-                  )
-                  .toList(),
-            ),
-            currentStroke: null,
-            currentStrokeDetectedShape: null,
-            currentSelection: null,
-            currentToolIsSelect: false,
-            currentScale: double.maxFinite,
           ),
         ),
       ),
-      context: context,
-      pixelRatio: 2,
-      targetSize: pageSize,
     );
   }
 }

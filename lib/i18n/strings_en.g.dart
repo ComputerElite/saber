@@ -342,27 +342,18 @@ class TranslationsEditorEn {
 
   final Translations _root; // ignore: unused_field
 
-  // Translations
-  late final TranslationsEditorToolbarEn toolbar =
-      TranslationsEditorToolbarEn.internal(_root);
-  late final TranslationsEditorPensEn pens =
-      TranslationsEditorPensEn.internal(_root);
-  late final TranslationsEditorPenOptionsEn penOptions =
-      TranslationsEditorPenOptionsEn.internal(_root);
-  late final TranslationsEditorColorsEn colors =
-      TranslationsEditorColorsEn.internal(_root);
-  late final TranslationsEditorImageOptionsEn imageOptions =
-      TranslationsEditorImageOptionsEn.internal(_root);
-  late final TranslationsEditorSelectionBarEn selectionBar =
-      TranslationsEditorSelectionBarEn.internal(_root);
-  late final TranslationsEditorMenuEn menu =
-      TranslationsEditorMenuEn.internal(_root);
-  late final TranslationsEditorNewerFileFormatEn newerFileFormat =
-      TranslationsEditorNewerFileFormatEn.internal(_root);
-  late final TranslationsEditorQuillEn quill =
-      TranslationsEditorQuillEn.internal(_root);
-  late final TranslationsEditorHudEn hud =
-      TranslationsEditorHudEn.internal(_root);
+	// Translations
+	late final TranslationsEditorToolbarEn toolbar = TranslationsEditorToolbarEn.internal(_root);
+	late final TranslationsEditorPensEn pens = TranslationsEditorPensEn.internal(_root);
+	late final TranslationsEditorPenOptionsEn penOptions = TranslationsEditorPenOptionsEn.internal(_root);
+	late final TranslationsEditorColorsEn colors = TranslationsEditorColorsEn.internal(_root);
+	late final TranslationsEditorImageOptionsEn imageOptions = TranslationsEditorImageOptionsEn.internal(_root);
+	late final TranslationsEditorSelectionBarEn selectionBar = TranslationsEditorSelectionBarEn.internal(_root);
+	late final TranslationsEditorMenuEn menu = TranslationsEditorMenuEn.internal(_root);
+	late final TranslationsEditorReadOnlyBannerEn readOnlyBanner = TranslationsEditorReadOnlyBannerEn.internal(_root);
+	late final TranslationsEditorVersionTooNewEn versionTooNew = TranslationsEditorVersionTooNewEn.internal(_root);
+	late final TranslationsEditorQuillEn quill = TranslationsEditorQuillEn.internal(_root);
+	late final TranslationsEditorHudEn hud = TranslationsEditorHudEn.internal(_root);
 
   /// en: 'Pages'
   String get pages => 'Pages';
@@ -494,14 +485,17 @@ class TranslationsHomeRenameNoteEn {
   /// en: 'Rename'
   String get rename => 'Rename';
 
-  /// en: 'Note name can't be empty'
-  String get noteNameEmpty => 'Note name can\'t be empty';
+	/// en: 'Note name can't be empty'
+	String get noteNameEmpty => 'Note name can\'t be empty';
 
-  /// en: 'Note name can't contain a slash'
-  String get noteNameContainsSlash => 'Note name can\'t contain a slash';
+	/// en: 'A note with this name already exists'
+	String get noteNameExists => 'A note with this name already exists';
 
-  /// en: 'A note with this name already exists'
-  String get noteNameExists => 'A note with this name already exists';
+	/// en: 'Note name contains forbidden characters'
+	String get noteNameForbiddenCharacters => 'Note name contains forbidden characters';
+
+	/// en: 'Note name reserved'
+	String get noteNameReserved => 'Note name reserved';
 }
 
 // Path: home.moveNote
@@ -1338,16 +1332,31 @@ class TranslationsEditorMenuEn {
       TranslationsEditorMenuBgPatternsEn.internal(_root);
 }
 
-// Path: editor.newerFileFormat
-class TranslationsEditorNewerFileFormatEn {
-  TranslationsEditorNewerFileFormatEn.internal(this._root);
+// Path: editor.readOnlyBanner
+class TranslationsEditorReadOnlyBannerEn {
+	TranslationsEditorReadOnlyBannerEn.internal(this._root);
 
   final Translations _root; // ignore: unused_field
 
   // Translations
 
-  /// en: 'Read-only mode'
-  String get readOnlyMode => 'Read-only mode';
+	/// en: 'Read-only mode'
+	String get title => 'Read-only mode';
+
+	/// en: 'You are currently watching for updates on the server. Editing is disabled in this mode.'
+	String get watchingServer => 'You are currently watching for updates on the server. Editing is disabled in this mode.';
+
+	/// en: 'Failed to load note. It may be corrupted or still being downloaded.'
+	String get corrupted => 'Failed to load note. It may be corrupted or still being downloaded.';
+}
+
+// Path: editor.versionTooNew
+class TranslationsEditorVersionTooNewEn {
+	TranslationsEditorVersionTooNewEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
 
   /// en: 'This note was edited using a newer version of Saber'
   String get title => 'This note was edited using a newer version of Saber';

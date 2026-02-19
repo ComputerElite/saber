@@ -12,24 +12,47 @@ on:
       - .github/workflows/android.yml
 
 jobs:
-  build-apk:
-    name: Build APK (${{ matrix.foss && 'FOSS' || 'Regular' }})
-    strategy:
-      fail-fast: false
-      matrix:
-        foss: [false, true]
+  warmup-android-cache:
+    # We can't cache the signed builds for security reasons,
+    # so run an unsigned build to populate the cache.
+    name: Build unsigned APK for caching
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - uses: "./.github/shared_workflows/install_apt_dependencies"
+      - name: Check if Android cache exists
+        id: cache
+        uses: actions/cache/restore@v5
+        with:
+          lookup-only: true
+          # Some sdk components are already included in the runner image so we don't need to cache them:
+          # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md#android
+          path: |
+            .dart_tool/
+            android/.gradle/
+            build/
+            submodules/flutter/bin/cache/
 
-      - name: Setup cache
-        uses: actions/cache/restore@v4
+            /usr/local/lib/android/sdk/cmake/*
+            !/usr/local/lib/android/sdk/cmake/3.31.5
+            !/usr/local/lib/android/sdk/cmake/4.1.2
+
+            /usr/local/lib/android/sdk/ndk/*
+            !/usr/local/lib/android/sdk/ndk/27.3.13750724
+            !/usr/local/lib/android/sdk/ndk/28.2.13676358
+            !/usr/local/lib/android/sdk/ndk/29.0.14206865
+
+            /usr/local/lib/android/sdk/platforms/*
+            !/usr/local/lib/android/sdk/platforms/android-34*
+            !/usr/local/lib/android/sdk/platforms/android-35*
+            !/usr/local/lib/android/sdk/platforms/android-36*
+          key: ${{ runner.OS }}-saber_android
+
+      - name: Restore platform-agnostic cache
+        uses: actions/cache@v5
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
         with:
           path: |
             .dart_tool/
@@ -42,6 +65,138 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-saber-
 
+      - uses: "./.github/shared_workflows/install_apt_dependencies"
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+
+      - name: Setup Flutter
+        uses: adil192/setup-flutter-submodule@v1
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+        with:
+          flutter-path: submodules/flutter
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+        with:
+          distribution: "microsoft"
+          java-version: "21"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+        with:
+          cache-write-only: true
+
+      - name: Setup Rust
+        uses: moonrepo/setup-rust@v1
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+        with:
+          # The rust version is read from rust-toolchain.toml
+          targets: armv7-linux-androideabi,aarch64-linux-android,x86_64-linux-android
+
+      - name: Disable Flutter CLI animations
+        run: flutter config --no-cli-animations
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+
+      - run: ./patches/pre/remove_dev_dependencies.sh
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+      - run: ./patches/pre/remove_linux_dependencies.sh
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+      - run: flutter pub get
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+      - run: ./patches/post/patch_rust_versions.sh
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+      - run: ./patches/post/remove_wasm_libs.sh
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+
+      - name: Build apk
+        run: flutter build apk
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+
+      - name: Save Android cache
+        uses: actions/cache/save@v5
+        if: ${{ steps.cache.outputs.cache-hit == '' }}
+        with:
+          path: |
+            .dart_tool/
+            android/.gradle/
+            build/
+            submodules/flutter/bin/cache/
+
+            /usr/local/lib/android/sdk/cmake/*
+            !/usr/local/lib/android/sdk/cmake/3.31.5
+            !/usr/local/lib/android/sdk/cmake/4.1.2
+
+            /usr/local/lib/android/sdk/ndk/*
+            !/usr/local/lib/android/sdk/ndk/27.3.13750724
+            !/usr/local/lib/android/sdk/ndk/28.2.13676358
+            !/usr/local/lib/android/sdk/ndk/29.0.14206865
+
+            /usr/local/lib/android/sdk/platforms/*
+            !/usr/local/lib/android/sdk/platforms/android-34*
+            !/usr/local/lib/android/sdk/platforms/android-35*
+            !/usr/local/lib/android/sdk/platforms/android-36*
+          key: ${{ steps.cache.outputs.cache-primary-key }}
+
+  build-android:
+    name: Build APK (${{ matrix.foss && 'FOSS' || 'Regular' }})
+    needs: warmup-android-cache
+    strategy:
+      fail-fast: false
+      matrix:
+        foss: [false, true]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - uses: "./.github/shared_workflows/install_apt_dependencies"
+
+      - name: Setup Flutter
+        uses: adil192/setup-flutter-submodule@v1
+        with:
+          flutter-path: submodules/flutter
+
+      - name: Restore platform-agnostic cache
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            .dart_tool/
+            build/
+            linux/flutter/ephemeral/
+            macos/Flutter/ephemeral/
+            windows/flutter/ephemeral/
+            .flutter-plugins-dependencies
+          key: ${{ runner.OS }}-saber-${{ hashFiles('**/pubspec.lock') }}-${{ hashFiles('**/*.dart') }}
+          restore-keys: |
+            ${{ runner.OS }}-saber-
+
+      - name: Restore Android cache
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            .dart_tool/
+            android/.gradle/
+            build/
+            submodules/flutter/bin/cache/
+
+            /usr/local/lib/android/sdk/cmake/*
+            !/usr/local/lib/android/sdk/cmake/3.31.5
+            !/usr/local/lib/android/sdk/cmake/4.1.2
+
+            /usr/local/lib/android/sdk/ndk/*
+            !/usr/local/lib/android/sdk/ndk/27.3.13750724
+            !/usr/local/lib/android/sdk/ndk/28.2.13676358
+            !/usr/local/lib/android/sdk/ndk/29.0.14206865
+
+            /usr/local/lib/android/sdk/platforms/*
+            !/usr/local/lib/android/sdk/platforms/android-34*
+            !/usr/local/lib/android/sdk/platforms/android-35*
+            !/usr/local/lib/android/sdk/platforms/android-36*
+          key: ${{ runner.OS }}-saber_android
+
       - name: Setup keystore
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
@@ -53,16 +208,15 @@ jobs:
           echo "keyAlias=${{ secrets.ALIAS }}" >> android/key.properties
           echo "storeFile=../android.keystore" >> android/key.properties
 
-      - name: Setup Flutter
-        uses: adil192/setup-flutter-submodule@v1
-        with:
-          flutter-path: submodules/flutter
-
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
           distribution: "microsoft"
           java-version: "21"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-read-only: true
 
       - name: Setup Rust
         uses: moonrepo/setup-rust@v1
@@ -73,17 +227,13 @@ jobs:
       - name: Disable Flutter CLI animations
         run: flutter config --no-cli-animations
 
-      - run: flutter pub get
-
-      - name: Remove development dependencies
-        run: ./patches/remove_dev_dependencies.sh
-      - name: Remove proprietary dependencies
-        run: ./patches/remove_proprietary_dependencies.sh
+      - run: ./patches/pre/remove_dev_dependencies.sh
+      - run: ./patches/pre/remove_linux_dependencies.sh
+      - run: ./patches/pre/remove_proprietary_dependencies.sh
         if: matrix.foss
-      - name: Remove non-Android dependencies
-        run: ./patches/remove_non_android_dependencies.sh
-      - name: Patch rust dependencies
-        run: ./patches/patch_rust_versions.sh
+      - run: flutter pub get
+      - run: ./patches/post/patch_rust_versions.sh
+      - run: ./patches/post/remove_wasm_libs.sh
 
       - name: Build apk
         run: flutter build apk
@@ -103,7 +253,7 @@ jobs:
           mv build/app/outputs/flutter-apk/app-release.apk output/$apkName
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.foss && 'Saber-Android-FOSS' || 'Saber-Android' }}
           path: output/${{ steps.rename_apk.outputs.apkName }}
@@ -114,3 +264,77 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: output/${{ steps.rename_apk.outputs.apkName }}
+
+      - name: Build aab
+        if: ${{ matrix.foss == false }}
+        run: |
+          flutter build appbundle --no-pub \
+            --dart-define=FLAVOR="Google Play" \
+            --dart-define=APP_STORE="Google Play" \
+            --dart-define=UPDATE_CHECK="false"
+
+      - name: Rename aab
+        if: ${{ matrix.foss == false }}
+        run: |
+          mkdir -p output
+          mv build/app/outputs/bundle/release/app-release.aab output/Saber.aab
+
+      - name: Upload artifact
+        if: ${{ matrix.foss == false }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: Saber-Android-PlayStore
+          path: output/Saber.aab
+
+  upload-to-play-store:
+    name: Upload to Play Store
+    runs-on: ubuntu-latest
+    needs: build-android
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Download artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: Saber-Android-PlayStore
+          path: output
+
+      - name: Prepare whatsnew directory from metadata/*/changelogs
+        working-directory: ${{ github.workspace }}
+        run: |
+          # display changelogs for debugging
+          find metadata -name '*.txt'
+
+          mkdir -p whatsnew
+
+          # get current version code from lib/data/version.dart
+          VERSION_CODE=$(grep -oP '(?<=buildNumber = )\d+' lib/data/version.dart)
+
+          # copy changelogs of each language to whatsnew
+          for dir in metadata/*/changelogs; do
+              # get language code from directory name
+              # e.g. metadata/en-US/changelogs -> en-US
+              lang=${dir#metadata/}
+              lang=${lang%/changelogs}
+
+              # get original changelog file
+              original="$dir/$VERSION_CODE.txt"
+
+              if [ -f "$original" ]; then
+                # copy changelog file to whatsnew
+                cp "$original" "whatsnew/whatsnew-${lang}"
+              fi
+          done
+
+      - name: Upload to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_JSON }}
+          packageName: com.adilhanney.saber
+          releaseFiles: output/Saber.aab
+          track: production
+          status: completed
+          whatsNewDirectory: whatsnew

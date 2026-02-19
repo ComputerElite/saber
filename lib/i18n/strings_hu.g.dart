@@ -218,7 +218,8 @@ class _TranslationsEditorHu extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsHu imageOptions = _TranslationsEditorImageOptionsHu._(_root);
 	@override late final _TranslationsEditorSelectionBarHu selectionBar = _TranslationsEditorSelectionBarHu._(_root);
 	@override late final _TranslationsEditorMenuHu menu = _TranslationsEditorMenuHu._(_root);
-	@override late final _TranslationsEditorNewerFileFormatHu newerFileFormat = _TranslationsEditorNewerFileFormatHu._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerHu readOnlyBanner = _TranslationsEditorReadOnlyBannerHu._(_root);
+	@override late final _TranslationsEditorVersionTooNewHu versionTooNew = _TranslationsEditorVersionTooNewHu._(_root);
 	@override late final _TranslationsEditorQuillHu quill = _TranslationsEditorQuillHu._(_root);
 	@override late final _TranslationsEditorHudHu hud = _TranslationsEditorHudHu._(_root);
 	@override String get pages => 'Oldalak';
@@ -297,11 +298,12 @@ class _TranslationsHomeRenameNoteHu extends TranslationsHomeRenameNoteEn {
 	final TranslationsHu _root; // ignore: unused_field
 
 	// Translations
+	@override String get noteNameForbiddenCharacters => 'A megjegyzés neve tiltott karaktereket tartalmaz';
+	@override String get noteNameReserved => 'Megjegyzés név fenntartva';
 	@override String get renameNote => 'Jegyzet átnevezése';
 	@override String get noteName => 'Megjegyzés neve';
 	@override String get rename => 'Átnevezés';
 	@override String get noteNameEmpty => 'A jegyzet neve nem lehet üres';
-	@override String get noteNameContainsSlash => 'A jegyzet neve nem tartalmazhat perjelet';
 	@override String get noteNameExists => 'Már létezik ilyen nevű jegyzet';
 }
 
@@ -394,9 +396,9 @@ class _TranslationsSettingsPrefLabelsHu extends TranslationsSettingsPrefLabelsEn
 	@override String get preferGreyscale => 'Szürkeárnyalatos színek előnyben részesítése';
 	@override String get maxImageSize => 'Maximális képméret';
 	@override String get autoClearWhiteboardOnExit => 'A tábla törlése az alkalmazásból való kilépés után';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Ujjrajzolás automatikus letiltása';
 	@override String get editorPromptRename => 'Új jegyzetek átnevezésére való felszólítás';
 	@override String get recentColorsDontSavePresets => 'Ne mentse az előre beállított színeket a legutóbbi színek között';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Ujjrajzolás automatikus letiltása';
 	@override String get sentry => 'Hibajelentés';
 	@override String get autosave => 'Automatikus mentés';
 	@override String get simplifiedHomeLayout => 'Egyszerűsített otthoni elrendezés';
@@ -424,9 +426,9 @@ class _TranslationsSettingsPrefDescriptionsHu extends TranslationsSettingsPrefDe
 	@override String get autoClearWhiteboardOnExit => 'Továbbra is szinkronizálva lesz a többi eszközzel';
 	@override String get maxImageSize => 'Az ennél nagyobb képek tömörítve lesznek';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingHu hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingHu._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Kapcsolja ki az ujjal történő rajzolást, ha ceruzát észlel';
 	@override String get editorPromptRename => 'A jegyzeteket később bármikor átnevezheti';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryHu sentry = _TranslationsSettingsPrefDescriptionsSentryHu._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Kapcsolja ki az ujjal történő rajzolást, ha ceruzát észlel';
 	@override String get autosave => 'Automato-Save rövid késleltetés után, vagy soha';
 	@override String get simplifiedHomeLayout => 'Rögzített magasságot állít be minden hangjegy előnézetéhez';
 	@override String get autoStraightenLines => 'Kiegyenesíti a hosszú vonalakat anélkül, hogy az alakos tollat ​​kellene használnia';
@@ -746,14 +748,25 @@ class _TranslationsEditorMenuHu extends TranslationsEditorMenuEn {
 	@override String get deletePage => 'Oldal törlése';
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatHu extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatHu._(TranslationsHu root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerHu extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerHu._(TranslationsHu root) : this._root = root, super.internal(root);
 
 	final TranslationsHu _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Csak olvasható mód';
+	@override String get title => 'Csak olvasható mód';
+	@override String get corrupted => 'Nem sikerült betölteni a jegyzetet. Lehet, hogy sérült, vagy még mindig letöltés alatt áll.';
+	@override String get watchingServer => 'Jelenleg frissítéseket figyel a szerveren. A szerkesztés le van tiltva ebben a módban.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewHu extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewHu._(TranslationsHu root) : this._root = root, super.internal(root);
+
+	final TranslationsHu _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Ezt a jegyzetet a Saber egy újabb verziójával lett szerkesztve';
 	@override String get subtitle => 'A jegyzet szerkesztése bizonyos információk elvesztését eredményezheti. Szeretné ezt figyelmen kívül hagyni, és mégis szerkeszteni?';
 	@override String get allowEditing => 'Szerkesztés engedélyezése';

@@ -218,7 +218,8 @@ class _TranslationsEditorPtBr extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsPtBr imageOptions = _TranslationsEditorImageOptionsPtBr._(_root);
 	@override late final _TranslationsEditorSelectionBarPtBr selectionBar = _TranslationsEditorSelectionBarPtBr._(_root);
 	@override late final _TranslationsEditorMenuPtBr menu = _TranslationsEditorMenuPtBr._(_root);
-	@override late final _TranslationsEditorNewerFileFormatPtBr newerFileFormat = _TranslationsEditorNewerFileFormatPtBr._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerPtBr readOnlyBanner = _TranslationsEditorReadOnlyBannerPtBr._(_root);
+	@override late final _TranslationsEditorVersionTooNewPtBr versionTooNew = _TranslationsEditorVersionTooNewPtBr._(_root);
 	@override late final _TranslationsEditorQuillPtBr quill = _TranslationsEditorQuillPtBr._(_root);
 	@override late final _TranslationsEditorHudPtBr hud = _TranslationsEditorHudPtBr._(_root);
 	@override String get pages => 'Páginas';
@@ -301,8 +302,9 @@ class _TranslationsHomeRenameNotePtBr extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'Nome da nota';
 	@override String get rename => 'Renomear';
 	@override String get noteNameEmpty => 'O nome da nota não pode estar vazio';
-	@override String get noteNameContainsSlash => 'O nome da nota não pode conter uma barra';
 	@override String get noteNameExists => 'Já existe uma nota com este nome';
+	@override String get noteNameForbiddenCharacters => 'O nome da nota contém caracteres proibidos';
+	@override String get noteNameReserved => 'Nome da nota reservado';
 }
 
 // Path: home.moveNote
@@ -399,10 +401,10 @@ class _TranslationsSettingsPrefLabelsPtBr extends TranslationsSettingsPrefLabels
 	@override String get autoClearWhiteboardOnExit => 'Limpar o quadro branco depois de sair do aplicativo';
 	@override String get disableEraserAfterUse => 'Desativar automaticamente a borracha';
 	@override String get hideFingerDrawingToggle => 'Ocultar o botão de desenho com o dedo';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Desativar automaticamente o desenho do dedo';
 	@override String get editorPromptRename => 'Solicitar que você renomeie novas notas';
 	@override String get recentColorsDontSavePresets => 'Não salvar as cores predefinidas nas cores recentes';
 	@override String get printPageIndicators => 'Imprimir os indicadores de página';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Desativar automaticamente o desenho do dedo';
 	@override String get sentry => 'Relatório de erro';
 	@override String get autosave => 'Save automática';
 	@override String get simplifiedHomeLayout => 'Layout simplificado da casa';
@@ -426,11 +428,11 @@ class _TranslationsSettingsPrefDescriptionsPtBr extends TranslationsSettingsPref
 	@override String get disableEraserAfterUse => 'Voltar automaticamente para a caneta depois de usar a borracha';
 	@override String get maxImageSize => 'Imagens maiores que isso serão compactadas';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingPtBr hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingPtBr._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Desative o desenho com o dedo quando uma caneta for detectada';
 	@override String get editorPromptRename => 'Você pode sempre renomear as notas mais tarde';
 	@override String get printPageIndicators => 'Mostrar os indicadores de página nas exportações';
 	@override String get shouldAlwaysAlertForUpdates => 'Conte-me sobre atualizações assim que elas estiverem disponíveis';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryPtBr sentry = _TranslationsSettingsPrefDescriptionsSentryPtBr._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Desative o desenho com o dedo quando uma caneta for detectada';
 	@override String get autosave => 'Salvamento automático após um pequeno atraso, ou nunca';
 	@override String get simplifiedHomeLayout => 'Define uma altura fixa para cada pré-visualização de nota';
 	@override String get autoStraightenLines => 'Endireita linhas longas sem precisar usar a caneta modeladora';
@@ -746,14 +748,25 @@ class _TranslationsEditorMenuPtBr extends TranslationsEditorMenuEn {
 	@override String get lineHeightDescription => 'Também controla o tamanho do texto para notas digitadas';
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatPtBr extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerPtBr extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
 
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Modo somente leitura';
+	@override String get title => 'Modo somente leitura';
+	@override String get corrupted => 'Falha ao carregar a nota. Ele pode estar corrompido ou ainda sendo baixado.';
+	@override String get watchingServer => 'No momento, você está aguardando atualizações no servidor. A edição está desabilitada neste modo.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewPtBr extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Esta nota foi editada usando uma versão mais recente do Saber';
 	@override String get subtitle => 'A edição desta nota pode resultar na perda de algumas informações. Deseja ignorar isso e editá-la mesmo assim?';
 	@override String get allowEditing => 'Permitir edição';

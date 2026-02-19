@@ -8,8 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart' as p;
 import 'package:saber/components/canvas/_asset_cache.dart';
-import 'package:saber/components/canvas/_canvas_background_painter.dart';
 import 'package:saber/components/canvas/_stroke.dart';
 import 'package:saber/components/canvas/image/editor_image.dart';
 import 'package:saber/data/editor/page.dart';
@@ -18,6 +18,9 @@ import 'package:saber/data/flavor_config.dart';
 import 'package:saber/data/prefs.dart';
 import 'package:saber/data/tools/stroke_properties.dart';
 import 'package:saber/pages/editor/editor.dart';
+import 'package:sbn/canvas_background_pattern.dart';
+import 'package:sbn/has_size.dart';
+import 'package:sbn/read_only_reason.dart';
 import 'package:worker_manager/worker_manager.dart';
 
 class EditorCoreInfo {
@@ -47,14 +50,19 @@ class EditorCoreInfo {
   /// - 2: Store width and height in sbn
   /// - 1: Store version in sbn
   static const sbnVersion = 19;
-  var readOnly = false;
-  var readOnlyBecauseOfVersion = false;
-  var readOnlyBecauseWatchingServer = false;
+
+  /// The reason why the note is read-only,
+  /// or `null` if the note is editable.
+  ReadOnlyReason? readOnlyReason;
+
+  /// Whether the note is read-only.
+  /// See [readOnlyReason] for the reason.
+  bool get readOnly => readOnlyReason != null;
 
   String filePath;
 
   /// The file name without its parent directories.
-  String get fileName => filePath.substring(filePath.lastIndexOf('/') + 1);
+  String get fileName => p.basename(filePath);
 
   AssetCache assetCache;
   int nextImageId;
@@ -67,11 +75,10 @@ class EditorCoreInfo {
   /// Stores the current page index so that it can be restored when the file is reloaded.
   int? initialPageIndex;
 
-  static final empty =
+  static final placeholder =
       EditorCoreInfo._(
         filePath: '',
-        readOnly: true,
-        readOnlyBecauseOfVersion: false,
+        readOnlyReason: .placeholder,
         nextImageId: 0,
         backgroundColor: null,
         backgroundPattern: .none,
@@ -91,21 +98,18 @@ class EditorCoreInfo {
   bool get isEmpty => pages.every((EditorPage page) => page.isEmpty);
   bool get isNotEmpty => !isEmpty;
 
-  EditorCoreInfo({
-    required this.filePath,
-    this.readOnly =
-        true, // default to read-only, until it's loaded with [loadFromFilePath]
-  }) : nextImageId = 0,
-       backgroundPattern = stows.lastBackgroundPattern.value,
-       lineHeight = stows.lastLineHeight.value,
-       lineThickness = stows.lastLineThickness.value,
-       pages = [],
-       assetCache = AssetCache();
+  @visibleForTesting
+  EditorCoreInfo({required this.filePath, this.readOnlyReason})
+    : nextImageId = 0,
+      backgroundPattern = stows.lastBackgroundPattern.value,
+      lineHeight = stows.lastLineHeight.value,
+      lineThickness = stows.lastLineThickness.value,
+      pages = [],
+      assetCache = AssetCache();
 
   EditorCoreInfo._({
     required this.filePath,
-    required this.readOnly,
-    required this.readOnlyBecauseOfVersion,
+    required this.readOnlyReason,
     required this.nextImageId,
     this.backgroundColor,
     required this.backgroundPattern,
@@ -121,12 +125,17 @@ class EditorCoreInfo {
   factory EditorCoreInfo.fromJson(
     Map<String, dynamic> json, {
     required String filePath,
-    required bool readOnly,
     required bool onlyFirstPage,
   }) {
+    ReadOnlyReason? readOnlyReason;
     final fileVersion = json['v'] as int? ?? 0;
-    final readOnlyBecauseOfVersion = fileVersion > sbnVersion;
-    readOnly = readOnly || readOnlyBecauseOfVersion;
+    if (fileVersion > sbnVersion) {
+      readOnlyReason ??= .versionTooNew;
+      log.warning(
+        'File version $fileVersion is newer than supported $sbnVersion. '
+        'Note may be read incorrectly or incompletely.',
+      );
+    }
 
     /// Note that inline assets aren't used anymore
     /// since sbnVersion 19.
@@ -165,23 +174,18 @@ class EditorCoreInfo {
 
     return EditorCoreInfo._(
         filePath: filePath,
-        readOnly: readOnly,
-        readOnlyBecauseOfVersion: readOnlyBecauseOfVersion,
+        readOnlyReason: readOnlyReason,
         nextImageId: json['ni'] as int? ?? 0,
         backgroundColor: backgroundColor,
-        backgroundPattern: () {
-          final pattern = json['p'] as String?;
-          for (final p in CanvasBackgroundPattern.values) {
-            if (p.name == pattern) return p;
-          }
-          return CanvasBackgroundPattern.none;
-        }(),
+        backgroundPattern: CanvasBackgroundPattern.fromName(
+          json['p'] as String?,
+        ),
         lineHeight: json['l'] as int? ?? stows.lastLineHeight.value,
         lineThickness: json['lt'] as int? ?? stows.lastLineThickness.value,
         pages: _parsePagesJson(
           json['z'] as List?,
           inlineAssets: inlineAssets,
-          readOnly: readOnly,
+          readOnlyReason: readOnlyReason,
           onlyFirstPage: onlyFirstPage,
           fileVersion: fileVersion,
           sbnPath: filePath,
@@ -207,7 +211,6 @@ class EditorCoreInfo {
   EditorCoreInfo.fromOldJson(
     List<dynamic> json, {
     required this.filePath,
-    this.readOnly = false,
     required bool onlyFirstPage,
   }) : nextImageId = 0,
        backgroundPattern = .none,
@@ -228,7 +231,7 @@ class EditorCoreInfo {
   static List<EditorPage> _parsePagesJson(
     List<dynamic>? pages, {
     required List<Uint8List>? inlineAssets,
-    required bool readOnly,
+    required ReadOnlyReason? readOnlyReason,
     required bool onlyFirstPage,
     required int fileVersion,
     required String sbnPath,
@@ -253,7 +256,7 @@ class EditorCoreInfo {
             (dynamic page) => EditorPage.fromJson(
               page as Map<String, dynamic>,
               inlineAssets: inlineAssets,
-              readOnly: readOnly,
+              readOnly: readOnlyReason != null,
               fileVersion: fileVersion,
               sbnPath: sbnPath,
               assetCache: assetCache,
@@ -309,7 +312,7 @@ class EditorCoreInfo {
       final images = EditorPage.parseImagesJson(
         imagesJson,
         inlineAssets: inlineAssets,
-        isThumbnail: readOnly,
+        isThumbnail: readOnlyReason != null,
         onlyFirstPage: onlyFirstPage,
         sbnPath: filePath,
         assetCache: assetCache,
@@ -347,7 +350,6 @@ class EditorCoreInfo {
 
   static Future<EditorCoreInfo> loadFromFilePath(
     String path, {
-    bool readOnly = false,
     bool onlyFirstPage = false,
   }) async {
     final bsonBytes = await FileManager.readFile(path + Editor.extension);
@@ -363,14 +365,13 @@ class EditorCoreInfo {
     }
 
     if (bsonBytes == null && jsonString == null) {
-      return EditorCoreInfo(filePath: path, readOnly: readOnly);
+      return EditorCoreInfo(filePath: path);
     }
 
     return loadFromFileContents(
       jsonString: jsonString,
       bsonBytes: bsonBytes,
       path: path,
-      readOnly: readOnly,
       onlyFirstPage: onlyFirstPage,
     );
   }
@@ -380,19 +381,13 @@ class EditorCoreInfo {
     String? jsonString,
     Uint8List? bsonBytes,
     required String path,
-    required bool readOnly,
     required bool onlyFirstPage,
     bool alwaysUseIsolate = false,
   }) async {
     EditorCoreInfo coreInfo;
     try {
-      EditorCoreInfo isolate() => _loadFromFileIsolate(
-        jsonString,
-        bsonBytes,
-        path,
-        readOnly,
-        onlyFirstPage,
-      );
+      EditorCoreInfo isolate() =>
+          _loadFromFileIsolate(jsonString, bsonBytes, path, onlyFirstPage);
 
       final length = jsonString?.length ?? bsonBytes!.length;
       if (alwaysUseIsolate || length > 2 * 1024 * 1024) {
@@ -422,7 +417,7 @@ class EditorCoreInfo {
       if (kDebugMode) {
         rethrow;
       } else {
-        coreInfo = EditorCoreInfo(filePath: path, readOnly: readOnly);
+        coreInfo = EditorCoreInfo(filePath: path, readOnlyReason: .corrupted);
       }
     }
 
@@ -433,7 +428,6 @@ class EditorCoreInfo {
     String? jsonString,
     Uint8List? bsonBytes,
     String path,
-    bool readOnly,
     bool onlyFirstPage,
   ) {
     final dynamic json;
@@ -458,14 +452,12 @@ class EditorCoreInfo {
       return EditorCoreInfo.fromOldJson(
         json,
         filePath: path,
-        readOnly: readOnly,
         onlyFirstPage: onlyFirstPage,
       );
     } else {
       return EditorCoreInfo.fromJson(
         json as Map<String, dynamic>,
         filePath: path,
-        readOnly: readOnly,
         onlyFirstPage: onlyFirstPage,
       );
     }
@@ -540,8 +532,7 @@ class EditorCoreInfo {
 
   EditorCoreInfo copyWith({
     String? filePath,
-    bool? readOnly,
-    bool? readOnlyBecauseOfVersion,
+    ReadOnlyReason? readOnlyReason,
     int? nextImageId,
     Color? backgroundColor,
     CanvasBackgroundPattern? backgroundPattern,
@@ -551,9 +542,7 @@ class EditorCoreInfo {
   }) {
     return EditorCoreInfo._(
       filePath: filePath ?? this.filePath,
-      readOnly: readOnly ?? this.readOnly,
-      readOnlyBecauseOfVersion:
-          readOnlyBecauseOfVersion ?? this.readOnlyBecauseOfVersion,
+      readOnlyReason: readOnlyReason ?? this.readOnlyReason,
       nextImageId: nextImageId ?? this.nextImageId,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       backgroundPattern: backgroundPattern ?? this.backgroundPattern,

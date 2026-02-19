@@ -32,8 +32,8 @@ jobs:
 
       - name: Setup Xcode
         run: |
-          echo "Selecting Xcode 16.4..."
-          sudo xcode-select -s /Applications/Xcode_16.4.app
+          echo "Selecting Xcode 26.1..."
+          sudo xcode-select -s /Applications/Xcode_26.1.app
           xcode-select -p
           echo
 
@@ -42,7 +42,7 @@ jobs:
           echo
 
           echo "Downloading iOS platform files..."
-          xcodebuild -downloadPlatform iOS -version 18.0
+          xcodebuild -downloadPlatform iOS -version 26.1
           echo
 
       - name: Setup Flutter
@@ -70,10 +70,11 @@ jobs:
       - name: Disable Flutter CLI animations
         run: flutter config --no-cli-animations
 
+      - run: ./patches/pre/remove_dev_dependencies.sh
+      - run: ./patches/pre/remove_linux_dependencies.sh
       - run: flutter pub get
-
-      - name: Remove development dependencies
-        run: ./patches/remove_dev_dependencies.sh
+      - run: ./patches/post/patch_rust_versions.sh
+      - run: ./patches/post/remove_wasm_libs.sh
 
       - name: Build for iOS
         run: |
@@ -105,7 +106,7 @@ jobs:
           SENTRY_PROJECT: saber
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: Saber-iOS-Archive
           path: ${{ steps.move.outputs.ipaPath }}

@@ -23,6 +23,34 @@ import 'package:yaru/yaru.dart';
 import 'utils/test_mock_channel_handlers.dart';
 import 'utils/test_user.dart';
 
+Future<void> setupDemoFiles() async {
+  const demoFiles = <String>[
+    // These files will be at the top of recent files
+    '/Annotate images and diagrams.sbn2',
+    '/Golden ratio.sbn2',
+    '/Import PDFs.sbn2',
+    '/Metric Spaces Week 1.sbn2',
+    '/You can type notes too!.sbn2',
+  ];
+  final fillerFiles = <String>[];
+  await Future.wait(
+    Directory('test/demo_notes/').listSync().whereType<File>().map((
+      file,
+    ) async {
+      /// The file name starting with a slash
+      final fileName = file.path.substring(file.path.lastIndexOf('/'));
+      if (fileName.endsWith('.sbn2') || fileName.endsWith('.sbn')) {
+        if (!demoFiles.contains(fileName)) fillerFiles.add(fileName);
+      }
+      final bytes = await file.readAsBytes();
+      final dstFile = FileManager.getFile(fileName);
+      await dstFile.create(recursive: true);
+      return dstFile.writeAsBytes(bytes);
+    }),
+  );
+  stows.recentFiles.value = [...demoFiles, ...fillerFiles..sort()];
+}
+
 void main() {
   group('Screenshots:', () {
     TestWidgetsFlutterBinding.ensureInitialized();
@@ -42,39 +70,12 @@ void main() {
     stows.username.value = 'myusername';
     stows.sentryConsent.value = .granted;
 
-    setUpAll(
-      () => Future.wait([
+    setUpAll(() async {
+      await Future.wait([
         FileManager.init(shouldWatchRootDirectory: false),
         PencilShader.init(),
-      ]),
-    );
-
-    setUpAll(() async {
-      const demoFiles = <String>[
-        // These files will be at the top of recent files
-        '/Annotate images and diagrams.sbn2',
-        '/Golden ratio.sbn2',
-        '/Import PDFs.sbn2',
-        '/Metric Spaces Week 1.sbn2',
-        '/You can type notes too!.sbn2',
-      ];
-      final fillerFiles = <String>[];
-      await Future.wait(
-        Directory('test/demo_notes/').listSync().whereType<File>().map((
-          file,
-        ) async {
-          /// The file name starting with a slash
-          final fileName = file.path.substring(file.path.lastIndexOf('/'));
-          if (fileName.endsWith('.sbn2') || fileName.endsWith('.sbn')) {
-            if (!demoFiles.contains(fileName)) fillerFiles.add(fileName);
-          }
-          final bytes = await file.readAsBytes();
-          final dstFile = FileManager.getFile(fileName);
-          await dstFile.create(recursive: true);
-          return dstFile.writeAsBytes(bytes);
-        }),
-      );
-      stows.recentFiles.value = [...demoFiles, ...fillerFiles..sort()];
+      ]);
+      await setupDemoFiles();
     });
 
     const seedColor = YaruColors.blue;
@@ -129,16 +130,14 @@ void _screenshot({
   required String goldenFileName,
   required Widget child,
 }) {
-  /// Some locales have font issues where text is not displayed properly.
-  /// If you know how to fix this, contributions are welcome!
-  const localesWithFontIssues = {
-    'ar',
-    'fa',
-    'he',
-    'ja',
-    'zh-Hans-CN',
-    'zh-Hant-TW',
-  };
+  /// These locales aren't supported by my InterNotoSansHybrid font:
+  /// https://github.com/adil192/inter-noto-hybrid
+  const localesWithNoFonts = {'ja', 'zh-Hans-CN', 'zh-Hant-TW'};
+
+  /// These locales are supported by InterNotoSansHybrid but not
+  /// Apple or Ubuntu fonts.
+  const localesWithOnlyMaterialFonts = {'ar', 'fa', 'he', 'th'};
+
   const allScreenshots = bool.fromEnvironment('ALL_SCREENSHOTS');
   final localeDeviceMatrix = allScreenshots
       ? {
@@ -148,7 +147,7 @@ void _screenshot({
           // for other locales (except those with font issues)
           // create screenshots for flathub and android only
           for (final locale in localeNames.keys)
-            if (!localesWithFontIssues.contains(locale)) ...[
+            if (!localesWithNoFonts.contains(locale)) ...[
               (locale, GoldenScreenshotDevices.flathub),
               (locale, GoldenScreenshotDevices.androidTablet),
               (locale, GoldenScreenshotDevices.androidPhone),
@@ -173,12 +172,17 @@ void _screenshot({
           addTearDown(() => NextcloudProfile.forceLoginStep = null);
         }
 
+        var theme = switch (device.platform) {
+          .linux => yaruTheme,
+          .iOS || .macOS => cupertinoTheme,
+          _ => materialTheme,
+        };
+        if (localesWithOnlyMaterialFonts.contains(localeCode)) {
+          theme = theme.copyWith(textTheme: materialTheme.textTheme);
+        }
+
         final widget = ScreenshotApp.withConditionalTitlebar(
-          theme: switch (device.platform) {
-            .linux => yaruTheme,
-            .iOS || .macOS => cupertinoTheme,
-            _ => materialTheme,
-          },
+          theme: theme,
           device: device,
           frameColors: frameColors,
           title: 'Saber',

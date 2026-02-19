@@ -220,7 +220,8 @@ class _TranslationsEditorIt extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsIt imageOptions = _TranslationsEditorImageOptionsIt._(_root);
 	@override late final _TranslationsEditorSelectionBarIt selectionBar = _TranslationsEditorSelectionBarIt._(_root);
 	@override late final _TranslationsEditorMenuIt menu = _TranslationsEditorMenuIt._(_root);
-	@override late final _TranslationsEditorNewerFileFormatIt newerFileFormat = _TranslationsEditorNewerFileFormatIt._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerIt readOnlyBanner = _TranslationsEditorReadOnlyBannerIt._(_root);
+	@override late final _TranslationsEditorVersionTooNewIt versionTooNew = _TranslationsEditorVersionTooNewIt._(_root);
 	@override late final _TranslationsEditorQuillIt quill = _TranslationsEditorQuillIt._(_root);
 	@override late final _TranslationsEditorHudIt hud = _TranslationsEditorHudIt._(_root);
 	@override String get pages => 'Pagine';
@@ -303,8 +304,9 @@ class _TranslationsHomeRenameNoteIt extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'Nome nota';
 	@override String get rename => 'Rinomina';
 	@override String get noteNameEmpty => 'Il nome della nota non può essere vuoto';
-	@override String get noteNameContainsSlash => 'Il nome della nota non può contenere una barra';
 	@override String get noteNameExists => 'Esiste già una nota con questo nome';
+	@override String get noteNameForbiddenCharacters => 'Il nome della nota contiene caratteri vietati';
+	@override String get noteNameReserved => 'Nome nota riservato';
 }
 
 // Path: home.moveNote
@@ -748,14 +750,25 @@ class _TranslationsEditorMenuIt extends TranslationsEditorMenuEn {
 	@override late final _TranslationsEditorMenuBgPatternsIt bgPatterns = _TranslationsEditorMenuBgPatternsIt._(_root);
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatIt extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatIt._(TranslationsIt root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerIt extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerIt._(TranslationsIt root) : this._root = root, super.internal(root);
 
 	final TranslationsIt _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Modalità di sola lettura';
+	@override String get title => 'Modalità di sola lettura';
+	@override String get watchingServer => 'Al momento stai monitorando gli aggiornamenti sul server. La modifica è disabilitata in questa modalità.';
+	@override String get corrupted => 'Impossibile caricare la nota. Potrebbe essere danneggiata o ancora in fase di download.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewIt extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewIt._(TranslationsIt root) : this._root = root, super.internal(root);
+
+	final TranslationsIt _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Questa nota è stata modificata utilizzando una versione più recente di Saber';
 	@override String get subtitle => 'La modifica di questa nota potrebbe comportare la perdita di alcune informazioni. Vuoi ignorare e modificarla comunque?';
 	@override String get allowEditing => 'Consenti modifica';

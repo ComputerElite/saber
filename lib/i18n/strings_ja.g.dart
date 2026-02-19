@@ -218,7 +218,8 @@ class _TranslationsEditorJa extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsJa imageOptions = _TranslationsEditorImageOptionsJa._(_root);
 	@override late final _TranslationsEditorSelectionBarJa selectionBar = _TranslationsEditorSelectionBarJa._(_root);
 	@override late final _TranslationsEditorMenuJa menu = _TranslationsEditorMenuJa._(_root);
-	@override late final _TranslationsEditorNewerFileFormatJa newerFileFormat = _TranslationsEditorNewerFileFormatJa._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerJa readOnlyBanner = _TranslationsEditorReadOnlyBannerJa._(_root);
+	@override late final _TranslationsEditorVersionTooNewJa versionTooNew = _TranslationsEditorVersionTooNewJa._(_root);
 	@override late final _TranslationsEditorQuillJa quill = _TranslationsEditorQuillJa._(_root);
 	@override late final _TranslationsEditorHudJa hud = _TranslationsEditorHudJa._(_root);
 	@override String get pages => 'ページ';
@@ -301,8 +302,9 @@ class _TranslationsHomeRenameNoteJa extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'メモのタイトル';
 	@override String get rename => '名称変更';
 	@override String get noteNameEmpty => 'メモのタイトルは空欄にすることはできません';
-	@override String get noteNameContainsSlash => 'メモのタイトルにはスラッシュを使用できません';
 	@override String get noteNameExists => '同一のタイトルがすでに存在します';
+	@override String get noteNameForbiddenCharacters => 'ノート名に禁止文字が含まれています';
+	@override String get noteNameReserved => 'ノート名は予約済み';
 }
 
 // Path: home.moveNote
@@ -396,10 +398,10 @@ class _TranslationsSettingsPrefLabelsJa extends TranslationsSettingsPrefLabelsEn
 	@override String get preferGreyscale => 'グレースケールを優先';
 	@override String get maxImageSize => '最大画像サイズ';
 	@override String get autoClearWhiteboardOnExit => 'アプリを終了したらホワイトボードを消去する';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => '指の描画を自動的に無効にする';
 	@override String get editorPromptRename => '新しいメモの名前を変更するよう促す';
 	@override String get recentColorsDontSavePresets => '最近使用した色をプリセットに登録しない';
 	@override String get printPageIndicators => '印刷ページのインジケーター';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => '指の描画を自動的に無効にする';
 	@override String get sentry => 'エラー報告';
 	@override String get autosave => '自動保存';
 	@override String get simplifiedHomeLayout => '簡素化されたホームレイアウト';
@@ -425,10 +427,10 @@ class _TranslationsSettingsPrefDescriptionsJa extends TranslationsSettingsPrefDe
 	@override String get autoClearWhiteboardOnExit => '他のデバイスと同期されます';
 	@override String get maxImageSize => 'これより大きな画像は圧縮されます';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingJa hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingJa._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'スタイラスが検出されたときに指の描画をオフにする';
 	@override String get editorPromptRename => 'メモの名前は後でいつでも変更できます';
 	@override String get printPageIndicators => 'エクスポートにページインジケーターを表示';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryJa sentry = _TranslationsSettingsPrefDescriptionsSentryJa._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'スタイラスが検出されたときに指の描画をオフにする';
 	@override String get autosave => '短い遅延の後、または決して自動保存しません';
 	@override String get simplifiedHomeLayout => '各ノートのプレビューに固定の高さを設定します';
 	@override String get autoStraightenLines => 'シェイプペンを使用せずに長い線をまっすぐにします。';
@@ -746,14 +748,25 @@ class _TranslationsEditorMenuJa extends TranslationsEditorMenuEn {
 	@override String get backgroundImageFit => '背景画像';
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatJa extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatJa._(TranslationsJa root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerJa extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerJa._(TranslationsJa root) : this._root = root, super.internal(root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => '読み取り専用モード';
+	@override String get title => '読み取り専用モード';
+	@override String get watchingServer => '現在、サーバー上の更新を監視しています。このモードでは編集は無効になります。';
+	@override String get corrupted => 'メモの読み込みに失敗しました。破損しているか、まだダウンロード中の可能性があります。';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewJa extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewJa._(TranslationsJa root) : this._root = root, super.internal(root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'このメモは新しいバージョンのSaberを使用して編集されたものです';
 	@override String get subtitle => 'このメモを編集すると、いくつかの情報が失われる可能性があります。これを無視して編集しますか？';
 	@override String get allowEditing => '編集を許可する';

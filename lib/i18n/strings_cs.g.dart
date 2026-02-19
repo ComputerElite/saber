@@ -220,7 +220,8 @@ class _TranslationsEditorCs extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsCs imageOptions = _TranslationsEditorImageOptionsCs._(_root);
 	@override late final _TranslationsEditorSelectionBarCs selectionBar = _TranslationsEditorSelectionBarCs._(_root);
 	@override late final _TranslationsEditorMenuCs menu = _TranslationsEditorMenuCs._(_root);
-	@override late final _TranslationsEditorNewerFileFormatCs newerFileFormat = _TranslationsEditorNewerFileFormatCs._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerCs readOnlyBanner = _TranslationsEditorReadOnlyBannerCs._(_root);
+	@override late final _TranslationsEditorVersionTooNewCs versionTooNew = _TranslationsEditorVersionTooNewCs._(_root);
 	@override late final _TranslationsEditorQuillCs quill = _TranslationsEditorQuillCs._(_root);
 	@override late final _TranslationsEditorHudCs hud = _TranslationsEditorHudCs._(_root);
 	@override String get pages => 'Stránky';
@@ -303,8 +304,9 @@ class _TranslationsHomeRenameNoteCs extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'Nový název poznámky';
 	@override String get rename => 'Přejmenovat';
 	@override String get noteNameEmpty => 'Název poznámky nemůže být prázdný';
-	@override String get noteNameContainsSlash => 'Název poznámky nemůže obsahovat lomítko';
 	@override String get noteNameExists => 'Poznámka s tímto názvem již existuje';
+	@override String get noteNameForbiddenCharacters => 'Zadaný název poznámky obsahuje nepovolené znaky';
+	@override String get noteNameReserved => 'Tento název poznámky je rezervovaný pro účely aplikace';
 }
 
 // Path: home.moveNote
@@ -748,14 +750,25 @@ class _TranslationsEditorMenuCs extends TranslationsEditorMenuEn {
 	@override late final _TranslationsEditorMenuBgPatternsCs bgPatterns = _TranslationsEditorMenuBgPatternsCs._(_root);
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatCs extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatCs._(TranslationsCs root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerCs extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerCs._(TranslationsCs root) : this._root = root, super.internal(root);
 
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Otevřít v režimu pouze pro čtení';
+	@override String get title => 'Otevřít v režimu pouze pro čtení';
+	@override String get watchingServer => 'Aktuálně máte zapnuté sledování změn ze serveru. V tomto módu jsou vypnuté úpravy.';
+	@override String get corrupted => 'Poznámku se nepodařilo načíst. Buď se ještě stahuje, nebo může být poškozená.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewCs extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewCs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Tato poznámka byla upravena v novější verzi aplikace Saber';
 	@override String get subtitle => 'Úpravou této poznámky můžete přijít o některé informace. Přejete tuto skutečnost ignorovat a přesto pokračovat k úpravě poznámky?';
 	@override String get allowEditing => 'Povolit úpravy';

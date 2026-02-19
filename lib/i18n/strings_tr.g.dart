@@ -220,7 +220,8 @@ class _TranslationsEditorTr extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsTr imageOptions = _TranslationsEditorImageOptionsTr._(_root);
 	@override late final _TranslationsEditorSelectionBarTr selectionBar = _TranslationsEditorSelectionBarTr._(_root);
 	@override late final _TranslationsEditorMenuTr menu = _TranslationsEditorMenuTr._(_root);
-	@override late final _TranslationsEditorNewerFileFormatTr newerFileFormat = _TranslationsEditorNewerFileFormatTr._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerTr readOnlyBanner = _TranslationsEditorReadOnlyBannerTr._(_root);
+	@override late final _TranslationsEditorVersionTooNewTr versionTooNew = _TranslationsEditorVersionTooNewTr._(_root);
 	@override late final _TranslationsEditorQuillTr quill = _TranslationsEditorQuillTr._(_root);
 	@override late final _TranslationsEditorHudTr hud = _TranslationsEditorHudTr._(_root);
 	@override String get pages => 'Sayfalar';
@@ -303,8 +304,9 @@ class _TranslationsHomeRenameNoteTr extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'Not adı';
 	@override String get rename => 'Yeniden adlandır';
 	@override String get noteNameEmpty => 'Not adı boş bırakılamaz';
-	@override String get noteNameContainsSlash => 'Not adı eğik çizgi işareti içeremez';
 	@override String get noteNameExists => 'Bu isimde bir not zaten var';
+	@override String get noteNameForbiddenCharacters => 'Not adı yasak karakterler içeriyor';
+	@override String get noteNameReserved => 'Not adı saklıdır';
 }
 
 // Path: home.moveNote
@@ -401,7 +403,6 @@ class _TranslationsSettingsPrefLabelsTr extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'Uygulamadan çıkıldığında beyaz tahtayı temizle';
 	@override String get disableEraserAfterUse => 'Silgiden kaleme geçiş';
 	@override String get hideFingerDrawingToggle => 'Parmakla çizme kilidini sakla';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Parmak çizimini otomatik olarak devre dışı bırak';
 	@override String get editorPromptRename => 'Notları yeniden adlandırmak için uyar';
 	@override String get recentColorsDontSavePresets => 'Ön tanımlı renkleri son kullanılanlara kaydetme';
 	@override String get recentColorsLength => 'Kaç tane son kullanılan renk saklanacak';
@@ -410,6 +411,7 @@ class _TranslationsSettingsPrefLabelsTr extends TranslationsSettingsPrefLabelsEn
 	@override String get autoStraightenLines => 'Çizgileri otomatik düzleştir';
 	@override String get simplifiedHomeLayout => 'Sadeleştirilmiş ana ekran düzeni';
 	@override String get customDataDir => 'Özel Saber klasörü';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Parmak çizimini otomatik olarak devre dışı bırak';
 	@override String get sentry => 'Hata raporlama';
 	@override String get autosave => 'Otomatik koruma';
 }
@@ -428,7 +430,6 @@ class _TranslationsSettingsPrefDescriptionsTr extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'Silgiyi kullandıktan sonra otomatik olarak kaleme geçer';
 	@override String get maxImageSize => 'Bundan daha büyük görseller sıkıştırılacak';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingTr hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingTr._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Bir kalem algılandığında parmakla çizimi kapatın';
 	@override String get editorPromptRename => 'Notlarınızı daha sonra da yeniden adlandırabilirsiniz';
 	@override String get printPageIndicators => 'Çıktılarda sayfa belirteçlerini göster';
 	@override String get shapeRecognitionDelay => 'Çizilen şekilleri tanımlama sıklığını belirler';
@@ -436,6 +437,7 @@ class _TranslationsSettingsPrefDescriptionsTr extends TranslationsSettingsPrefDe
 	@override String get simplifiedHomeLayout => 'Not önizlemelerinin uzunluklarını eşitler';
 	@override String get shouldAlwaysAlertForUpdates => 'Güncelleme mevcut olduğu gibi bana haber ver';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryTr sentry = _TranslationsSettingsPrefDescriptionsSentryTr._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Bir kalem algılandığında parmakla çizimi kapatın';
 	@override String get autosave => 'Kısa bir gecikmeden sonra otomatik kaydetme veya asla';
 }
 
@@ -748,14 +750,25 @@ class _TranslationsEditorMenuTr extends TranslationsEditorMenuEn {
 	@override String get lineThicknessDescription => 'Arka plan çizgisi kalınlığı';
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatTr extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatTr._(TranslationsTr root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerTr extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerTr._(TranslationsTr root) : this._root = root, super.internal(root);
 
 	final TranslationsTr _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Yalnızca okunabilir mod';
+	@override String get title => 'Yalnızca okunabilir mod';
+	@override String get watchingServer => 'Şu anda sunucudaki güncellemeleri izliyorsunuz. Bu modda düzenleme devre dışı bırakılır.';
+	@override String get corrupted => 'Not yüklenemedi. Bozulmuş veya hâlâ indiriliyor olabilir.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewTr extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewTr._(TranslationsTr root) : this._root = root, super.internal(root);
+
+	final TranslationsTr _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Bu not Saber\'ın yeni bir versiyonunda düzenlenmiş';
 	@override String get subtitle => 'Bu notu düzenlemek veri kaybına sebep olabilir. Bunu görmezden gelerek düzenlemek ister misiniz?';
 	@override String get allowEditing => 'Düzenlemeye izin ver';

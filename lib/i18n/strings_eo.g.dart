@@ -220,7 +220,8 @@ class _TranslationsEditorEo extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsEo imageOptions = _TranslationsEditorImageOptionsEo._(_root);
 	@override late final _TranslationsEditorSelectionBarEo selectionBar = _TranslationsEditorSelectionBarEo._(_root);
 	@override late final _TranslationsEditorMenuEo menu = _TranslationsEditorMenuEo._(_root);
-	@override late final _TranslationsEditorNewerFileFormatEo newerFileFormat = _TranslationsEditorNewerFileFormatEo._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerEo readOnlyBanner = _TranslationsEditorReadOnlyBannerEo._(_root);
+	@override late final _TranslationsEditorVersionTooNewEo versionTooNew = _TranslationsEditorVersionTooNewEo._(_root);
 	@override late final _TranslationsEditorQuillEo quill = _TranslationsEditorQuillEo._(_root);
 	@override late final _TranslationsEditorHudEo hud = _TranslationsEditorHudEo._(_root);
 	@override String get pages => 'Paĝoj';
@@ -303,8 +304,9 @@ class _TranslationsHomeRenameNoteEo extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'Notonomo';
 	@override String get rename => 'Alinomu';
 	@override String get noteNameEmpty => 'Notonomo ne estu malplena';
-	@override String get noteNameContainsSlash => 'Notonomu ne havu oblikvon';
 	@override String get noteNameExists => 'Noto kun ĉi tiu nomo jam ekzistas';
+	@override String get noteNameForbiddenCharacters => 'Notonomo enhavas malpermesitajn signojn';
+	@override String get noteNameReserved => 'Noto nomo rezervita';
 }
 
 // Path: home.moveNote
@@ -401,7 +403,6 @@ class _TranslationsSettingsPrefLabelsEo extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'Malplenigu la tablon post foriro';
 	@override String get disableEraserAfterUse => 'Malaktivigu la forviŝilon';
 	@override String get hideFingerDrawingToggle => 'Kaŝu la fingrodesegnan ŝaltilon';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Aŭtomate malŝalti fingrodesegnadon';
 	@override String get editorPromptRename => 'Petu vin alinomi novajn notojn';
 	@override String get recentColorsDontSavePresets => 'Ne konservu kolorŝablonon en la lastuzitaj koloroj';
 	@override String get recentColorsLength => 'Nombro da lastuzitaj koloroj';
@@ -412,6 +413,7 @@ class _TranslationsSettingsPrefLabelsEo extends TranslationsSettingsPrefLabelsEn
 	@override String get simplifiedHomeLayout => 'Simpligita ĉefekranaranĝo';
 	@override String get customDataDir => 'Kutima Saber-dosierujo';
 	@override String get sentry => 'Erarraportado';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Aŭtomate malŝalti fingrodesegnadon';
 }
 
 // Path: settings.prefDescriptions
@@ -428,7 +430,6 @@ class _TranslationsSettingsPrefDescriptionsEo extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'Aŭtomate ŝanĝas reen al la plumo post uzi la forviŝilon';
 	@override String get maxImageSize => 'Pli grandaj bildoj densiĝos';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingEo hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingEo._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Malŝaltu fingrodesegnadon kiam grifelo estas detektita';
 	@override String get editorPromptRename => 'Vi ĉiam povas renomi notojn poste';
 	@override String get printPageIndicators => 'Montru paĝnumeradon post eksporto';
 	@override String get autosave => 'Aŭtomate konservas post iom da tempo aŭ neniam';
@@ -437,6 +438,7 @@ class _TranslationsSettingsPrefDescriptionsEo extends TranslationsSettingsPrefDe
 	@override String get simplifiedHomeLayout => 'Fiksas la alton por ĉiu notantaŭrigardo';
 	@override String get shouldAlwaysAlertForUpdates => 'Informu min pri ĝisdatigoj tuj kiam ili disponebliĝos';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryEo sentry = _TranslationsSettingsPrefDescriptionsSentryEo._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Malŝaltu fingrodesegnadon kiam grifelo estas detektita';
 }
 
 // Path: settings.themeModes
@@ -748,14 +750,25 @@ class _TranslationsEditorMenuEo extends TranslationsEditorMenuEn {
 	@override late final _TranslationsEditorMenuBgPatternsEo bgPatterns = _TranslationsEditorMenuBgPatternsEo._(_root);
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatEo extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatEo._(TranslationsEo root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerEo extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerEo._(TranslationsEo root) : this._root = root, super.internal(root);
 
 	final TranslationsEo _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Nurlegebla reĝimo';
+	@override String get title => 'Nurlegebla reĝimo';
+	@override String get watchingServer => 'Vi nuntempe rigardas por ĝisdatigoj sur la servilo. Redaktado estas malŝaltita en ĉi tiu reĝimo.';
+	@override String get corrupted => 'Malsukcesis ŝargi noton. Ĝi povas esti koruptita aŭ ankoraŭ elŝutita.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewEo extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewEo._(TranslationsEo root) : this._root = root, super.internal(root);
+
+	final TranslationsEo _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Ĉi tiu noto estis redaktita per pli nova versio de Saber';
 	@override String get subtitle => 'Redakti ĉi tiun noton eble kaŭzos perdon de iuj informoj. Ĉu vi volas malatenti kaj redakti ĝin spite al tio?';
 	@override String get allowEditing => 'Permesu redaktadon';

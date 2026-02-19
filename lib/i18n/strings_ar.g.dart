@@ -220,7 +220,8 @@ class _TranslationsEditorAr extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsAr imageOptions = _TranslationsEditorImageOptionsAr._(_root);
 	@override late final _TranslationsEditorSelectionBarAr selectionBar = _TranslationsEditorSelectionBarAr._(_root);
 	@override late final _TranslationsEditorMenuAr menu = _TranslationsEditorMenuAr._(_root);
-	@override late final _TranslationsEditorNewerFileFormatAr newerFileFormat = _TranslationsEditorNewerFileFormatAr._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerAr readOnlyBanner = _TranslationsEditorReadOnlyBannerAr._(_root);
+	@override late final _TranslationsEditorVersionTooNewAr versionTooNew = _TranslationsEditorVersionTooNewAr._(_root);
 	@override late final _TranslationsEditorQuillAr quill = _TranslationsEditorQuillAr._(_root);
 	@override late final _TranslationsEditorHudAr hud = _TranslationsEditorHudAr._(_root);
 	@override String get pages => 'صفحات';
@@ -303,8 +304,9 @@ class _TranslationsHomeRenameNoteAr extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'اسم الملاحظة';
 	@override String get rename => 'إعادة تسمية';
 	@override String get noteNameEmpty => 'لا يمكن أن يكون اسم الملاحظة فارغًا';
-	@override String get noteNameContainsSlash => 'لا يمكن أن يحتوي اسم الملاحظة على شرطة مائلة';
 	@override String get noteNameExists => 'توجد بالفعل ملاحظة بهذا الاسم';
+	@override String get noteNameForbiddenCharacters => 'يحتوي اسم الملاحظة على أحرف محظورة';
+	@override String get noteNameReserved => 'اسم الملاحظة محجوز';
 }
 
 // Path: home.moveNote
@@ -401,7 +403,6 @@ class _TranslationsSettingsPrefLabelsAr extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'امسح السبورة بعد الخروج من التطبيق';
 	@override String get disableEraserAfterUse => 'تعطيل الممحاة تلقائيًا بعد الاستخدام';
 	@override String get hideFingerDrawingToggle => 'إخفاء زر الرسم بالإصبع';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'التعطيل التلقائي لرسم الإصبع';
 	@override String get editorPromptRename => 'مطالبتك بإعادة تسمية الملاحظات الجديدة';
 	@override String get recentColorsDontSavePresets => 'لا تحفظ الألوان المعينة مسبقًا كألوان حديثة';
 	@override String get recentColorsLength => 'كم عدد الألوان الحديثة التي يجب تخزينها';
@@ -410,6 +411,7 @@ class _TranslationsSettingsPrefLabelsAr extends TranslationsSettingsPrefLabelsEn
 	@override String get autoStraightenLines => 'استقامة الخطوط تلقائيًا';
 	@override String get simplifiedHomeLayout => 'تخطيط الصفحة الرئيسية المبسط';
 	@override String get customDataDir => 'مخصص Saber مجلد';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'التعطيل التلقائي لرسم الإصبع';
 	@override String get sentry => 'الإبلاغ خطأ';
 	@override String get autosave => 'تلقائي';
 }
@@ -428,7 +430,6 @@ class _TranslationsSettingsPrefDescriptionsAr extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'التبديل تلقائيًا إلى القلم بعد استخدام الممحاة';
 	@override String get maxImageSize => 'سيتم ضغط الصور الأكبر من هذا';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingAr hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingAr._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'قم بإيقاف تشغيل الرسم بالإصبع عند اكتشاف القلم';
 	@override String get editorPromptRename => 'يمكنك دائمًا إعادة تسمية الملاحظات لاحقًا';
 	@override String get printPageIndicators => 'تظهر مؤشرات الصفحة في الصادرات';
 	@override String get shapeRecognitionDelay => 'عدد مرات تحديث معاينة الشكل';
@@ -436,6 +437,7 @@ class _TranslationsSettingsPrefDescriptionsAr extends TranslationsSettingsPrefDe
 	@override String get simplifiedHomeLayout => 'تعيين ارتفاع ثابت لكل معاينة ملاحظة';
 	@override String get shouldAlwaysAlertForUpdates => 'أبلغني عن التحديثات بمجرد توفرها';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryAr sentry = _TranslationsSettingsPrefDescriptionsSentryAr._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'قم بإيقاف تشغيل الرسم بالإصبع عند اكتشاف القلم';
 	@override String get autosave => 'تلقائي بعد تأخير قصير ، أو أبدا';
 }
 
@@ -748,14 +750,25 @@ class _TranslationsEditorMenuAr extends TranslationsEditorMenuEn {
 	@override String get lineThicknessDescription => 'سماكة خط الخلفية';
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatAr extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatAr._(TranslationsAr root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerAr extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerAr._(TranslationsAr root) : this._root = root, super.internal(root);
 
 	final TranslationsAr _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'وضع القراءة فقط';
+	@override String get title => 'وضع القراءة فقط';
+	@override String get watchingServer => 'أنت حاليًا تراقب التحديثات على الخادم. تم تعطيل التحرير في هذا الوضع.';
+	@override String get corrupted => 'فشل تحميل الملاحظة. ربما يكون تالفًا أو لا يزال قيد التنزيل.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewAr extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewAr._(TranslationsAr root) : this._root = root, super.internal(root);
+
+	final TranslationsAr _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'تم تحرير هذه الملاحظة باستخدام إصدار أحدث من Saber';
 	@override String get subtitle => 'قد يؤدي تحرير هذه الملاحظة إلى ضياع بعض المعلومات. هل تريد تجاهل هذا وتعديله على أي حال؟';
 	@override String get allowEditing => 'السماح بالتعديل';

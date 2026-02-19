@@ -40,6 +40,30 @@ class FileManager {
   /// including previews, e.g. `mynote.sbn2.1`.
   static final assetFileRegex = RegExp(r'\.sbn2?\.[\dp]+$');
 
+  /// Forbidden names for files and directories (on any/all platforms).
+  /// These patterns match the base name only (not the full path).
+  /// Source: https://stackoverflow.com/a/31976060/
+  static List<(String, RegExp)> _getForbiddenFilenamePatterns() => [
+    (
+      t.home.renameNote.noteNameForbiddenCharacters,
+      RegExp(r'[<>:"/\\|?*\x00-\x1F]'),
+    ),
+    (
+      t.home.renameNote.noteNameReserved,
+      RegExp(
+        r'^((con|prn|aux|nul|com[1-9]|lpt[1-9])(\..*)?)|\.+$',
+        caseSensitive: false,
+      ),
+    ),
+  ];
+  static String? validateFilename(String filename) {
+    if (filename.isEmpty) return t.home.renameNote.noteNameEmpty;
+    for (final (error, regexp) in _getForbiddenFilenamePatterns()) {
+      if (regexp.hasMatch(filename)) return error;
+    }
+    return null;
+  }
+
   static Future<void> init({
     String? documentsDirectory,
     bool shouldWatchRootDirectory = true,
@@ -642,6 +666,10 @@ class FileManager {
 
   static Future<List<String>> getRecentlyAccessed() async {
     if (!stows.recentFiles.loaded) await stows.recentFiles.waitUntilRead();
+    // Delete entries for files that have been deleted outside of Saber
+    for (final file in stows.recentFiles.value.toList()) {
+      if (!doesFileExist(file)) _removeReferences(file);
+    }
     return stows.recentFiles.value
         .map((String filePath) {
           if (filePath.endsWith(Editor.extension)) {

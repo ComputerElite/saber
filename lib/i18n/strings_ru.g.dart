@@ -220,7 +220,8 @@ class _TranslationsEditorRu extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsRu imageOptions = _TranslationsEditorImageOptionsRu._(_root);
 	@override late final _TranslationsEditorSelectionBarRu selectionBar = _TranslationsEditorSelectionBarRu._(_root);
 	@override late final _TranslationsEditorMenuRu menu = _TranslationsEditorMenuRu._(_root);
-	@override late final _TranslationsEditorNewerFileFormatRu newerFileFormat = _TranslationsEditorNewerFileFormatRu._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerRu readOnlyBanner = _TranslationsEditorReadOnlyBannerRu._(_root);
+	@override late final _TranslationsEditorVersionTooNewRu versionTooNew = _TranslationsEditorVersionTooNewRu._(_root);
 	@override late final _TranslationsEditorQuillRu quill = _TranslationsEditorQuillRu._(_root);
 	@override late final _TranslationsEditorHudRu hud = _TranslationsEditorHudRu._(_root);
 	@override String get pages => 'Листы';
@@ -303,8 +304,9 @@ class _TranslationsHomeRenameNoteRu extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'Название заметки';
 	@override String get rename => 'Переименовать';
 	@override String get noteNameEmpty => 'Название заметки не может быть пустым';
-	@override String get noteNameContainsSlash => 'Название заметки не может содержать косую черту';
 	@override String get noteNameExists => 'Заметка с таким названием уже существует';
+	@override String get noteNameForbiddenCharacters => 'Название заметки содержит запрёщенные символы';
+	@override String get noteNameReserved => 'Название заметки зарезервировано';
 }
 
 // Path: home.moveNote
@@ -401,7 +403,7 @@ class _TranslationsSettingsPrefLabelsRu extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'Очищать лист при выходе из приложения';
 	@override String get disableEraserAfterUse => 'Автоотключение ластика';
 	@override String get hideFingerDrawingToggle => 'Скрыть переключатель «Рисование пальцем»';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Автоматическое отключение рисования пальцем';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Автоотключение рисования пальцем';
 	@override String get editorPromptRename => 'Предлагать переименовывать новые заметки';
 	@override String get recentColorsDontSavePresets => 'Не сохранять предустановленные цвета в последних цветах';
 	@override String get recentColorsLength => 'Количество последних сохраняемых цветов';
@@ -428,7 +430,7 @@ class _TranslationsSettingsPrefDescriptionsRu extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'Автоматически переключается на перо после использования ластика';
 	@override String get maxImageSize => 'Большие изображения будут сжаты';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingRu hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingRu._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Отключить рисование пальцем при обнаружении стилуса';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Отключение рисования пальцем при обнаружении пера';
 	@override String get editorPromptRename => 'Вы всегда можете переименовать заметки позже';
 	@override String get printPageIndicators => 'Показывать номера страниц при экспорте';
 	@override String get autosave => 'Автосохранение с задержкой';
@@ -748,14 +750,25 @@ class _TranslationsEditorMenuRu extends TranslationsEditorMenuEn {
 	@override late final _TranslationsEditorMenuBgPatternsRu bgPatterns = _TranslationsEditorMenuBgPatternsRu._(_root);
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatRu extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatRu._(TranslationsRu root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerRu extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerRu._(TranslationsRu root) : this._root = root, super.internal(root);
 
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Режим «Только чтение»';
+	@override String get title => 'Режим «Только чтение»';
+	@override String get watchingServer => 'В данный момент вы следите за обновлениями на сервере. В этом режиме редактирование отключено.';
+	@override String get corrupted => 'Не удалось загрузить заметку. Возможно, она повреждена или все еще загружается.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewRu extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewRu._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Эта заметка была отредактирована в более новой версии Saber.';
 	@override String get subtitle => 'Редактирование этой заметки может привести к потере некоторой информации. Вы хотите проигнорировать это и начать редактирование?';
 	@override String get allowEditing => 'Разрешить редактирование';

@@ -218,7 +218,8 @@ class _TranslationsEditorFr extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsFr imageOptions = _TranslationsEditorImageOptionsFr._(_root);
 	@override late final _TranslationsEditorSelectionBarFr selectionBar = _TranslationsEditorSelectionBarFr._(_root);
 	@override late final _TranslationsEditorMenuFr menu = _TranslationsEditorMenuFr._(_root);
-	@override late final _TranslationsEditorNewerFileFormatFr newerFileFormat = _TranslationsEditorNewerFileFormatFr._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerFr readOnlyBanner = _TranslationsEditorReadOnlyBannerFr._(_root);
+	@override late final _TranslationsEditorVersionTooNewFr versionTooNew = _TranslationsEditorVersionTooNewFr._(_root);
 	@override late final _TranslationsEditorQuillFr quill = _TranslationsEditorQuillFr._(_root);
 	@override late final _TranslationsEditorHudFr hud = _TranslationsEditorHudFr._(_root);
 	@override String get pages => 'Pages';
@@ -301,8 +302,9 @@ class _TranslationsHomeRenameNoteFr extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'Nom de note';
 	@override String get rename => 'Renommer';
 	@override String get noteNameEmpty => 'Le nom de note ne peut pas être vide';
-	@override String get noteNameContainsSlash => 'Le nom de note ne peut pas contenir une barre oblique';
 	@override String get noteNameExists => 'Une note du même nom existe déjà';
+	@override String get noteNameForbiddenCharacters => 'Le nom de la note contient des caractères interdits';
+	@override String get noteNameReserved => 'Nom de la note réservé';
 }
 
 // Path: home.moveNote
@@ -399,12 +401,12 @@ class _TranslationsSettingsPrefLabelsFr extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'Effacer le tableau blanc quand vous fermez l\'application';
 	@override String get disableEraserAfterUse => 'Désactiver automatiquement la gomme après usage';
 	@override String get hideFingerDrawingToggle => 'Cacher l\'icône d\'activation/désactivation de tracé au doigt';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Désactivation automatique du dessin au doigt';
 	@override String get editorPromptRename => 'Vous rappeler de renommer les notes';
 	@override String get recentColorsDontSavePresets => 'Ne pas conserver les couleurs pré-définies parmi les couleurs récentes';
 	@override String get recentColorsLength => 'Nombre de couleurs récentes à conserver';
 	@override String get printPageIndicators => 'Imprimer les numéros de pages';
 	@override String get shapeRecognitionDelay => 'Délai de reconnaissance de forme';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Désactivation automatique du dessin au doigt';
 	@override String get sentry => 'Rapports d\'erreur';
 	@override String get autosave => 'S\'attacher automatiquement';
 	@override String get simplifiedHomeLayout => 'Aménagement d\'une maison simplifié';
@@ -426,12 +428,12 @@ class _TranslationsSettingsPrefDescriptionsFr extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'Revenir automatiquement au stylo après usage de la gomme';
 	@override String get maxImageSize => 'Les images plus grandes seront compressées';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingFr hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingFr._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Désactiver le dessin au doigt lorsqu\'un stylet est détecté';
 	@override String get editorPromptRename => 'Vous pourrez toujours les renommer plus tard';
 	@override String get printPageIndicators => 'Montrer les numéros de pages dans les exportations';
 	@override String get shapeRecognitionDelay => 'Avec quelle fréquence mettre à jour la prévisualisation de forme';
 	@override String get shouldAlwaysAlertForUpdates => 'Me prévenir dès qu\'une mise à jour est disponible';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryFr sentry = _TranslationsSettingsPrefDescriptionsSentryFr._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'Désactiver le dessin au doigt lorsqu\'un stylet est détecté';
 	@override String get autosave => 'S\'attacher automatiquement après un court délai, ou jamais';
 	@override String get simplifiedHomeLayout => 'Définit une hauteur fixe pour chaque aperçu de note';
 	@override String get autoStraightenLines => 'Redresse les longues lignes sans avoir à utiliser le stylo de forme';
@@ -746,14 +748,25 @@ class _TranslationsEditorMenuFr extends TranslationsEditorMenuEn {
 	@override String get lineHeightDescription => 'Contrôle également la taille du texte pour les notes saisies';
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatFr extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatFr._(TranslationsFr root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerFr extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerFr._(TranslationsFr root) : this._root = root, super.internal(root);
 
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Mode lecture seule';
+	@override String get title => 'Mode lecture seule';
+	@override String get corrupted => 'Échec du chargement de la note. Il est peut-être corrompu ou en cours de téléchargement.';
+	@override String get watchingServer => 'Vous surveillez actuellement les mises à jour sur le serveur. L\'édition est désactivée dans ce mode.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewFr extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Cette note a été modifiée avec une version plus récente de Saber';
 	@override String get subtitle => 'Éditer cette note pourrait entraîner la perte de certaines informations. Voulez-vous la modifier quand même ?';
 	@override String get allowEditing => 'Autoriser les modifications';

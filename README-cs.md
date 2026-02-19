@@ -54,6 +54,8 @@ Objevte zcela nový způsob zaznamenávání a organizace vašich myšlenek s ap
 [![Flathub](https://img.shields.io/flathub/downloads/com.adilhanney.saber?label=sta%C5%BEen%C3%AD%20z%20Flathubu)](https://flathub.org/cs/apps/details/com.adilhanney.saber)
 [![Sponzoři na GitHubu](https://img.shields.io/github/sponsors/adil192?label=sponzo%C5%99i)](https://github.com/sponsors/adil192)
 [![GitHub](https://img.shields.io/github/license/saber-notes/saber?label=licence)](https://github.com/saber-notes/saber/blob/main/LICENSE.md)
+[![Stav překladů](https://img.shields.io/weblate/progress/saber-notes?label=p%C5%99elo%C5%BEeno)](https://hosted.weblate.org/engage/saber-notes/)
+[![Codecov](https://codecov.io/gh/saber-notes/saber/branch/main/graph/badge.svg?token=EGQSN0THW2)](https://codecov.io/gh/saber-notes/saber)
 
 <details open>
 <summary>Klepněte pro zobrazení/skrytí snímků obrazovky</summary>
@@ -86,9 +88,11 @@ Podívejte se na wiki stránku
 
 ## Překlady
 
-Podívejte se na wiki stránku
-[Překlady](https://github.com/saber-notes/saber/wiki/Translating)
-(anglicky).
+Všechny překlady vznikají díky naší komunitě přispěvatelů.
+
+Pokud byste chtěli pomoci s překladem aplikace Saber, přejděte na [Weblate](https://hosted.weblate.org/engage/saber-notes/)!
+
+[![Stav překladů](https://hosted.weblate.org/widget/saber-notes/multi-auto.svg)](https://hosted.weblate.org/engage/saber-notes/)
 
 ## Podpora aplikace Saber
 
@@ -111,8 +115,8 @@ Podívejte se na wiki stránku
 [google_play]: https://play.google.com/store/apps/details?id=com.adilhanney.saber
 [snap]: https://snapcraft.io/saber
 [app_store]: https://apps.apple.com/cz/app/saber/id1671523739
-[download_windows]: https://github.com/saber-notes/saber/releases/download/v1.29.1/SaberInstaller_v1.29.1.exe
-[download_appimage]: https://github.com/saber-notes/saber/releases/download/v1.29.1/Saber-1.29.1-x86_64.AppImage
+[download_windows]: https://github.com/saber-notes/saber/releases/download/v1.31.1/SaberInstaller_v1.31.1.exe
+[download_appimage]: https://github.com/saber-notes/saber/releases/download/v1.31.1/Saber-1.31.1-x86_64.AppImage
 
 [nextcloud]: https://nc.saber.adil.hanney.org/
 

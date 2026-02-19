@@ -220,7 +220,8 @@ class _TranslationsEditorDe extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsDe imageOptions = _TranslationsEditorImageOptionsDe._(_root);
 	@override late final _TranslationsEditorSelectionBarDe selectionBar = _TranslationsEditorSelectionBarDe._(_root);
 	@override late final _TranslationsEditorMenuDe menu = _TranslationsEditorMenuDe._(_root);
-	@override late final _TranslationsEditorNewerFileFormatDe newerFileFormat = _TranslationsEditorNewerFileFormatDe._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerDe readOnlyBanner = _TranslationsEditorReadOnlyBannerDe._(_root);
+	@override late final _TranslationsEditorVersionTooNewDe versionTooNew = _TranslationsEditorVersionTooNewDe._(_root);
 	@override late final _TranslationsEditorQuillDe quill = _TranslationsEditorQuillDe._(_root);
 	@override late final _TranslationsEditorHudDe hud = _TranslationsEditorHudDe._(_root);
 	@override String get pages => 'Seiten';
@@ -303,8 +304,9 @@ class _TranslationsHomeRenameNoteDe extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => 'Name der Notiz';
 	@override String get rename => 'Umbenennen';
 	@override String get noteNameEmpty => 'Name der Notiz darf nicht leer sein';
-	@override String get noteNameContainsSlash => 'Name der Notiz darf keinen Schrägstrich enthalten';
 	@override String get noteNameExists => 'Notiz mit diesem Namen existiert bereits';
+	@override String get noteNameForbiddenCharacters => 'Der Notizname enthält verbotene Zeichen';
+	@override String get noteNameReserved => 'Notizname reserviert';
 }
 
 // Path: home.moveNote
@@ -748,14 +750,25 @@ class _TranslationsEditorMenuDe extends TranslationsEditorMenuEn {
 	@override late final _TranslationsEditorMenuBgPatternsDe bgPatterns = _TranslationsEditorMenuBgPatternsDe._(_root);
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatDe extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatDe._(TranslationsDe root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerDe extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerDe._(TranslationsDe root) : this._root = root, super.internal(root);
 
 	final TranslationsDe _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'Schreibgeschützter Modus';
+	@override String get title => 'Schreibgeschützter Modus';
+	@override String get corrupted => 'Notiz konnte nicht geladen werden. Möglicherweise ist es beschädigt oder wird noch heruntergeladen.';
+	@override String get watchingServer => 'Sie suchen derzeit nach Updates auf dem Server. Die Bearbeitung ist in diesem Modus deaktiviert.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewDe extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'Diese Notiz wurde mit einer neueren Version von Saber bearbeitet';
 	@override String get subtitle => 'Durch das Bearbeiten dieser Notiz können Daten verloren gehen. Möchtest du sie trotzdem bearbeiten?';
 	@override String get allowEditing => 'Schreibschutz aufheben';

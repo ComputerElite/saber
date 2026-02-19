@@ -220,7 +220,8 @@ class _TranslationsEditorZhHansCn extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsZhHansCn imageOptions = _TranslationsEditorImageOptionsZhHansCn._(_root);
 	@override late final _TranslationsEditorSelectionBarZhHansCn selectionBar = _TranslationsEditorSelectionBarZhHansCn._(_root);
 	@override late final _TranslationsEditorMenuZhHansCn menu = _TranslationsEditorMenuZhHansCn._(_root);
-	@override late final _TranslationsEditorNewerFileFormatZhHansCn newerFileFormat = _TranslationsEditorNewerFileFormatZhHansCn._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerZhHansCn readOnlyBanner = _TranslationsEditorReadOnlyBannerZhHansCn._(_root);
+	@override late final _TranslationsEditorVersionTooNewZhHansCn versionTooNew = _TranslationsEditorVersionTooNewZhHansCn._(_root);
 	@override late final _TranslationsEditorQuillZhHansCn quill = _TranslationsEditorQuillZhHansCn._(_root);
 	@override late final _TranslationsEditorHudZhHansCn hud = _TranslationsEditorHudZhHansCn._(_root);
 	@override String get pages => '页面';
@@ -303,8 +304,9 @@ class _TranslationsHomeRenameNoteZhHansCn extends TranslationsHomeRenameNoteEn {
 	@override String get noteName => '笔记名称';
 	@override String get rename => '重命名';
 	@override String get noteNameEmpty => '笔记名称不能为空';
-	@override String get noteNameContainsSlash => '注意名称不能包含斜杠';
 	@override String get noteNameExists => '此名称的笔记已经存在';
+	@override String get noteNameReserved => '备注名称保留';
+	@override String get noteNameForbiddenCharacters => '注意名称包含禁用字符';
 }
 
 // Path: home.moveNote
@@ -748,14 +750,25 @@ class _TranslationsEditorMenuZhHansCn extends TranslationsEditorMenuEn {
 	@override late final _TranslationsEditorMenuBgPatternsZhHansCn bgPatterns = _TranslationsEditorMenuBgPatternsZhHansCn._(_root);
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatZhHansCn extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatZhHansCn._(TranslationsZhHansCn root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerZhHansCn extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerZhHansCn._(TranslationsZhHansCn root) : this._root = root, super.internal(root);
 
 	final TranslationsZhHansCn _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => '只读模式';
+	@override String get title => '只读模式';
+	@override String get watchingServer => '您当前正在查看服务器上的更新。在此模式下禁用编辑。';
+	@override String get corrupted => '无法加载笔记。它可能已损坏或仍在下载。';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewZhHansCn extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewZhHansCn._(TranslationsZhHansCn root) : this._root = root, super.internal(root);
+
+	final TranslationsZhHansCn _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => '此笔记使用新版 Saber 编辑而成';
 	@override String get subtitle => '编辑此笔记可能会导致某些信息丢失。您想忽略并编辑吗？';
 	@override String get allowEditing => '允许编辑';

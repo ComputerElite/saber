@@ -218,7 +218,8 @@ class _TranslationsEditorHe extends TranslationsEditorEn {
 	@override late final _TranslationsEditorImageOptionsHe imageOptions = _TranslationsEditorImageOptionsHe._(_root);
 	@override late final _TranslationsEditorSelectionBarHe selectionBar = _TranslationsEditorSelectionBarHe._(_root);
 	@override late final _TranslationsEditorMenuHe menu = _TranslationsEditorMenuHe._(_root);
-	@override late final _TranslationsEditorNewerFileFormatHe newerFileFormat = _TranslationsEditorNewerFileFormatHe._(_root);
+	@override late final _TranslationsEditorReadOnlyBannerHe readOnlyBanner = _TranslationsEditorReadOnlyBannerHe._(_root);
+	@override late final _TranslationsEditorVersionTooNewHe versionTooNew = _TranslationsEditorVersionTooNewHe._(_root);
 	@override late final _TranslationsEditorQuillHe quill = _TranslationsEditorQuillHe._(_root);
 	@override late final _TranslationsEditorHudHe hud = _TranslationsEditorHudHe._(_root);
 	@override String get pages => 'דפים';
@@ -300,8 +301,9 @@ class _TranslationsHomeRenameNoteHe extends TranslationsHomeRenameNoteEn {
 	@override String get renameNote => 'שנה את שם הפתק';
 	@override String get noteName => 'שם הפתק';
 	@override String get rename => 'שנה שם';
+	@override String get noteNameForbiddenCharacters => 'שם הערה מכיל תווים אסורים';
+	@override String get noteNameReserved => 'שם הערה שמור';
 	@override String get noteNameEmpty => 'שם הערה לא יכול להיות ריק';
-	@override String get noteNameContainsSlash => 'שם הערה לא יכול להכיל קו נטוי';
 	@override String get noteNameExists => 'הערה בשם זה כבר קיימת';
 }
 
@@ -399,10 +401,10 @@ class _TranslationsSettingsPrefLabelsHe extends TranslationsSettingsPrefLabelsEn
 	@override String get autoClearWhiteboardOnExit => 'נקה אוטומטית את הלוח הלבן';
 	@override String get disableEraserAfterUse => 'השבת אוטומטית את המחק';
 	@override String get hideFingerDrawingToggle => 'הסתר את מתג ציור האצבע';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'השבתה אוטומטית של ציור אצבע';
 	@override String get editorPromptRename => 'מבקש ממך לשנות את שם הערות חדשות';
 	@override String get recentColorsDontSavePresets => 'אל תשמור צבעים מוגדרים מראש בצבעים אחרונים';
 	@override String get printPageIndicators => 'הדפסת עמודים מחוונים';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'השבתה אוטומטית של ציור אצבע';
 	@override String get sentry => 'דיווח שגיאות';
 	@override String get autosave => 'שמור אוטומטי';
 	@override String get simplifiedHomeLayout => 'פריסת בית פשוטה';
@@ -426,11 +428,11 @@ class _TranslationsSettingsPrefDescriptionsHe extends TranslationsSettingsPrefDe
 	@override String get disableEraserAfterUse => 'מעבר אוטומטי חזרה לעט לאחר שימוש במחק';
 	@override String get maxImageSize => 'תמונות גדולות יותר יידחסו';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'כבה את ציור האצבע כאשר מזוהה חרט';
 	@override String get editorPromptRename => 'תמיד תוכל לשנות את שם הפתקים מאוחר יותר';
 	@override String get printPageIndicators => 'הצג מחווני עמודים בייצוא';
 	@override String get shouldAlwaysAlertForUpdates => 'ספר לי על עדכונים ברגע שהם יהיו זמינים';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryHe sentry = _TranslationsSettingsPrefDescriptionsSentryHe._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'כבה את ציור האצבע כאשר מזוהה חרט';
 	@override String get autosave => 'יש לשעוג אוטומטית לאחר עיכוב קצר, או לעולם';
 	@override String get simplifiedHomeLayout => 'מגדיר גובה קבוע עבור כל תצוגה מקדימה של הערה';
 	@override String get autoStraightenLines => 'מיישר קווים ארוכים ללא צורך להשתמש בעט הצורה';
@@ -746,14 +748,25 @@ class _TranslationsEditorMenuHe extends TranslationsEditorMenuEn {
 	@override String get lineHeightDescription => 'שולט גם בגודל הטקסט עבור הערות מוקלדות';
 }
 
-// Path: editor.newerFileFormat
-class _TranslationsEditorNewerFileFormatHe extends TranslationsEditorNewerFileFormatEn {
-	_TranslationsEditorNewerFileFormatHe._(TranslationsHe root) : this._root = root, super.internal(root);
+// Path: editor.readOnlyBanner
+class _TranslationsEditorReadOnlyBannerHe extends TranslationsEditorReadOnlyBannerEn {
+	_TranslationsEditorReadOnlyBannerHe._(TranslationsHe root) : this._root = root, super.internal(root);
 
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get readOnlyMode => 'מצב צפייה בלבד';
+	@override String get title => 'מצב צפייה בלבד';
+	@override String get watchingServer => 'כרגע אתה צופה לעדכונים בשרת. העריכה מושבתת במצב זה.';
+	@override String get corrupted => 'טעינת ההערה נכשלה. ייתכן שהוא פגום או עדיין בהורדה.';
+}
+
+// Path: editor.versionTooNew
+class _TranslationsEditorVersionTooNewHe extends TranslationsEditorVersionTooNewEn {
+	_TranslationsEditorVersionTooNewHe._(TranslationsHe root) : this._root = root, super.internal(root);
+
+	final TranslationsHe _root; // ignore: unused_field
+
+	// Translations
 	@override String get title => 'הערה זו נערכה באמצעות גרסה חדשה יותר של Saber';
 	@override String get subtitle => 'עריכת פתק זה עלולה לגרום לאיבוד מידע מסוים. האם אתה רוצה להתאלם מזה בכל מקרה?';
 	@override String get allowEditing => 'אפשר עריכה';

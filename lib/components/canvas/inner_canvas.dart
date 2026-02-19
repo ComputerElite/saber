@@ -8,10 +8,11 @@ import 'package:saber/components/canvas/_stroke.dart';
 import 'package:saber/components/canvas/canvas_image.dart';
 import 'package:saber/components/canvas/image/editor_image.dart';
 import 'package:saber/data/editor/editor_core_info.dart';
-import 'package:saber/data/editor/quill_styles.dart';
 import 'package:saber/data/prefs.dart';
 import 'package:saber/data/tools/select.dart';
 import 'package:saber/i18n/strings.g.dart';
+import 'package:sbn/canvas_background_pattern.dart';
+import 'package:sbn/quill_styles.dart';
 
 class InnerCanvas extends StatefulWidget {
   const InnerCanvas({
@@ -20,8 +21,7 @@ class InnerCanvas extends StatefulWidget {
     this.redrawPageListenable,
     required this.width,
     required this.height,
-    this.isPreview = false,
-    this.isPrint = false,
+    this.showPageIndicator = true,
     this.textEditing = false,
     required this.coreInfo,
     required this.currentStroke,
@@ -37,10 +37,7 @@ class InnerCanvas extends StatefulWidget {
   final Listenable? redrawPageListenable;
   final double width;
   final double height;
-
-  final bool isPreview;
-  final bool isPrint;
-
+  final bool showPageIndicator;
   final bool textEditing;
   final EditorCoreInfo coreInfo;
   final Stroke? currentStroke;
@@ -137,9 +134,7 @@ class _InnerCanvasState extends State<InnerCanvas> {
           currentSelection: widget.currentSelection,
           primaryColor: colorScheme.primary,
           page: page,
-          showPageIndicator:
-              !widget.isPreview &&
-              (!widget.isPrint || stows.printPageIndicators.value),
+          showPageIndicator: widget.showPageIndicator,
           pageIndex: widget.pageIndex,
           totalPages: widget.coreInfo.pages.length,
           currentScale: widget.currentScale,
