@@ -78,6 +78,7 @@ class _TranslationsHomeZhHansCn extends TranslationsHomeEn {
 	@override late final _TranslationsHomeRenameNoteZhHansCn renameNote = _TranslationsHomeRenameNoteZhHansCn._(_root);
 	@override late final _TranslationsHomeMoveNoteZhHansCn moveNote = _TranslationsHomeMoveNoteZhHansCn._(_root);
 	@override String get deleteNote => '删除笔记';
+	@override late final _TranslationsHomeDeleteNoteDialogZhHansCn deleteNoteDialog = _TranslationsHomeDeleteNoteDialogZhHansCn._(_root);
 	@override late final _TranslationsHomeRenameFolderZhHansCn renameFolder = _TranslationsHomeRenameFolderZhHansCn._(_root);
 	@override late final _TranslationsHomeDeleteFolderZhHansCn deleteFolder = _TranslationsHomeDeleteFolderZhHansCn._(_root);
 }
@@ -305,8 +306,8 @@ class _TranslationsHomeRenameNoteZhHansCn extends TranslationsHomeRenameNoteEn {
 	@override String get rename => '重命名';
 	@override String get noteNameEmpty => '笔记名称不能为空';
 	@override String get noteNameExists => '此名称的笔记已经存在';
-	@override String get noteNameReserved => '备注名称保留';
-	@override String get noteNameForbiddenCharacters => '注意名称包含禁用字符';
+	@override String get noteNameForbiddenCharacters => '笔记名称包含禁止使用的字符';
+	@override String get noteNameReserved => '保留了笔记名';
 }
 
 // Path: home.moveNote
@@ -323,6 +324,22 @@ class _TranslationsHomeMoveNoteZhHansCn extends TranslationsHomeMoveNoteEn {
 	@override String renamedTo({required Object newName}) => '笔记将重命名为 ${newName}';
 	@override String get multipleRenamedTo => '以下笔记将被重命名：';
 	@override String numberRenamedTo({required Object n}) => '${n} 个笔记将被重命名以避免冲突';
+}
+
+// Path: home.deleteNoteDialog
+class _TranslationsHomeDeleteNoteDialogZhHansCn extends TranslationsHomeDeleteNoteDialogEn {
+	_TranslationsHomeDeleteNoteDialogZhHansCn._(TranslationsZhHansCn root) : this._root = root, super.internal(root);
+
+	final TranslationsZhHansCn _root; // ignore: unused_field
+
+	// Translations
+	@override String confirmDelete({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('zh'))(n,
+		one: '永久删除选中的笔记？',
+		other: '永久删除选中的笔记？',
+	);
+	@override String deleteNotes({required Object n}) => '删除 ${n} 笔记';
+	@override String deleteName({required Object f}) => '删除 ${f}';
+	@override String get delete => '删除';
 }
 
 // Path: home.renameFolder
@@ -497,7 +514,7 @@ class _TranslationsSettingsCustomDataDirZhHansCn extends TranslationsSettingsCus
 	@override String get select => '选择';
 	@override String get mustBeEmpty => '所选文件夹必须为空';
 	@override String get mustBeDoneSyncing => '更改文件夹前，请确保同步已完成';
-	@override String get unsupported => '此功能目前仅限开发者使用，可能导致数据丢失';
+	@override String get unsupported => '此功能目前仅限开发者使用，可能导致数据丢失。';
 }
 
 // Path: login.form
@@ -605,7 +622,7 @@ class _TranslationsProfile$faq$0i2$ZhHansCn extends TranslationsProfile$faq$0i2$
 
 	// Translations
 	@override String get q => '如何更改我的加密密码？';
-	@override String get a => '1.退出Saber。请确保在注销前完成同步，以免丢失任何数据（在主屏幕上查看同步进度）。\n2.转到您的服务器网站并删除您的“Saber”文件夹。这将从服务器中删除您的所有笔记。\n3.重新登录 Saber。您可以在登录时选择一个新的加密密码。\n4.不要忘记在您的其他设备上注销并重新登录 Saber。';
+	@override String get a => '0. 请确保在注销前完成同步，以免丢失任何数据（在主屏幕上查看同步进度）。\n1.退出 Saber 登录。\n2.转到您的服务器网站并删除您的“Saber”文件夹。这将从服务器中删除您的所有笔记。\n3.重新登录 Saber。您可以在登录时选择一个新的加密密码。\n4.不要忘记在您的其他设备上注销并重新登录 Saber。';
 }
 
 // Path: profile.faq.3
@@ -758,8 +775,8 @@ class _TranslationsEditorReadOnlyBannerZhHansCn extends TranslationsEditorReadOn
 
 	// Translations
 	@override String get title => '只读模式';
-	@override String get watchingServer => '您当前正在查看服务器上的更新。在此模式下禁用编辑。';
-	@override String get corrupted => '无法加载笔记。它可能已损坏或仍在下载。';
+	@override String get watchingServer => '当前正在监视服务器的更新，此模式下编辑功能已禁用。';
+	@override String get corrupted => '无法加载笔记。它可能已损坏或仍在下载中。';
 }
 
 // Path: editor.versionTooNew

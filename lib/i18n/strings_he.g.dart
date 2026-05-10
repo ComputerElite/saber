@@ -52,9 +52,9 @@ class _TranslationsCommonHe extends TranslationsCommonEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get cancel => 'בטל';
-	@override String get done => 'בוצע';
-	@override String get continueBtn => 'לְהַמשִׁיך';
+	@override String get done => 'סיום';
+	@override String get continueBtn => 'המשך';
+	@override String get cancel => 'ביטול';
 }
 
 // Path: home
@@ -68,18 +68,19 @@ class _TranslationsHomeHe extends TranslationsHomeEn {
 	@override late final _TranslationsHomeTitlesHe titles = _TranslationsHomeTitlesHe._(_root);
 	@override late final _TranslationsHomeTooltipsHe tooltips = _TranslationsHomeTooltipsHe._(_root);
 	@override late final _TranslationsHomeCreateHe create = _TranslationsHomeCreateHe._(_root);
-	@override String get welcome => 'ברוכים הבאים ל Saber';
-	@override String get invalidFormat => 'הקובץ שבחרת אינו תומך. אנא בחר בקובץ .sbn\' .sbn2\' .sba או .pdf';
-	@override String get noFiles => 'קבצים לא נמצאו';
-	@override String get createNewNote => 'הקש על הלחצן + כדי ליצור הערה חדשה';
-	@override String get backFolder => 'חזור אחורה לתקייה הקודמת';
+	@override String get welcome => 'ברוך בואך אל Saber';
+	@override String get invalidFormat => 'הקובץ שבחרת אינו נתמך. נא לבחור בקובץ sbn,‏ sbn2,‏ sba, או pdf.';
+	@override String get noFiles => 'לא נמצאו קבצים';
+	@override String get noPreviewAvailable => 'אין תצוגה מקדימה זמינה';
+	@override String get createNewNote => 'יש להקיש על הכפתור „+” בשביל ליצור פתק חדש';
+	@override String get backFolder => 'חזרה לתיקייה הקודמת';
 	@override late final _TranslationsHomeNewFolderHe newFolder = _TranslationsHomeNewFolderHe._(_root);
 	@override late final _TranslationsHomeRenameNoteHe renameNote = _TranslationsHomeRenameNoteHe._(_root);
 	@override late final _TranslationsHomeMoveNoteHe moveNote = _TranslationsHomeMoveNoteHe._(_root);
-	@override String get deleteNote => 'מחק פתק';
+	@override String get deleteNote => 'מחיקת פתק';
+	@override late final _TranslationsHomeDeleteNoteDialogHe deleteNoteDialog = _TranslationsHomeDeleteNoteDialogHe._(_root);
 	@override late final _TranslationsHomeRenameFolderHe renameFolder = _TranslationsHomeRenameFolderHe._(_root);
 	@override late final _TranslationsHomeDeleteFolderHe deleteFolder = _TranslationsHomeDeleteFolderHe._(_root);
-	@override String get noPreviewAvailable => 'אין תצוגה מקדימה זמינה';
 }
 
 // Path: sentry
@@ -113,11 +114,11 @@ class _TranslationsSettingsHe extends TranslationsSettingsEn {
 		'שמאל',
 	];
 	@override late final _TranslationsSettingsResetHe reset = _TranslationsSettingsResetHe._(_root);
+	@override String get resyncEverything => 'סנכרון מחדש של הכול';
+	@override String get openDataDir => 'פתיחת תיקיית Saber';
 	@override late final _TranslationsSettingsCustomDataDirHe customDataDir = _TranslationsSettingsCustomDataDirHe._(_root);
-	@override String get autosaveDisabled => 'לְעוֹלָם לֹא';
-	@override String get shapeRecognitionDisabled => 'לְעוֹלָם לֹא';
-	@override String get openDataDir => 'פתח את תיקיית Saber';
-	@override String get resyncEverything => 'סנכרן הכל מחדש';
+	@override String get autosaveDisabled => 'אף פעם';
+	@override String get shapeRecognitionDisabled => 'אף פעם';
 }
 
 // Path: logs
@@ -127,11 +128,11 @@ class _TranslationsLogsHe extends TranslationsLogsEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get useTheApp => 'יומנים יופיעו כאן בזמן שאתה משתמש באפליקציה';
-	@override String get logs => 'יומנים';
-	@override String get viewLogs => 'הצג יומנים';
-	@override String get debuggingInfo => 'יומנים מכילים מידע שימושי עבור איתור באגים ופיתוח';
-	@override String get noLogs => 'אין כאן יומנים!';
+	@override String get logs => 'יומן';
+	@override String get viewLogs => 'הצגת היומן';
+	@override String get debuggingInfo => 'היומן מכיל מידע שימושי לניפוי שגיאות ולפיתוח';
+	@override String get noLogs => 'אין כאן פלט יומן!';
+	@override String get useTheApp => 'פלט היומן יופיע כאן ככל שייעשה ביישום יותר שימוש';
 }
 
 // Path: login
@@ -148,12 +149,14 @@ class _TranslationsLoginHe extends TranslationsLoginEn {
 		linkToSignup('הירשם עכשיו'),
 		const TextSpan(text: '!'),
 	]);
+	@override TextSpan notYou({required InlineSpanBuilder undoLogin}) => TextSpan(children: [
+		const TextSpan(text: 'זה לא חשבונך? אפשר '),
+		undoLogin('לבחור חשבון אחר'),
+		const TextSpan(text: '.'),
+	]);
 	@override late final _TranslationsLoginStatusHe status = _TranslationsLoginStatusHe._(_root);
 	@override late final _TranslationsLoginNcLoginStepHe ncLoginStep = _TranslationsLoginNcLoginStepHe._(_root);
 	@override late final _TranslationsLoginEncLoginStepHe encLoginStep = _TranslationsLoginEncLoginStepHe._(_root);
-	@override TextSpan notYou({required InlineSpanBuilder undoLogin}) => TextSpan(children: [
-		undoLogin('לא אתה'),
-	]);
 }
 
 // Path: profile
@@ -165,16 +168,16 @@ class _TranslationsProfileHe extends TranslationsProfileEn {
 	// Translations
 	@override String get title => 'הפרופיל שלי';
 	@override String get logout => 'התנתק';
+	@override String quotaUsage({required Object used, required Object total, required Object percent}) => 'נעשה שימוש ב־${used} מתוך ${total} (‏${percent}‏%)';
+	@override String get connectedTo => 'התחברת אל';
 	@override late final _TranslationsProfileQuickLinksHe quickLinks = _TranslationsProfileQuickLinksHe._(_root);
+	@override String get faqTitle => 'שאלות ותשובות';
 	@override List<dynamic> get faq => [
 		_TranslationsProfile$faq$0i0$He._(_root),
 		_TranslationsProfile$faq$0i1$He._(_root),
 		_TranslationsProfile$faq$0i2$He._(_root),
 		_TranslationsProfile$faq$0i3$He._(_root),
 	];
-	@override String quotaUsage({required Object used, required Object total, required Object percent}) => 'אתה משתמש ב-${used} של ${total} (${percent}%)';
-	@override String get connectedTo => 'מחובר ל';
-	@override String get faqTitle => 'שאלות נפוצות';
 }
 
 // Path: appInfo
@@ -184,11 +187,11 @@ class _TranslationsAppInfoHe extends TranslationsAppInfoEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String licenseNotice({required Object buildYear}) => 'Saber  Copyright © 2022-${buildYear}  Adil Hanney\nתוכנית זו מגיעה ללא כל אחריות. זוהי תוכנה חופשית ואתה מוזמן להפיץ אותו מחדש בתנאים מסוימים.';
+	@override String licenseNotice({required Object buildYear}) => 'Saber  כל הזכויות שמורות © 2022-${buildYear}  עַאדִל האני\nתוכנית זו מגיעה ללא כל אחריות. זוהי תוכנה חופשית ואפשר להפיץ אותה מחדש בתנאים מסוימים.';
 	@override String get debug => 'דִּיבָּג';
-	@override String get sponsorButton => 'הקש כאן כדי לתת לי חסות או לקנות שטח אחסון נוסף';
-	@override String get licenseButton => 'הקש כאן כדי להציג פרטי רישיון נוספים';
-	@override String get privacyPolicyButton => 'הקש כאן כדי להציג את מדיניות הפרטיות';
+	@override String get sponsorButton => 'אפשר להקיש כאן כדי לתת לי חסות או לקנות שטח אחסון נוסף';
+	@override String get licenseButton => 'אפשר להקיש כאן כדי להציג פרטי רישיון נוספים';
+	@override String get privacyPolicyButton => 'אפשר להקיש כאן כדי להציג את מדיניות הפרטיות';
 }
 
 // Path: update
@@ -201,7 +204,7 @@ class _TranslationsUpdateHe extends TranslationsUpdateEn {
 	@override String get updateAvailable => 'עדכון זמין';
 	@override String get updateAvailableDescription => 'גרסה חדשה של היישום זמינה עם שינויים אלה:';
 	@override String get update => 'עדכן';
-	@override String get downloadNotAvailableYet => 'ההורדה עדיין לא זמינה עבור הפלטפורמה שלך. אנא בדוק שוב בקרוב.';
+	@override String get downloadNotAvailableYet => 'ההורדה עדיין אינה זמינה לפלטפורמה שלך. נא לבדוק שוב בעוד זמן קצר.';
 }
 
 // Path: editor
@@ -222,9 +225,9 @@ class _TranslationsEditorHe extends TranslationsEditorEn {
 	@override late final _TranslationsEditorVersionTooNewHe versionTooNew = _TranslationsEditorVersionTooNewHe._(_root);
 	@override late final _TranslationsEditorQuillHe quill = _TranslationsEditorQuillHe._(_root);
 	@override late final _TranslationsEditorHudHe hud = _TranslationsEditorHudHe._(_root);
-	@override String get pages => 'דפים';
+	@override String get pages => 'עמודים';
 	@override String get untitled => 'חסר כותרת';
-	@override String get needsToSaveBeforeExiting => 'שמירת השינויים... אתה יכול לצאת בבטחה מהעורך בסיום';
+	@override String get needsToSaveBeforeExiting => 'השינויים נשמרים... אפשר לצאת בבטחה מהעורך בעת סיום השמירה';
 }
 
 // Path: home.tabs
@@ -235,8 +238,8 @@ class _TranslationsHomeTabsHe extends TranslationsHomeTabsEn {
 
 	// Translations
 	@override String get home => 'בית';
-	@override String get browse => 'דפדף';
-	@override String get whiteboard => 'לוח לבן';
+	@override String get browse => 'עיון';
+	@override String get whiteboard => 'לוח מחיק';
 	@override String get settings => 'הגדרות';
 }
 
@@ -248,8 +251,8 @@ class _TranslationsHomeTitlesHe extends TranslationsHomeTitlesEn {
 
 	// Translations
 	@override String get home => 'פתקים אחרונים';
-	@override String get browse => 'דפדף';
-	@override String get whiteboard => 'לוח לבן';
+	@override String get browse => 'עיון';
+	@override String get whiteboard => 'לוח מחיק';
 	@override String get settings => 'הגדרות';
 }
 
@@ -261,8 +264,8 @@ class _TranslationsHomeTooltipsHe extends TranslationsHomeTooltipsEn {
 
 	// Translations
 	@override String get newNote => 'פתק חדש';
-	@override String get showUpdateDialog => 'תיבת הדו-שיח הצג עדכון';
-	@override String get exportNote => 'ייצא הערה';
+	@override String get showUpdateDialog => 'הצגת חלונית עדכון';
+	@override String get exportNote => 'ייצוא פתק';
 }
 
 // Path: home.create
@@ -273,7 +276,7 @@ class _TranslationsHomeCreateHe extends TranslationsHomeCreateEn {
 
 	// Translations
 	@override String get newNote => 'פתק חדש';
-	@override String get importNote => 'יבא פתק';
+	@override String get importNote => 'ייבוא פתק';
 }
 
 // Path: home.newFolder
@@ -283,12 +286,12 @@ class _TranslationsHomeNewFolderHe extends TranslationsHomeNewFolderEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get newFolder => 'תקייה חדשה';
-	@override String get folderName => 'שם התקייה';
-	@override String get create => 'צור';
-	@override String get folderNameEmpty => 'שם התקייה לא יכול להיות ריק';
-	@override String get folderNameContainsSlash => 'שם התקייה לא יכול להכיל לוכסן';
-	@override String get folderNameExists => 'תקייה כבר קיימת';
+	@override String get newFolder => 'תיקייה חדשה';
+	@override String get folderName => 'שם התיקייה';
+	@override String get create => 'יצירה';
+	@override String get folderNameEmpty => 'שם התיקייה אינו יכול להיות ריק';
+	@override String get folderNameContainsSlash => 'שם התיקייה אינו יכול להכיל קו נטוי';
+	@override String get folderNameExists => 'התיקייה כבר קיימת';
 }
 
 // Path: home.renameNote
@@ -298,13 +301,13 @@ class _TranslationsHomeRenameNoteHe extends TranslationsHomeRenameNoteEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get renameNote => 'שנה את שם הפתק';
+	@override String get renameNote => 'שינוי שם הפתק';
 	@override String get noteName => 'שם הפתק';
-	@override String get rename => 'שנה שם';
-	@override String get noteNameForbiddenCharacters => 'שם הערה מכיל תווים אסורים';
-	@override String get noteNameReserved => 'שם הערה שמור';
-	@override String get noteNameEmpty => 'שם הערה לא יכול להיות ריק';
-	@override String get noteNameExists => 'הערה בשם זה כבר קיימת';
+	@override String get rename => 'שינוי שם';
+	@override String get noteNameEmpty => 'שם הפתק אינו יכול להיות ריק';
+	@override String get noteNameExists => 'כבר קיים פתק בשם זה';
+	@override String get noteNameForbiddenCharacters => 'שם הפתק מכיל תווים אסורים';
+	@override String get noteNameReserved => 'שם הפתק שמור';
 }
 
 // Path: home.moveNote
@@ -314,13 +317,29 @@ class _TranslationsHomeMoveNoteHe extends TranslationsHomeMoveNoteEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get moveNote => 'הזז פתק';
-	@override String moveName({required Object f}) => 'הזז ${f}';
-	@override String get move => 'הזז';
-	@override String renamedTo({required Object newName}) => 'שם הפתק ישתנה ל ${newName}';
-	@override String moveNotes({required Object n}) => 'העבר ${n} פתקים';
-	@override String get multipleRenamedTo => 'שמות ההערות הבאות ישונו:';
-	@override String numberRenamedTo({required Object n}) => 'השם של ${n} הערות ישונה כדי למנוע התנגשויות';
+	@override String get moveNote => 'העברת פתק';
+	@override String moveNotes({required Object n}) => 'העברת ${n} פתקים';
+	@override String moveName({required Object f}) => 'העברת ${f}';
+	@override String get move => 'העברה';
+	@override String renamedTo({required Object newName}) => 'שם הפתק ישתנה לשם ${newName}';
+	@override String get multipleRenamedTo => 'ישתנה שמם של הפתקים הבאים:';
+	@override String numberRenamedTo({required Object n}) => 'ישתנה שמם של ${n} פתקים בשביל להימנע מהתנגשויות';
+}
+
+// Path: home.deleteNoteDialog
+class _TranslationsHomeDeleteNoteDialogHe extends TranslationsHomeDeleteNoteDialogEn {
+	_TranslationsHomeDeleteNoteDialogHe._(TranslationsHe root) : this._root = root, super.internal(root);
+
+	final TranslationsHe _root; // ignore: unused_field
+
+	// Translations
+	@override String deleteNotes({required Object n}) => 'מחיקת ${n} פתקים';
+	@override String deleteName({required Object f}) => 'מחיקת ${f}';
+	@override String confirmDelete({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('he'))(n,
+		one: 'למחוק את הפתק שנבחר לצמיתות?',
+		other: 'למחוק את הפתקים שנבחרו לצמיתות?',
+	);
+	@override String get delete => 'מחיקה';
 }
 
 // Path: home.renameFolder
@@ -330,12 +349,12 @@ class _TranslationsHomeRenameFolderHe extends TranslationsHomeRenameFolderEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get renameFolder => 'שנה את שם התקייה';
-	@override String get folderName => 'שם התקייה';
-	@override String get rename => 'שנה שם';
-	@override String get folderNameEmpty => 'שם התקייה לא יכול להיות ריק';
-	@override String get folderNameContainsSlash => 'שם התקייה לא יכול להכיל לוכסן';
-	@override String get folderNameExists => 'תקייה כבר קיימת';
+	@override String get renameFolder => 'שינוי שם התיקייה';
+	@override String get folderName => 'שם התיקייה';
+	@override String get rename => 'שינוי שם';
+	@override String get folderNameEmpty => 'שם התיקייה אינו יכול להיות ריק';
+	@override String get folderNameContainsSlash => 'שם התיקייה אינו יכול להכיל קו נטוי';
+	@override String get folderNameExists => 'כבר קיימת תיקייה בשם זה';
 }
 
 // Path: home.deleteFolder
@@ -345,10 +364,10 @@ class _TranslationsHomeDeleteFolderHe extends TranslationsHomeDeleteFolderEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get deleteFolder => 'מחק תקייה';
-	@override String deleteName({required Object f}) => 'מחק ${f}';
-	@override String get delete => 'מחק';
-	@override String get alsoDeleteContents => 'גם תמחק את כל הפתקים בתקייה זו';
+	@override String get deleteFolder => 'מחיקת תיקייה';
+	@override String deleteName({required Object f}) => 'מחיקת ${f}';
+	@override String get delete => 'מחיקה';
+	@override String get alsoDeleteContents => 'מחיקה גם של כל הפתקים בתיקייה זו';
 }
 
 // Path: sentry.consent
@@ -358,9 +377,9 @@ class _TranslationsSentryConsentHe extends TranslationsSentryConsentEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
+	@override String get title => 'האם לעזור בשיפור Saber?';
 	@override late final _TranslationsSentryConsentDescriptionHe description = _TranslationsSentryConsentDescriptionHe._(_root);
 	@override late final _TranslationsSentryConsentAnswersHe answers = _TranslationsSentryConsentAnswersHe._(_root);
-	@override String get title => 'לעזור בשיפור סאבר?';
 }
 
 // Path: settings.prefCategories
@@ -370,11 +389,11 @@ class _TranslationsSettingsPrefCategoriesHe extends TranslationsSettingsPrefCate
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get general => 'כללי';
+	@override String get general => 'הגדרות כלליות';
 	@override String get writing => 'כתיבה';
-	@override String get editor => 'עורך';
-	@override String get advanced => 'מתקדם';
+	@override String get editor => 'מצב עריכה';
 	@override String get performance => 'ביצועים';
+	@override String get advanced => 'הגדרות מתקדמות';
 }
 
 // Path: settings.prefLabels
@@ -390,28 +409,28 @@ class _TranslationsSettingsPrefLabelsHe extends TranslationsSettingsPrefLabelsEn
 	@override String get layoutSize => 'סוג פריסה';
 	@override String get customAccentColor => 'צבע הדגשה מותאם אישית';
 	@override String get hyperlegibleFont => 'גופן Atkinson Hyperreadible';
-	@override String get shouldCheckForUpdates => 'בדוק אם קיימים עדכוני Saber';
+	@override String get shouldCheckForUpdates => 'לבדוק אם יש עדכונים ל־Saber';
 	@override String get shouldAlwaysAlertForUpdates => 'עדכונים מהירים יותר';
-	@override String get allowInsecureConnections => 'אפשר חיבורים לא מאובטחים';
+	@override String get allowInsecureConnections => 'לאפשר חיבורים לא מאובטחים';
 	@override String get editorToolbarAlignment => 'מיקום סרגל הכלים';
-	@override String get editorToolbarShowInFullscreen => 'הצג את סרגל הכלים במצב מסך מלא';
-	@override String get editorAutoInvert => 'הפוך הערות במצב כהה';
-	@override String get preferGreyscale => 'העדיפו צבעי גווני אפור';
-	@override String get maxImageSize => 'גודל תמונה מקסימלי';
+	@override String get editorToolbarShowInFullscreen => 'הצגת סרגל הכלים במצב מסך מלא';
+	@override String get editorAutoInvert => 'היפוך צבעי הפתקים במצב כהה';
+	@override String get preferGreyscale => 'העדפת גוונים אפורים';
+	@override String get maxImageSize => 'גודל תמונה מרבי';
 	@override String get autoClearWhiteboardOnExit => 'נקה אוטומטית את הלוח הלבן';
 	@override String get disableEraserAfterUse => 'השבת אוטומטית את המחק';
-	@override String get hideFingerDrawingToggle => 'הסתר את מתג ציור האצבע';
-	@override String get editorPromptRename => 'מבקש ממך לשנות את שם הערות חדשות';
-	@override String get recentColorsDontSavePresets => 'אל תשמור צבעים מוגדרים מראש בצבעים אחרונים';
-	@override String get printPageIndicators => 'הדפסת עמודים מחוונים';
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'השבתה אוטומטית של ציור אצבע';
-	@override String get sentry => 'דיווח שגיאות';
-	@override String get autosave => 'שמור אוטומטי';
-	@override String get simplifiedHomeLayout => 'פריסת בית פשוטה';
-	@override String get customDataDir => 'ספריית נתונים מותאמת אישית';
-	@override String get autoStraightenLines => 'יישור קווים אוטומטית';
-	@override String get shapeRecognitionDelay => 'עיכוב זיהוי צורות';
-	@override String get recentColorsLength => 'כמה צבעים אחרונים לאחסן';
+	@override String get hideFingerDrawingToggle => 'הסתרת מתג הציור עם האצבע';
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'השבתה אוטומטית של הציור עם האצבע';
+	@override String get editorPromptRename => 'חלונית לבקשת שינוי שם לפתקים חדשים';
+	@override String get recentColorsDontSavePresets => 'לא לשמור צבעי מערך בצבעים אחרונים';
+	@override String get recentColorsLength => 'כמה צבעים אחרונים לשמור';
+	@override String get printPageIndicators => 'הדפסת מספורי עמודים';
+	@override String get autosave => 'שמירה אוטומטית';
+	@override String get shapeRecognitionDelay => 'השהיה לפני זיהוי צורות';
+	@override String get autoStraightenLines => 'יישור קווים אוטומטי';
+	@override String get simplifiedHomeLayout => 'פריסת עמוד בית פשוטה';
+	@override String get customDataDir => 'תיקייה מותאמת אישית ל־Saber';
+	@override String get sentry => 'דיווח על שגיאות';
 }
 
 // Path: settings.prefDescriptions
@@ -422,21 +441,21 @@ class _TranslationsSettingsPrefDescriptionsHe extends TranslationsSettingsPrefDe
 
 	// Translations
 	@override String get hyperlegibleFont => 'מגביר את הקריאות למשתמשים עם ראייה לקויה';
-	@override String get allowInsecureConnections => '(לא מומלץ) אפשר לסבר להתחבר לשרתים עם אישורים חתומים/לא מהימנים';
+	@override String get allowInsecureConnections => '(לא מומלץ) לאפשר ל־Saber להתחבר לשרתים עם חתימה עצמית או תעודות שאינן מהימנות';
 	@override String get preferGreyscale => 'עבור תצוגות דיו אלקטרוני';
 	@override String get autoClearWhiteboardOnExit => 'מנקה את לוח הציור לאחר היציאה מהאפליקציה';
 	@override String get disableEraserAfterUse => 'מעבר אוטומטי חזרה לעט לאחר שימוש במחק';
 	@override String get maxImageSize => 'תמונות גדולות יותר יידחסו';
 	@override late final _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe hideFingerDrawing = _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe._(_root);
+	@override String get autoDisableFingerDrawingWhenStylusDetected => 'כיבוי הציור עם האצבע כאשר מזוהה חיבור של עט';
 	@override String get editorPromptRename => 'תמיד תוכל לשנות את שם הפתקים מאוחר יותר';
-	@override String get printPageIndicators => 'הצג מחווני עמודים בייצוא';
+	@override String get printPageIndicators => 'הצגת מספורי עמודים בקבצים מיוצאים';
+	@override String get autosave => 'שמירה אוטומטית לאחר פרק זמן קצר, או אף פעם';
+	@override String get shapeRecognitionDelay => 'כל כמה זמן לעדכן את התצוגה המקדימה של הצורות';
+	@override String get autoStraightenLines => 'מיישר קווים ארוכים ללא צורך להשתמש בעט הצורות';
+	@override String get simplifiedHomeLayout => 'קביעת גובה קבוע לתצוגה המקדימה של כל פתק';
 	@override String get shouldAlwaysAlertForUpdates => 'ספר לי על עדכונים ברגע שהם יהיו זמינים';
 	@override late final _TranslationsSettingsPrefDescriptionsSentryHe sentry = _TranslationsSettingsPrefDescriptionsSentryHe._(_root);
-	@override String get autoDisableFingerDrawingWhenStylusDetected => 'כבה את ציור האצבע כאשר מזוהה חרט';
-	@override String get autosave => 'יש לשעוג אוטומטית לאחר עיכוב קצר, או לעולם';
-	@override String get simplifiedHomeLayout => 'מגדיר גובה קבוע עבור כל תצוגה מקדימה של הערה';
-	@override String get autoStraightenLines => 'מיישר קווים ארוכים ללא צורך להשתמש בעט הצורה';
-	@override String get shapeRecognitionDelay => 'באיזו תדירות לעדכן את התצוגה המקדימה של הצורה';
 }
 
 // Path: settings.themeModes
@@ -491,11 +510,11 @@ class _TranslationsSettingsCustomDataDirHe extends TranslationsSettingsCustomDat
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get unsupported => 'תכונה זו מיועדת כרגע רק למפתחים. השימוש בו ככל הנראה יביא לאובדן נתונים.';
-	@override String get cancel => 'לְבַטֵל';
-	@override String get select => 'בחר';
-	@override String get mustBeEmpty => 'הספרייה שנבחרה חייבת להיות ריקה';
-	@override String get mustBeDoneSyncing => 'ודא שהסנכרון הושלם לפני שינוי הספרייה';
+	@override String get cancel => 'ביטול';
+	@override String get select => 'בחירה';
+	@override String get mustBeEmpty => 'על התיקייה שנבחרה להיות ריקה';
+	@override String get mustBeDoneSyncing => 'יש לוודא שהסנכרון הושלם לפני שמשנים את התיקייה';
+	@override String get unsupported => 'תכונה זו מיועדת כרגע רק למפתחים. השימוש בה יגרום ככל הנראה אובדן נתונים.';
 }
 
 // Path: login.form
@@ -506,7 +525,7 @@ class _TranslationsLoginFormHe extends TranslationsLoginFormEn {
 
 	// Translations
 	@override TextSpan agreeToPrivacyPolicy({required InlineSpanBuilder linkToPrivacyPolicy}) => TextSpan(children: [
-		const TextSpan(text: 'על ידי התחברות, אתה מסכים ל '),
+		const TextSpan(text: 'ההתחברות מבטאת את הסכמתך ל'),
 		linkToPrivacyPolicy('מדיניות הפרטיות'),
 		const TextSpan(text: '.'),
 	]);
@@ -520,10 +539,10 @@ class _TranslationsLoginStatusHe extends TranslationsLoginStatusEn {
 
 	// Translations
 	@override String get loggedOut => 'מנותק';
-	@override String get tapToLogin => 'לחץ כדי להתחבר עם NextCloud';
-	@override String get loggedIn => 'מחובר עם NextCloud';
-	@override String hi({required Object u}) => 'היי, ${u}!';
-	@override String get almostDone => 'כמעט מוכן לסנכרון, הקש כדי לסיים את הכניסה';
+	@override String get tapToLogin => 'יש ללחוץ כדי להיכנס עם Nextcloud';
+	@override String hi({required Object u}) => 'אהלן, ${u}!';
+	@override String get almostDone => 'הסנכרון כמעט מוכן, יש ללחוץ בשביל להשלים את ההתחברות';
+	@override String get loggedIn => 'נכנסת עם Nextcloud';
 }
 
 // Path: login.ncLoginStep
@@ -533,13 +552,13 @@ class _TranslationsLoginNcLoginStepHe extends TranslationsLoginNcLoginStepEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override late final _TranslationsLoginNcLoginStepLoginFlowHe loginFlow = _TranslationsLoginNcLoginStepLoginFlowHe._(_root);
-	@override String get whereToStoreData => 'בחר היכן ברצונך לאחסן את הנתונים שלך:';
-	@override String get saberNcServer => 'שרת Nextcloud של סייבר';
+	@override String get whereToStoreData => 'נא לבחור היכן ברצונך לאחסן את הנתונים:';
+	@override String get saberNcServer => 'שרת ה־Nextcloud של Saber';
 	@override String get otherNcServer => 'שרת Nextcloud אחר';
-	@override String get serverUrl => 'כתובת האתר של השרת';
-	@override String get loginWithSaber => 'התחבר עם Saber';
-	@override String get loginWithNextcloud => 'התחבר עם Nextcloud';
+	@override String get serverUrl => 'כתובת שרת';
+	@override String get loginWithSaber => 'התחברות עם Saber';
+	@override String get loginWithNextcloud => 'התחברות עם Nextcloud';
+	@override late final _TranslationsLoginNcLoginStepLoginFlowHe loginFlow = _TranslationsLoginNcLoginStepLoginFlowHe._(_root);
 }
 
 // Path: login.encLoginStep
@@ -549,12 +568,12 @@ class _TranslationsLoginEncLoginStepHe extends TranslationsLoginEncLoginStepEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get enterEncPassword => 'כדי להגן על הנתונים שלך, אנא הזן את סיסמת ההצפנה שלך:';
-	@override String get newToSaber => 'חדש בסבר';
+	@override String get enterEncPassword => 'לצורך הגנה על הנתונים שלך, נא להקליד את סיסמת ההצפנה שלך:';
+	@override String get newToSaber => 'פעם ראשונה ב־Saber? אפשר פשוט להקליד סיסמת הצפנה חדשה.';
 	@override String get encPassword => 'סיסמת הצפנה';
-	@override String get encFaqTitle => 'שאלות נפוצות';
-	@override String get wrongEncPassword => 'הפענוח נכשל עם הסיסמה שסופקה. אנא נסה להזין אותו שוב.';
-	@override String get connectionFailed => 'משהו השתבש בחיבור לשרת. בבקשה נסה שוב מאוחר יותר.';
+	@override String get encFaqTitle => 'שאלות ותשובות';
+	@override String get wrongEncPassword => 'פענוח ההצפנה עם הסיסמה שסופקה נכשל. נא לנסות להקליד אותה שוב.';
+	@override String get connectionFailed => 'משהו השתבש בעת ההתחברות לשרת. נא לנסות שוב מאוחר יותר.';
 	@override List<dynamic> get encFaq => [
 		_TranslationsLoginEncLoginStep$encFaq$0i0$He._(_root),
 		_TranslationsLoginEncLoginStep$encFaq$0i1$He._(_root),
@@ -569,7 +588,7 @@ class _TranslationsProfileQuickLinksHe extends TranslationsProfileQuickLinksEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get serverHomepage => 'דף הבית של השרת';
+	@override String get serverHomepage => 'עמוד הבית של השרת';
 	@override String get deleteAccount => 'מחק משתמש';
 }
 
@@ -591,7 +610,7 @@ class _TranslationsProfile$faq$0i1$He extends TranslationsProfile$faq$0i1$En {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get q => 'איך אני משנה את סיסמאת ה NextCloud שלי';
+	@override String get q => 'איך לשנות את הסיסמה שלי ל־Nextcloud?';
 	@override String get a => 'עבור לאתר השרת שלך והתחבר. לאחר מכן עבור אל הגדרות > אבטחה > שנה סיסמה. תצטרך להתנתק ולהיכנס שוב ל-Saber לאחר שינוי הסיסמה שלך.';
 }
 
@@ -603,7 +622,7 @@ class _TranslationsProfile$faq$0i2$He extends TranslationsProfile$faq$0i2$En {
 
 	// Translations
 	@override String get q => 'איך אני משנה את הסיסמא המוצפנת שלי?';
-	@override String get a => '0. ודא שהסנכרון הושלם (ראה את התקדמות הסנכרון במסך הבית).\n1. התנתק מ Saber.\n2. עבור אל אתר האינטרנט של השרת שלך ומחק את התיקיה \'Saber\' שלך. פעולה זו תמחק את כל ההערות שלך מהשרת.\n3. היכנס שוב ל-Saber. אתה יכול לבחור סיסמת הצפנה חדשה בעת הכניסה.\n4. אל תשכח להתנתק ולהתחבר שוב ל-Saber גם במכשירים האחרים שלך.';
+	@override String get a => '0. לוודא שהסנכרון הושלם (ניתן לראות את התקדמות הסנכרון במסך הבית).\n1. להתנתק מ־Saber.\n2. לעבור לאתר האינטרנט של השרת ולמחוק את תיקיית ‚Saber’ שלך. פעולה זו תמחק את כל הפתקים שלך מהשרת.\n3. להתחבר שוב אל Saber. אפשר לבחור סיסמת הצפנה חדשה בעת הכניסה.\n4. לא לשכוח להתנתק ולהתחבר שוב אל Saber גם במכשירים האחרים שלך.';
 }
 
 // Path: profile.faq.3
@@ -614,7 +633,7 @@ class _TranslationsProfile$faq$0i3$He extends TranslationsProfile$faq$0i3$En {
 
 	// Translations
 	@override String get q => 'איך אני יכול למחוק את החשבון שלי?';
-	@override String get a => 'הקש על הלחצן "${_root.profile.quickLinks.deleteAccount}" למעלה, והיכנס במידת הצורך.\n אם אתה משתמש בשרת Saber הרשמי, החשבון שלך יימחק לאחר תקופת חסד של שבוע. ניתן ליצור איתי קשר בכתובת adilhanney@disroot.org במהלך תקופה זו כדי לבטל את המחיקה.\n אם אתה משתמש בשרת של צד שלישי, ייתכן שלא תהיה אפשרות למחוק את חשבונך: תצטרך לעיין במדיניות הפרטיות של השרת לקבלת מידע נוסף.';
+	@override String get a => 'יש להקיש על הכפתור „${_root.profile.quickLinks.deleteAccount}” ולהתחבר במידת הצורך.\nאם משתמשים בשרת הרשמי של Saber, החשבון שיוצרים יימחק לאחר תקופת חסד של שבוע. אפשר ליצור איתי קשר בכתובת adilhanney@disroot.org במהלך תקופה זו כדי לבטל את המחיקה.\nאם משתמשים בשרת צד שלישי, ייתכן שאין אפשרות למחוק את החשבון: יש לעיין במדיניות הפרטיות של השרת למידע נוסף.';
 }
 
 // Path: editor.toolbar
@@ -626,15 +645,15 @@ class _TranslationsEditorToolbarHe extends TranslationsEditorToolbarEn {
 	// Translations
 	@override String get toggleColors => 'החלפת מצב צבע (Ctrl C)';
 	@override String get select => 'בחר';
-	@override String get toggleEraser => 'החלפת מצב מחק (Ctrl E)';
+	@override String get toggleEraser => 'הפעלת/כיבוי מחק (Ctrl E)';
 	@override String get photo => 'תמונות';
 	@override String get text => 'טקסט';
-	@override String get toggleFingerDrawing => 'החלפת מצב ציור אצבע (Ctrl F)';
-	@override String get undo => 'בטל';
-	@override String get redo => 'שחזר ביטול';
+	@override String get toggleFingerDrawing => 'הפעלת/כיבוי ציור עם האצבע (Ctrl F)';
+	@override String get undo => 'ביטול פעולה';
+	@override String get redo => 'ביצוע מחדש';
 	@override String get export => 'יצא (Ctrl Shift S)';
 	@override String get exportAs => 'יצא כ:';
-	@override String get fullscreen => 'החלפת מצב מסך מלא (F11)';
+	@override String get fullscreen => 'הפעלת/כיבוי מצב מסך מלא (F11)';
 }
 
 // Path: editor.pens
@@ -646,10 +665,10 @@ class _TranslationsEditorPensHe extends TranslationsEditorPensEn {
 	// Translations
 	@override String get fountainPen => 'עט נובע';
 	@override String get ballpointPen => 'עט כדורי';
-	@override String get highlighter => 'מרקר';
+	@override String get highlighter => 'מדגוש';
+	@override String get pencil => 'עיפרון';
+	@override String get shapePen => 'עט צורות';
 	@override String get laserPointer => 'סמן לייזר';
-	@override String get pencil => 'עִפָּרוֹן';
-	@override String get shapePen => 'עט צורה';
 }
 
 // Path: editor.penOptions
@@ -670,6 +689,10 @@ class _TranslationsEditorColorsHe extends TranslationsEditorColorsEn {
 
 	// Translations
 	@override String get colorPicker => 'בורר צבעים';
+	@override String customBrightnessHue({required Object b, required Object h}) => 'בהתאמה אישית ${b} ${h}';
+	@override String customHue({required Object h}) => 'בהתאמה אישית ${h}';
+	@override String get dark => 'כהה';
+	@override String get light => 'בהיר';
 	@override String get black => 'שחור';
 	@override String get darkGrey => 'עפור ככה';
 	@override String get grey => 'עפור';
@@ -677,9 +700,11 @@ class _TranslationsEditorColorsHe extends TranslationsEditorColorsEn {
 	@override String get white => 'לבן';
 	@override String get red => 'אדום';
 	@override String get green => 'ירוק';
+	@override String get cyan => 'ציאן';
 	@override String get blue => 'כחול';
 	@override String get yellow => 'צהוב';
 	@override String get purple => 'סגול';
+	@override String get pink => 'ורוד';
 	@override String get orange => 'כתום';
 	@override String get pastelRed => 'אדום פסטל';
 	@override String get pastelOrange => 'כתום פסטל';
@@ -689,12 +714,6 @@ class _TranslationsEditorColorsHe extends TranslationsEditorColorsEn {
 	@override String get pastelBlue => 'כחול פסטל';
 	@override String get pastelPurple => 'סגול פסטל';
 	@override String get pastelPink => 'ורוד פסטל';
-	@override String customBrightnessHue({required Object b, required Object h}) => 'מותאם אישית ${b} ${h}';
-	@override String customHue({required Object h}) => 'מותאם אישית ${h}';
-	@override String get dark => 'אפל';
-	@override String get light => 'אוֹר';
-	@override String get cyan => 'טורקיז';
-	@override String get pink => 'וָרוֹד';
 }
 
 // Path: editor.imageOptions
@@ -719,8 +738,8 @@ class _TranslationsEditorSelectionBarHe extends TranslationsEditorSelectionBarEn
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get delete => 'מחק';
-	@override String get duplicate => 'שכפל';
+	@override String get delete => 'מחיקה';
+	@override String get duplicate => 'שכפול';
 }
 
 // Path: editor.menu
@@ -730,22 +749,22 @@ class _TranslationsEditorMenuHe extends TranslationsEditorMenuEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String clearPage({required Object page, required Object totalPages}) => 'נקה דף ${page}/${totalPages}';
-	@override String get clearAllPages => 'נקה את כל הדפים';
-	@override String get insertPage => 'הכנס דף מלמטה';
-	@override String get duplicatePage => 'שכפל דף';
-	@override String get deletePage => 'מחק דף';
+	@override String clearPage({required Object page, required Object totalPages}) => 'ניקוי העמוד ${page}/${totalPages}';
+	@override String get clearAllPages => 'ניקוי כל העמודים';
+	@override String get insertPage => 'הוספת עמוד למטה';
+	@override String get duplicatePage => 'שכפול עמוד';
+	@override String get deletePage => 'מחיקת עמוד';
 	@override String get lineHeight => 'גובה הקו';
+	@override String get lineHeightDescription => 'משפיע גם על גודל הטקסט בפתקים שבהם הוקלד מלל';
+	@override String get lineThickness => 'עובי קו';
+	@override String get lineThicknessDescription => 'עובי קו רקע';
 	@override String get backgroundImageFit => 'התאמת תמונת רקע';
 	@override String get backgroundPattern => 'תבנית רקע';
 	@override String get import => 'יבוא';
+	@override String get watchServer => 'מעקב אחר עדכונים בשרת';
+	@override String get watchServerReadOnly => 'העריכה מושתת בעת מעקב אחר השרת';
 	@override late final _TranslationsEditorMenuBoxFitsHe boxFits = _TranslationsEditorMenuBoxFitsHe._(_root);
 	@override late final _TranslationsEditorMenuBgPatternsHe bgPatterns = _TranslationsEditorMenuBgPatternsHe._(_root);
-	@override String get lineThickness => 'עובי קו';
-	@override String get lineThicknessDescription => 'עובי קו רקע';
-	@override String get watchServer => 'שימו לב לעדכונים בשרת';
-	@override String get watchServerReadOnly => 'העריכה מושבתת בזמן צפייה בשרת';
-	@override String get lineHeightDescription => 'שולט גם בגודל הטקסט עבור הערות מוקלדות';
 }
 
 // Path: editor.readOnlyBanner
@@ -756,8 +775,8 @@ class _TranslationsEditorReadOnlyBannerHe extends TranslationsEditorReadOnlyBann
 
 	// Translations
 	@override String get title => 'מצב צפייה בלבד';
-	@override String get watchingServer => 'כרגע אתה צופה לעדכונים בשרת. העריכה מושבתת במצב זה.';
-	@override String get corrupted => 'טעינת ההערה נכשלה. ייתכן שהוא פגום או עדיין בהורדה.';
+	@override String get watchingServer => 'כרגע מתבצע מעקב אחר עדכונים בשרת. העריכה מושבתת במצב זה.';
+	@override String get corrupted => 'טעינת הפתק נכשלה. ייתכן שהוא פגום או שהורדתו עדיין לא הסתיימה.';
 }
 
 // Path: editor.versionTooNew
@@ -768,7 +787,7 @@ class _TranslationsEditorVersionTooNewHe extends TranslationsEditorVersionTooNew
 
 	// Translations
 	@override String get title => 'הערה זו נערכה באמצעות גרסה חדשה יותר של Saber';
-	@override String get subtitle => 'עריכת פתק זה עלולה לגרום לאיבוד מידע מסוים. האם אתה רוצה להתאלם מזה בכל מקרה?';
+	@override String get subtitle => 'עריכת פתק זה עלולה לגרום לאיבוד מידע מסוים. להתעלם ולערוך בכל זאת?';
 	@override String get allowEditing => 'אפשר עריכה';
 }
 
@@ -779,7 +798,7 @@ class _TranslationsEditorQuillHe extends TranslationsEditorQuillEn {
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get typeSomething => 'תכתוב משהו פה...';
+	@override String get typeSomething => 'אפשר להקליד כאן משהו...';
 }
 
 // Path: editor.hud
@@ -804,13 +823,13 @@ class _TranslationsSentryConsentDescriptionHe extends TranslationsSentryConsentD
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get question => 'האם ברצונך לדווח אוטומטית על שגיאות בלתי צפויות? זה עוזר לי לזהות ולתקן בעיות מהר יותר.';
-	@override String get scope => 'הדוחות עשויים להכיל מידע על השגיאה והמכשיר שלך. עשיתי כל מאמץ לסנן נתונים אישיים אך חלקם עשויים להישאר.';
-	@override String get currentlyOff => 'אם אתה מעניק הסכמה, דיווח שגיאות יופעל לאחר שתפעיל מחדש את האפליקציה.';
-	@override String get currentlyOn => 'אם תבטל הסכמה, הפעל מחדש את האפליקציה כדי להשבית את דיווח השגיאות.';
+	@override String get question => 'האם ברצונך לדווח אוטומטית על שגיאות לא צפויות? זה יעזור לי לזהות ולתקן בעיות יותר מהר.';
+	@override String get scope => 'הדיווחים עשויים להכיל מידע על השגיאה ועל מכשירך. עשיתי כל מאמץ על מנת לסנן החוצה נתונים אישיים, אבל ייתכן כי חלק יישארו בדיווח.';
+	@override String get currentlyOff => 'אם הסכמתך תוענק, הדיווח על השגיאות יופעל בעת פתיחת היישום מחדש.';
+	@override String get currentlyOn => 'אם הסכמתך תישלל, נא לפתוח מחדש את היישום בשביל להשבית את הדיווח על השגיאות.';
 	@override TextSpan learnMoreInPrivacyPolicy({required InlineSpanBuilder link}) => TextSpan(children: [
-		const TextSpan(text: 'למידע נוסף ב- '),
-		link('מדיניות פרטיות'),
+		const TextSpan(text: 'מידע נוסף ניתן למצוא ב'),
+		link('מדיניות הפרטיות'),
 		const TextSpan(text: '.'),
 	]);
 }
@@ -822,9 +841,9 @@ class _TranslationsSentryConsentAnswersHe extends TranslationsSentryConsentAnswe
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get yes => 'כֵּן';
-	@override String get no => 'לֹא';
-	@override String get later => 'שאל אותי אחר כך';
+	@override String get yes => 'כן';
+	@override String get no => 'לא';
+	@override String get later => 'ברצוני להישאל מאוחר יותר';
 }
 
 // Path: settings.prefDescriptions.hideFingerDrawing
@@ -835,8 +854,8 @@ class _TranslationsSettingsPrefDescriptionsHideFingerDrawingHe extends Translati
 
 	// Translations
 	@override String get shown => 'מונע החלפת מצב בשוגג';
-	@override String get fixedOn => 'ציור אצבע קבוע כזמין';
-	@override String get fixedOff => 'ציור אצבע קבוע כלא זמין';
+	@override String get fixedOn => 'הציור עם האצבע זמין באופן קבוע';
+	@override String get fixedOff => 'הציור עם האצבע מושבת באופן קבוע';
 }
 
 // Path: settings.prefDescriptions.sentry
@@ -846,10 +865,10 @@ class _TranslationsSettingsPrefDescriptionsSentryHe extends TranslationsSettings
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get active => 'פָּעִיל';
-	@override String get inactive => 'לֹא פָּעִיל';
-	@override String get activeUntilRestart => 'פעיל עד שתפעיל מחדש את האפליקציה';
-	@override String get inactiveUntilRestart => 'לא פעיל עד שתפעיל מחדש את האפליקציה';
+	@override String get active => 'פעיל';
+	@override String get inactive => 'לא פעיל';
+	@override String get activeUntilRestart => 'פעיל עד לפתיחת היישום מחדש';
+	@override String get inactiveUntilRestart => 'לא פעיל עד לפתיחת היישום מחדש';
 }
 
 // Path: login.ncLoginStep.loginFlow
@@ -859,9 +878,9 @@ class _TranslationsLoginNcLoginStepLoginFlowHe extends TranslationsLoginNcLoginS
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get pleaseAuthorize => 'אנא אשר לסבר לגשת לחשבון Nextcloud שלך';
-	@override String get followPrompts => 'אנא עקוב אחר ההנחיות בדפדפן שלך.';
-	@override String get browserDidntOpen => 'הדפדפן לא נפתח';
+	@override String get pleaseAuthorize => 'נא לתת ל־Saber הרשאה לגשת לחשבון Nextcloud שלך';
+	@override String get followPrompts => 'נא לעקוב אחר ההוראות הבאות בממשק של Nextcloud';
+	@override String get browserDidntOpen => 'עמוד ההתחברות לא נפתח? נא ללחוץ כאן';
 }
 
 // Path: login.encLoginStep.encFaq.0
@@ -871,8 +890,8 @@ class _TranslationsLoginEncLoginStep$encFaq$0i0$He extends TranslationsLoginEncL
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get q => 'מהי הסיסמא המוצפנת?';
-	@override String get a => 'סיסמת ההצפנה משמשת להצפנת הנתונים שלך לפני שליחתם לשרת. אתה בוחר את זה כשאתה נכנס לראשונה ל-Saber, וזה לא קשור לחשבון/סיסמת Nextcloud שלך.\nאף אחד לא יכול לגשת להערות שלך בשרת ללא סיסמת ההצפנה שלך. זה גם אומר שאם תשכח את סיסמת ההצפנה שלך, תאבד את הגישה לנתונים שלך.';
+	@override String get q => 'מהי סיסמת הצפנה? מדוע להשתמש בשתי סיסמאות?';
+	@override String get a => 'הסיסמה ל־Nextcloud משמשת לגישה לענן. סיסמת ההצפנה „מבלגנת” את הנתונים שלך ביישום לפני שהם מגיעים לענן.\nאפילו אם מישהו משיג גישה לחשבון ה־Nextcloud שלך, הפתקים שלך יישארו בטוחים ומוצפנים עם סיסמה נפרדת. דבר זה מעניק לך שכבת אבטחה שנייה להגנה על הנתונים שלך.\nללא סיסמת ההצפנה שלך, לאף אחד לא תהיה גישה לפתקים שלך בשרת, אך זה גם אומר שאם סיסמת ההצפנה שלך תישכח, לא תהיה לך יותר גישה לנתונים.';
 }
 
 // Path: login.encLoginStep.encFaq.1
@@ -882,8 +901,8 @@ class _TranslationsLoginEncLoginStep$encFaq$0i1$He extends TranslationsLoginEncL
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get q => 'למה להשתמש בשתי סיסמאות?';
-	@override String get a => 'סיסמת Nextcloud משמשת לגישה לענן. סיסמת ההצפנה "מערבלת" את הנתונים שלך לפני שהם מגיעים לענן.\nגם אם מישהו יקבל גישה לחשבון Nextcloud שלך, ההערות שלך יישארו בטוחות ומוצפנות עם סיסמה נפרדת. זה מספק לך שכבה שנייה של אבטחה כדי להגן על הנתונים שלך.';
+	@override String get q => 'עדיין לא הגדרתי סיסמת הצפנה? היכן מקבלים אחת?';
+	@override String get a => 'נא לבחור סיסמת הצפנה חדשה ולהקליד אותה למעלה.\n‏Saber ייצור את מפתחות ההצפנה שלך באופן אוטומטי מסיסמה זו.';
 }
 
 // Path: login.encLoginStep.encFaq.2
@@ -893,8 +912,8 @@ class _TranslationsLoginEncLoginStep$encFaq$0i2$He extends TranslationsLoginEncL
 	final TranslationsHe _root; // ignore: unused_field
 
 	// Translations
-	@override String get q => 'Can I use the same password for both?';
-	@override String get a => 'כן, אבל זה פחות מאובטח. מכיוון שסיסמת Nextcloud שלך נשלחת לשרת, מישהו עם גישה לשרת יוכל לפענח את ההערות שלך. השתמש באותה סיסמה רק אם אתה סומך על בעל השרת.';
+	@override String get q => 'האם אפשר להשתמש באותה סיסמה כמו לחשבון Nextcloud שלי?';
+	@override String get a => 'כן, אך יש לקחת בחשבון שיהיה יותר קל למנהלי השרת או לאנשים אחרים לגשת לפתקים שלך אם הם משיגים גישה לחשבונך ב־Nextcloud.';
 }
 
 // Path: editor.menu.boxFits
@@ -922,7 +941,7 @@ class _TranslationsEditorMenuBgPatternsHe extends TranslationsEditorMenuBgPatter
 	@override String get lined => 'שורות';
 	@override String get grid => 'משבצות';
 	@override String get dots => 'נקודות';
-	@override String get staffs => 'צוותים';
-	@override String get tablature => 'כרטיסייה';
+	@override String get staffs => 'תווים';
+	@override String get tablature => 'טבלטורה (מספורי תווים מוזיקליים)';
 	@override String get cornell => 'קורנל';
 }

@@ -3,6 +3,7 @@
 - "[--full enabled] Furthermore, translations not used in 'lib/' according to the 't.<path>' pattern are written into <en>."
 en:
 ar:
+ca:
 cs:
 de:
 eo:
@@ -13,10 +14,12 @@ he:
 hu:
 it:
 ja:
+pl:
 pt-BR:
 ru:
 sl:
 th:
 tr:
+vi:
 zh-Hans-CN:
 zh-Hant-TW:

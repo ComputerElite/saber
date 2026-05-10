@@ -52,9 +52,9 @@ class _TranslationsCommonEs extends TranslationsCommonEn {
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get cancel => 'Cancelar';
-	@override String get done => 'Hecho';
+	@override String get done => 'Completado';
 	@override String get continueBtn => 'Continuar';
+	@override String get cancel => 'Cancelar';
 }
 
 // Path: home
@@ -71,15 +71,16 @@ class _TranslationsHomeEs extends TranslationsHomeEn {
 	@override String get welcome => 'Te damos la bienvenida a Saber';
 	@override String get invalidFormat => 'El archivo que seleccionaste no es válido. Por favor, selecciona un archivo .sbn, .sbn2, .sba or .pdf.';
 	@override String get noFiles => 'No se ha encontrado ninguna nota';
+	@override String get noPreviewAvailable => 'Vista previa no disponible';
 	@override String get createNewNote => 'Presiona el botón + para crear una nueva nota';
 	@override String get backFolder => 'Volver a la carpeta anterior';
 	@override late final _TranslationsHomeNewFolderEs newFolder = _TranslationsHomeNewFolderEs._(_root);
 	@override late final _TranslationsHomeRenameNoteEs renameNote = _TranslationsHomeRenameNoteEs._(_root);
 	@override late final _TranslationsHomeMoveNoteEs moveNote = _TranslationsHomeMoveNoteEs._(_root);
 	@override String get deleteNote => 'Eliminar nota';
+	@override late final _TranslationsHomeDeleteNoteDialogEs deleteNoteDialog = _TranslationsHomeDeleteNoteDialogEs._(_root);
 	@override late final _TranslationsHomeRenameFolderEs renameFolder = _TranslationsHomeRenameFolderEs._(_root);
 	@override late final _TranslationsHomeDeleteFolderEs deleteFolder = _TranslationsHomeDeleteFolderEs._(_root);
-	@override String get noPreviewAvailable => 'No hay una vista previa disponible';
 }
 
 // Path: sentry
@@ -302,8 +303,8 @@ class _TranslationsHomeRenameNoteEs extends TranslationsHomeRenameNoteEn {
 	@override String get rename => 'Renombrar';
 	@override String get noteNameEmpty => 'El nombre de la nota no puede estar vacío';
 	@override String get noteNameExists => 'Ya existe una nota con este nombre';
-	@override String get noteNameForbiddenCharacters => 'El nombre de la nota contiene caracteres prohibidos.';
-	@override String get noteNameReserved => 'Nombre de la nota reservado';
+	@override String get noteNameForbiddenCharacters => 'El nombre contiene caracteres no permitidos';
+	@override String get noteNameReserved => 'Nombre reservado';
 }
 
 // Path: home.moveNote
@@ -320,6 +321,22 @@ class _TranslationsHomeMoveNoteEs extends TranslationsHomeMoveNoteEn {
 	@override String renamedTo({required Object newName}) => 'Se renombrará la nota a ${newName}';
 	@override String get multipleRenamedTo => 'Renombrar las siguientes notas';
 	@override String numberRenamedTo({required Object n}) => '${n} notas serán renombradas para evitar conflictos';
+}
+
+// Path: home.deleteNoteDialog
+class _TranslationsHomeDeleteNoteDialogEs extends TranslationsHomeDeleteNoteDialogEn {
+	_TranslationsHomeDeleteNoteDialogEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String confirmDelete({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n,
+		one: '¿Eliminar permanentemente la nota seleccionada?',
+		other: '¿Eliminar permanentemente las notas seleccionadas?',
+	);
+	@override String deleteNotes({required Object n}) => 'Eliminar ${n} notas';
+	@override String deleteName({required Object f}) => 'Borrar ${f}';
+	@override String get delete => 'Eliminar';
 }
 
 // Path: home.renameFolder
@@ -357,9 +374,9 @@ class _TranslationsSentryConsentEs extends TranslationsSentryConsentEn {
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
+	@override String get title => '¿Quieres mejorar Saber?';
 	@override late final _TranslationsSentryConsentDescriptionEs description = _TranslationsSentryConsentDescriptionEs._(_root);
 	@override late final _TranslationsSentryConsentAnswersEs answers = _TranslationsSentryConsentAnswersEs._(_root);
-	@override String get title => 'Ayudar a mejorar el sable?';
 }
 
 // Path: settings.prefCategories
@@ -803,9 +820,9 @@ class _TranslationsSentryConsentDescriptionEs extends TranslationsSentryConsentD
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get question => '¿Le gustaría informar automáticamente errores inesperados? Esto me ayuda a identificar y solucionar problemas más rápido.';
+	@override String get question => '¿Quieres enviar informes de errores de forma automática? Esto permite identificar y corregir fallos más rápido.';
+	@override String get currentlyOff => 'Si aceptas, los informes de error se activarán al reiniciar la app.';
 	@override String get scope => 'Los informes pueden contener información sobre el error y su dispositivo. He hecho todo lo posible para filtrar datos personales, pero algunos pueden permanecer.';
-	@override String get currentlyOff => 'Si otorga consentimiento, los informes de error se habilitarán después de reiniciar la aplicación.';
 	@override String get currentlyOn => 'Si revoca el consentimiento, reinicie la aplicación para deshabilitar el informe de errores.';
 	@override TextSpan learnMoreInPrivacyPolicy({required InlineSpanBuilder link}) => TextSpan(children: [
 		const TextSpan(text: 'Obtenga más información en '),

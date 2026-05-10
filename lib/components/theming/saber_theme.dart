@@ -15,7 +15,7 @@ abstract class SaberTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      textTheme: _Components.textTheme(colorScheme.brightness),
+      textTheme: _Components.textTheme(platform, colorScheme),
       platform: platform,
       progressIndicatorTheme: _Components.progressIndicatorTheme,
       cardColor: colorScheme.surface,
@@ -90,12 +90,40 @@ abstract class SaberTheme {
     final base = highContrast
         ? (brightness == .light ? yaruHighContrastLight : yaruHighContrastDark)
         : (brightness == .light ? yaru.theme : yaru.darkTheme);
+    return getThemeFromYaruFixed(base, platform);
+  }
+
+  static ThemeData getThemeFromYaruFixed(
+    ThemeData base,
+    TargetPlatform platform,
+  ) {
+    final textTheme = _Components.textTheme(platform, base.colorScheme);
+    final fontFamily = textTheme.bodyMedium!.fontFamily;
+    final fontFamilyFallback = textTheme.bodyMedium!.fontFamilyFallback;
     return base.copyWith(
       platform: platform,
-      textTheme: _Components.textTheme(brightness),
+      textTheme: textTheme,
       progressIndicatorTheme: _Components.progressIndicatorTheme,
       cardTheme: _Components.cardTheme(base.colorScheme),
       cupertinoOverrideTheme: _Components.cupertinoOverrideTheme,
+      listTileTheme: base.listTileTheme.copyWith(
+        // Yaru forces list tiles to use Ubuntu font, fix that
+        titleTextStyle: base.listTileTheme.titleTextStyle?.withFont(
+          fontFamily: fontFamily,
+          fontFamilyFallback: fontFamilyFallback,
+        ),
+        subtitleTextStyle: base.listTileTheme.subtitleTextStyle?.withFont(
+          fontFamily: fontFamily,
+          fontFamilyFallback: fontFamilyFallback,
+        ),
+        leadingAndTrailingTextStyle: base
+            .listTileTheme
+            .leadingAndTrailingTextStyle
+            ?.withFont(
+              fontFamily: fontFamily,
+              fontFamilyFallback: fontFamilyFallback,
+            ),
+      ),
       // Leave Yaru's app bar theme, since it adds a border bottom.
       // appBarTheme: _Components.appBarTheme,
     );
@@ -103,14 +131,25 @@ abstract class SaberTheme {
 }
 
 abstract class _Components {
-  static TextTheme? textTheme(Brightness brightness) {
+  static TextTheme textTheme(TargetPlatform platform, ColorScheme colorScheme) {
+    final typography = Typography.material2021(
+      platform: platform,
+      colorScheme: colorScheme,
+    );
+    final textTheme = colorScheme.brightness == .dark
+        ? typography.white
+        : typography.black;
+
     if (stows.hyperlegibleFont.value) {
-      return ThemeData(brightness: brightness).textTheme.withFont(
+      return textTheme.withFont(
         fontFamily: 'AtkinsonHyperlegibleNext',
         fontFamilyFallback: saberSansSerifFontFallbacks,
       );
+    } else if (platform == .linux) {
+      // Flutter picks Roboto but Adwaita Sans is a better default
+      return textTheme.withFont(fontFamily: 'Adwaita Sans');
     } else {
-      return null;
+      return textTheme;
     }
   }
 
@@ -127,7 +166,7 @@ abstract class _Components {
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: .circular(kYaruContainerRadius),
+        borderRadius: const .all(.circular(kYaruContainerRadius)),
         side: BorderSide(
           color: colorScheme.onSurface.withValues(alpha: 0.12),
           width: 2,

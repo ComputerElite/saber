@@ -52,12 +52,11 @@ class Pen extends Tool {
   late final int sizeStepsBetweenMinAndMax =
       ((sizeMax - sizeMin) / sizeStep).round();
   final IconData icon;
-
   @override
   final ToolId toolId;
 
-  static const IconData fountainPenIcon = FontAwesomeIcons.penFancy;
-  static const IconData ballpointPenIcon = FontAwesomeIcons.pen;
+  static const fountainPenIcon = FontAwesomeIcons.penFancy;
+  static const ballpointPenIcon = FontAwesomeIcons.pen;
 
   static Stroke? currentStroke;
   Color color;

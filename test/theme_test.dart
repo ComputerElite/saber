@@ -55,7 +55,7 @@ void _testTheme({
     final app = tester.widget<ExplicitlyThemedApp>(
       find.byType(ExplicitlyThemedApp),
     );
-    for (final theme in [app.theme, app.darkTheme]) {
+    for (final theme in [app.theme, ?app.darkTheme]) {
       expect(theme.platform, platform);
 
       if (hasAccent) {
@@ -71,7 +71,7 @@ void _testTheme({
           ? 'AtkinsonHyperlegibleNext'
           : switch (platform) {
               .iOS => RegExp('CupertinoSystem(Display|Text)'),
-              .linux => 'packages/yaru/Ubuntu',
+              .linux => 'Adwaita Sans',
               .macOS => '.AppleSystemUIFont',
               .windows => 'Segoe UI',
               _ => 'Roboto',

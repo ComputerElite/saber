@@ -530,6 +530,30 @@ class TranslationsHomeMoveNoteEn {
       '${n} notes will be renamed to avoid conflicts';
 }
 
+// Path: home.deleteNoteDialog
+class TranslationsHomeDeleteNoteDialogEn {
+	TranslationsHomeDeleteNoteDialogEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Delete $n notes'
+	String deleteNotes({required Object n}) => 'Delete ${n} notes';
+
+	/// en: 'Delete $f'
+	String deleteName({required Object f}) => 'Delete ${f}';
+
+	/// en: '(one) {Permanently delete the selected note?} (other) {Permanently delete the selected notes?}'
+	String confirmDelete({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
+		one: 'Permanently delete the selected note?',
+		other: 'Permanently delete the selected notes?',
+	);
+
+	/// en: 'Delete'
+	String get delete => 'Delete';
+}
+
 // Path: home.renameFolder
 class TranslationsHomeRenameFolderEn {
   TranslationsHomeRenameFolderEn.internal(this._root);

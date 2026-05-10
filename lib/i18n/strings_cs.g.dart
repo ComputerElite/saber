@@ -78,6 +78,7 @@ class _TranslationsHomeCs extends TranslationsHomeEn {
 	@override late final _TranslationsHomeRenameNoteCs renameNote = _TranslationsHomeRenameNoteCs._(_root);
 	@override late final _TranslationsHomeMoveNoteCs moveNote = _TranslationsHomeMoveNoteCs._(_root);
 	@override String get deleteNote => 'Odstranit poznámku';
+	@override late final _TranslationsHomeDeleteNoteDialogCs deleteNoteDialog = _TranslationsHomeDeleteNoteDialogCs._(_root);
 	@override late final _TranslationsHomeRenameFolderCs renameFolder = _TranslationsHomeRenameFolderCs._(_root);
 	@override late final _TranslationsHomeDeleteFolderCs deleteFolder = _TranslationsHomeDeleteFolderCs._(_root);
 }
@@ -325,6 +326,22 @@ class _TranslationsHomeMoveNoteCs extends TranslationsHomeMoveNoteEn {
 	@override String numberRenamedTo({required Object n}) => '${n} poznámek bude přejmenováno';
 }
 
+// Path: home.deleteNoteDialog
+class _TranslationsHomeDeleteNoteDialogCs extends TranslationsHomeDeleteNoteDialogEn {
+	_TranslationsHomeDeleteNoteDialogCs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String deleteNotes({required Object n}) => 'Odstranit ${n} poznámek';
+	@override String deleteName({required Object f}) => 'Odstranit poznámku ${f}';
+	@override String confirmDelete({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n,
+		one: 'Přejete si trvale odstranit zvolenou poznámku?',
+		other: 'Přejete si trvale odstranit zvolené poznámky?',
+	);
+	@override String get delete => 'Odstranit';
+}
+
 // Path: home.renameFolder
 class _TranslationsHomeRenameFolderCs extends TranslationsHomeRenameFolderEn {
 	_TranslationsHomeRenameFolderCs._(TranslationsCs root) : this._root = root, super.internal(root);
@@ -424,7 +441,7 @@ class _TranslationsSettingsPrefDescriptionsCs extends TranslationsSettingsPrefDe
 
 	// Translations
 	@override String get hyperlegibleFont => 'Font Atkinson Hyperlegible zvyšuje čitelnost pro čtenáře se slabým zrakem';
-	@override String get allowInsecureConnections => '(Nedoporučuje se) Povolit aplikaci Saber připojovat se k serverům se samopodepsaným/nedůvěryhodným certifikátem.';
+	@override String get allowInsecureConnections => '(Nedoporučuje se) Povolit aplikaci Saber připojovat se k serverům se samopodepsaným/nedůvěryhodným certifikátem';
 	@override String get preferGreyscale => 'Pro elektronické čtečky knih s e-ink displejem';
 	@override String get autoClearWhiteboardOnExit => 'Bude synchronizováno do dalších zařízení';
 	@override String get disableEraserAfterUse => 'Po použití gumy automaticky přepnout zpět na pero';
@@ -605,7 +622,7 @@ class _TranslationsProfile$faq$0i2$Cs extends TranslationsProfile$faq$0i2$En {
 
 	// Translations
 	@override String get q => 'Jak změním své heslo pro šifrování?';
-	@override String get a => '1. Odhlašte se z aplikace Saber. Před odhlášením se ujistěte, že byla dokončena synchronizace a nepřijdete o žádná data (průběh synchronizace uvidíte na domovské obrazovce).\n2. Přejděte na webovou stránku vašeho serveru a smažte složku „Saber“. Tím ze serveru odstraníte všechny poznámky.\n3. Opětovně se přihlašte do aplikace Saber. Při přihlašování můžete zvolit nové heslo pro šifrování.\n4. Nezapomeňte se z aplikace Saber odhlásit a opětovně se do ní přihlásit na ostatních zařízeních.';
+	@override String get a => '0. Ujistěte se, že byla dokončena synchronizace (průběh synchronizace uvidíte na domovské obrazovce).\n1. Odhlašte se z aplikace Saber.\n2. Přejděte na webovou stránku vašeho serveru a smažte složku „Saber“. Tím ze serveru odstraníte všechny poznámky.\n3. Opětovně se přihlašte do aplikace Saber. Při přihlašování můžete zvolit nové heslo pro šifrování.\n4. Nezapomeňte se z aplikace Saber odhlásit a opětovně se do ní přihlásit na ostatních zařízeních.';
 }
 
 // Path: profile.faq.3
@@ -671,7 +688,7 @@ class _TranslationsEditorColorsCs extends TranslationsEditorColorsEn {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
-	@override String get colorPicker => 'Vybrat vlastní barvu';
+	@override String get colorPicker => 'Zvolit vlastní barvu';
 	@override String customBrightnessHue({required Object b, required Object h}) => 'Vlastní ${b} ${h}';
 	@override String customHue({required Object h}) => 'Vlastní ${h}';
 	@override String get dark => 'tmavě';

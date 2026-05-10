@@ -4,6 +4,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
@@ -13,9 +14,8 @@ import 'package:saber/data/prefs.dart';
 import 'package:saber/i18n/extensions/redirecting_localization_delegate.dart';
 import 'package:saber/i18n/strings.g.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:yaru/yaru.dart';
 
-class DynamicMaterialApp extends StatefulWidget {
+class DynamicMaterialApp extends StatefulHookWidget {
   const DynamicMaterialApp({
     super.key,
     required this.title,
@@ -59,19 +59,10 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
     with WindowListener {
   @override
   void initState() {
-    stows.appTheme.addListener(onChanged);
-    stows.platform.addListener(onChanged);
-    stows.accentColor.addListener(onChanged);
-    stows.hyperlegibleFont.addListener(onChanged);
-
     windowManager.addListener(this);
     SystemChrome.setSystemUIChangeCallback(_onFullscreenChange);
 
     super.initState();
-  }
-
-  void onChanged() {
-    if (mounted) setState(() {});
   }
 
   @override
@@ -93,10 +84,12 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
 
   @override
   Widget build(BuildContext context) {
-    var chosenAccentColor = stows.accentColor.value;
+    final themeMode = useValueListenable(stows.appTheme);
+    final platform = useValueListenable(stows.platform);
+    var chosenAccentColor = useValueListenable(stows.accentColor);
     if ((chosenAccentColor?.a ?? 0) < double.minPositive)
       chosenAccentColor = null; // discard transparent accent color
-    final platform = stows.platform.value;
+    useListenable(stows.hyperlegibleFont);
 
     // Use Yaru theme, with or without [chosenAccentColor]
     if (platform == .linux) {
@@ -107,7 +100,7 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
           return ExplicitlyThemedApp(
             title: widget.title,
             router: widget.router,
-            themeMode: stows.appTheme.value,
+            themeMode: themeMode,
             theme: themes.theme,
             darkTheme: themes.darkTheme,
             highContrastTheme: themes.highContrastTheme,
@@ -122,7 +115,7 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
       return ExplicitlyThemedApp(
         title: widget.title,
         router: widget.router,
-        themeMode: stows.appTheme.value,
+        themeMode: themeMode,
         theme: SaberTheme.createThemeFromSeed(
           chosenAccentColor,
           .light,
@@ -142,7 +135,7 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
         return ExplicitlyThemedApp(
           title: widget.title,
           router: widget.router,
-          themeMode: stows.appTheme.value,
+          themeMode: themeMode,
           theme: (!platform.usesYaruColors && lightColorScheme != null)
               ? SaberTheme.createTheme(lightColorScheme, platform)
               : SaberTheme.createThemeFromSeed(
@@ -164,11 +157,6 @@ class DynamicMaterialAppState extends State<DynamicMaterialApp>
 
   @override
   void dispose() {
-    stows.appTheme.removeListener(onChanged);
-    stows.platform.removeListener(onChanged);
-    stows.accentColor.removeListener(onChanged);
-    stows.hyperlegibleFont.removeListener(onChanged);
-
     windowManager.removeListener(this);
     SystemChrome.setSystemUIChangeCallback(null);
 
@@ -193,8 +181,8 @@ class ExplicitlyThemedApp extends StatelessWidget {
   final String title;
   final GoRouter router;
   final ThemeMode themeMode;
-  final ThemeData theme, darkTheme;
-  final ThemeData? highContrastTheme, highContrastDarkTheme;
+  final ThemeData theme;
+  final ThemeData? darkTheme, highContrastTheme, highContrastDarkTheme;
 
   static final _materialAppKey = GlobalKey<State<MaterialApp>>();
 
@@ -205,7 +193,9 @@ class ExplicitlyThemedApp extends StatelessWidget {
         theme.copyWith(colorScheme: theme.colorScheme.withHighContrast());
     final highContrastDarkTheme =
         this.highContrastDarkTheme ??
-        darkTheme.copyWith(colorScheme: theme.colorScheme.withHighContrast());
+        darkTheme?.copyWith(
+          colorScheme: darkTheme?.colorScheme.withHighContrast(),
+        );
 
     return MaterialApp.router(
       key: _materialAppKey,
@@ -235,76 +225,11 @@ class ExplicitlyThemedApp extends StatelessWidget {
       highContrastTheme: highContrastTheme,
       highContrastDarkTheme: highContrastDarkTheme,
       debugShowCheckedModeBanner: false,
-      builder: (Platform.isWindows || Platform.isLinux)
-          ? (context, child) => _BorderedWindow(child: child)
-          : null,
     );
   }
 }
 
-/// A widget that adds a border around the app window when not in fullscreen.
-class _BorderedWindow extends StatefulWidget {
-  const _BorderedWindow({required this.child});
-  final Widget? child;
-  @override
-  State<_BorderedWindow> createState() => _BorderedWindowState();
-}
-
-class _BorderedWindowState extends State<_BorderedWindow> {
-  static var _lastBorderColor = Colors.transparent;
-  static final _childKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    DynamicMaterialApp.addFullscreenListener(_onFullscreenChanged);
-  }
-
-  @override
-  void dispose() {
-    DynamicMaterialApp.removeFullscreenListener(_onFullscreenChanged);
-    super.dispose();
-  }
-
-  void _onFullscreenChanged() {
-    if (mounted) setState(() {});
-  }
-
-  @override
-  void didChangeDependencies() {
-    final borderColor = Color.alphaBlend(
-      YaruTitleBarTheme.of(context).border?.color ??
-          (Theme.brightnessOf(context) == .light
-              ? Colors.black.withValues(alpha: 0.1)
-              : Colors.white.withValues(alpha: 0.06)),
-      ColorScheme.of(context).surface,
-    );
-    if (borderColor != _lastBorderColor) {
-      _lastBorderColor = borderColor;
-      windowManager.setBackgroundColor(borderColor).catchError((_) {});
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    /// Use KeyedSubtree to preserve child state when adding/removing border
-    final keyedChild = KeyedSubtree(
-      key: _childKey,
-      child: widget.child ?? const SizedBox(),
-    );
-
-    final showBorder = !DynamicMaterialApp.isFullscreen;
-    return showBorder
-        ? ColoredBox(
-            color: _lastBorderColor,
-            child: Padding(padding: const .all(1), child: keyedChild),
-          )
-        : keyedChild;
-  }
-}
-
-extension _ColorSchemeContraster on ColorScheme {
+extension on ColorScheme {
   ColorScheme withHighContrast() => ColorScheme.fromSeed(
     brightness: brightness,
     seedColor: primary,

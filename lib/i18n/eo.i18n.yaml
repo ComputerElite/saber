@@ -50,6 +50,13 @@ home:
     multipleRenamedTo: "La sekvaj notoj alinomiĝos:"
     numberRenamedTo: $n notoj alinomiĝos por eviti konfliktojn
   deleteNote: Forigu noton
+  deleteNoteDialog:
+    confirmDelete(OUTDATED):
+      one(OUTDATED): Perpetuebleman deleta la selektita noton?
+      other(OUTDATED): Perpetuebleman diliĝi la selektitaj notoj?
+    deleteNotes(OUTDATED): $n нота들을 삭제하세요
+    deleteName(OUTDATED): $f-ஐ நீக்கு
+    delete(OUTDATED): Удалить
   renameFolder:
     renameFolder: Alinomu dosierujon
     folderName: Dosierujnomo

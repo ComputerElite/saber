@@ -27,18 +27,18 @@ class AdaptiveSwitchListTile extends SwitchListTile {
     super.onFocusChange,
     super.autofocus,
     super.applyCupertinoTheme,
-    super.tileColor,
+    @Deprecated('No Yaru equivalent') super.tileColor,
     super.title,
     super.subtitle,
-    super.isThreeLine,
-    super.dense,
+    @Deprecated('No Yaru equivalent') super.isThreeLine,
+    @Deprecated('No Yaru equivalent') super.dense,
     super.contentPadding,
     super.secondary,
-    super.selected,
+    @Deprecated('No Yaru equivalent') super.selected,
     super.controlAffinity,
     super.shape,
-    super.selectedTileColor,
-    super.visualDensity,
+    @Deprecated('No Yaru equivalent') super.selectedTileColor,
+    @Deprecated('No Yaru equivalent') super.visualDensity,
     super.enableFeedback,
     super.hoverColor,
     super.internalAddSemanticForOnTap,
@@ -48,30 +48,40 @@ class AdaptiveSwitchListTile extends SwitchListTile {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     if (theme.platform == .linux) {
-      return _buildYaru(context);
+      return _buildYaru(context, theme);
     }
     return super.build(context);
   }
 
-  Widget _buildYaru(BuildContext context) {
+  Widget _buildYaru(BuildContext context, ThemeData theme) {
+    final textTheme = theme.textTheme;
+    final listTileTheme = theme.listTileTheme;
     return YaruSwitchListTile(
       value: value,
       onChanged: onChanged,
-      tileColor: tileColor,
-      title: title,
-      subtitle: subtitle,
-      isThreeLine: isThreeLine ?? false,
-      dense: dense,
+      title: title == null
+          ? null
+          : DefaultTextStyle(
+              style: textTheme.labelLarge!
+                  .merge(listTileTheme.titleTextStyle)
+                  .copyWith(inherit: false),
+              child: title!,
+            ),
+      subtitle: subtitle == null
+          ? null
+          : DefaultTextStyle(
+              style: textTheme.labelMedium!
+                  .merge(listTileTheme.subtitleTextStyle)
+                  .copyWith(inherit: false),
+              child: subtitle!,
+            ),
       contentPadding: contentPadding,
       secondary: secondary,
-      selected: selected,
       autofocus: autofocus,
-      controlAffinity: controlAffinity ?? ListTileControlAffinity.platform,
+      controlAffinity: controlAffinity ?? .platform,
       shape: shape,
-      selectedTileColor: selectedTileColor,
-      visualDensity: visualDensity,
       focusNode: focusNode,
-      enableFeedback: enableFeedback,
+      enableFeedback: enableFeedback ?? true,
       hoverColor: hoverColor,
       mouseCursor: mouseCursor,
     );
