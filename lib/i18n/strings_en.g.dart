@@ -126,6 +126,8 @@ class TranslationsHomeEn {
       TranslationsHomeRenameFolderEn.internal(_root);
   late final TranslationsHomeDeleteFolderEn deleteFolder =
       TranslationsHomeDeleteFolderEn.internal(_root);
+  late final TranslationsHomeDeleteNoteDialogEn deleteNoteDialog =
+      TranslationsHomeDeleteNoteDialogEn.internal(_root);
 }
 
 // Path: sentry
