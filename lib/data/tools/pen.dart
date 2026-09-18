@@ -29,7 +29,7 @@ class Pen extends Tool {
     : name = t.editor.pens.fountainPen,
       sizeMin = 1,
       sizeMax = 25,
-      sizeStep = 1,
+      sizeStep = .5,
       icon = fountainPenIcon,
       options = stows.lastFountainPenOptions.value,
       pressureEnabled = true,

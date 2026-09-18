@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Needed for reading files opened with the app -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <!-- Remove media permissions from open_filex package -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove" />

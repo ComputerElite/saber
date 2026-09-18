@@ -12,6 +12,7 @@ import 'package:saber/data/nextcloud/saber_syncer.dart';
 import 'package:saber/data/prefs.dart';
 import 'package:saber/i18n/strings.g.dart';
 import 'package:sbn/font_fallbacks.dart';
+import 'package:saber/main.dart';
 
 class SettingsDirectorySelector extends StatelessWidget {
   const new({
@@ -29,9 +30,9 @@ class SettingsDirectorySelector extends StatelessWidget {
 
   void onPressed(BuildContext context) async {
     final oldDir = Directory(FileManager.documentsDirectory);
-    final oldDirIsEmpty = oldDir.existsSync()
+    final oldDirIsEmpty = (oldDir.existsSync()
         ? oldDir.listSync().isEmpty
-        : true;
+        : true) || true;
     await showAdaptiveDialog(
       context: context,
       builder: (context) => DirectorySelector(
@@ -135,8 +136,11 @@ class _DirectorySelectorState extends State<DirectorySelector> {
   }
 
   void _onConfirm() {
-    stows.customDataDir.value = _directory;
+    stows.customDataDir.value = _directory.replaceAll("content://com.android.externalstorage.documents/tree/primary", "").replaceAll("%3A", "/sdcard/").replaceAll("%2F", "/");
     context.pop();
+    if (Platform.isAndroid) {
+      requestStoragePermission();
+    }
   }
 
   @override
