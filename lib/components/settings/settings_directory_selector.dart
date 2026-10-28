@@ -134,7 +134,7 @@ class _DirectorySelectorState extends State<DirectorySelector> {
     setState(() {});
   }
 
-  void _onConfirm() {
+  void _onConfirm() async {
     stows.customDataDir.value = _directory
         .replaceAll(
           "content://com.android.externalstorage.documents/tree/primary",

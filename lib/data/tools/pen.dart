@@ -51,7 +51,7 @@ class Pen extends Tool {
   final double sizeMin, sizeMax, sizeStep;
   late final int sizeStepsBetweenMinAndMax = ((sizeMax - sizeMin) / sizeStep)
       .round();
-  final IconData icon;
+  final Object icon;
 
   @override
   final ToolId toolId;
