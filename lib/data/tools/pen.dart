@@ -25,33 +25,33 @@ class Pen extends Tool {
     required this.toolId,
   });
 
-  new fountainPen()
+  Pen.fountainPen()
     : name = t.editor.pens.fountainPen,
       sizeMin = 1,
       sizeMax = 25,
-      sizeStep = 1,
+      sizeStep = 0.5,
       icon = fountainPenIcon,
       options = stows.lastFountainPenOptions.value,
       pressureEnabled = true,
       color = Color(stows.lastFountainPenColor.value),
-      toolId = .fountainPen;
+      toolId = ToolId.fountainPen;
 
-  new ballpointPen()
+  Pen.ballpointPen()
     : name = t.editor.pens.ballpointPen,
       sizeMin = 1,
       sizeMax = 25,
-      sizeStep = 1,
+      sizeStep = 0.5,
       icon = ballpointPenIcon,
       options = stows.lastBallpointPenOptions.value,
       pressureEnabled = false,
       color = Color(stows.lastBallpointPenColor.value),
-      toolId = .ballpointPen;
+      toolId = ToolId.ballpointPen;
 
   final String name;
   final double sizeMin, sizeMax, sizeStep;
   late final int sizeStepsBetweenMinAndMax = ((sizeMax - sizeMin) / sizeStep)
       .round();
-  final Object icon;
+  final IconData icon;
 
   @override
   final ToolId toolId;

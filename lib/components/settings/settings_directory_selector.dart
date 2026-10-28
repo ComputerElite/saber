@@ -135,8 +135,39 @@ class _DirectorySelectorState extends State<DirectorySelector> {
   }
 
   void _onConfirm() {
-    stows.customDataDir.value = _directory;
+    stows.customDataDir.value = _directory
+        .replaceAll(
+          "content://com.android.externalstorage.documents/tree/primary",
+          "",
+        )
+        .replaceAll("%3A", "/sdcard/")
+        .replaceAll("%2F", "/");
     context.pop();
+    if (Platform.isAndroid &&
+        !_directory.startsWith('/data/user/') &&
+        !await Permission.manageExternalStorage.isGranted) {
+      showDialog(
+        context: context,
+        builder: (context) => AdaptiveAlertDialog(
+          title: Text(t.settings.customDataDir.grantPermission),
+          content: Text(t.settings.customDataDir.grantPermissionExplenation),
+          actions: [
+            CupertinoDialogAction(
+              onPressed: () => context.pop(),
+              child: Text(t.settings.customDataDir.cancel),
+            ),
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              onPressed: () {
+                context.pop();
+                requestStoragePermission();
+              },
+              child: Text(t.settings.customDataDir.yes),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override

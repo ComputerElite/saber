@@ -831,11 +831,13 @@ class EditorState extends State<Editor> {
       // button pressed while hovering, switch to Eraser
       if (currentTool is! Eraser) {
         currentTool = Eraser();
-      }
-    } else {
-      // button was released while hovering, switch back to non-Eraser
-      if (currentTool is Eraser) {
-        currentTool = _lastNonEraserTool;
+        setState(() {});
+      } else {
+        if (tmpTool != null && currentTool is Eraser) {
+          currentTool = tmpTool!;
+          tmpTool = null;
+          setState(() {});
+        }
       }
     }
 
