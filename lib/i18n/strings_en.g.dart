@@ -869,6 +869,11 @@ class Translations$settings$customDataDir$en {
 
 	/// en: 'This feature is currently only for developers. Using it will likely result in data loss.'
 	String get unsupported => 'This feature is currently only for developers. Using it will likely result in data loss.';
+
+  String get grantPermission => "Grant permission";
+  String get yes => "Yes";
+  String get grantPermissionExplenation =>
+      "Saber needs permission to access the directory you chose in case you want to modify your notes via any other app (e. g. Syncthing). Do you want to grant this permission?";
 }
 
 // Path: login.form
